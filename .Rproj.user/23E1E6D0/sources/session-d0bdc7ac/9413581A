@@ -3,7 +3,7 @@
     "path": "~/GitHub/Blog/posts/1st-Post/index.qmd",
     "project_path": "posts/1st-Post/index.qmd",
     "type": "quarto_markdown",
-    "hash": "0",
+    "hash": "2539679002",
     "contents": "",
     "dirty": false,
     "created": 1679683343467.0,
@@ -21,11 +21,11 @@
         "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1679768174,
+    "lastKnownWriteTime": 1679768781,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1679768174636,
+    "last_content_update": 1679768781607,
     "read_only": false,
     "read_only_alternatives": []
 }
