@@ -8,9 +8,11 @@ website:
     right:
       - about.qmd
       - icon: github
-        href: https://github.com/
+        href: https://github.com/mekanavsharma
       - icon: twitter
         href: https://twitter.com
+      - icon: linkedin
+        href: https://www.linkedin.com/in/kanav-sharma-896b1021b/
 format:
   html:
     theme: cosmo
