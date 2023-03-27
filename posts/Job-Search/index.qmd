@@ -19,11 +19,11 @@ In this blog post, I'll share my journey with you and provide valuable insights 
 
 ## Initial plan and challenges
 
-Back in September, I had planned to study Python and machine learning basics for a month before creating an online profile. Unfortunately, my motivation dwindled and I spent two months halfheartedly reading articles and making notes out of them. Nonetheless, I eventually created a resume using resources like codebasics and Krish Naik's videos and established profiles on job portals such as Naukri and LinkedIn. Soon after, I started receiving calls from various organizations, but the interview process was a reality check for me as my understanding of machine learning algorithms was only surface-level.
+Back in September, I had planned to study Python and machine learning basics for a month before creating an online profile. Unfortunately, my motivation dwindled and I spent two months halfheartedly reading articles and making notes out of them. Nonetheless, I eventually created a resume using resources like [codebasics](https://www.youtube.com/@codebasics) and Krish Naik's videos and established profiles on job portals such as Naukri and LinkedIn. Soon after, I started receiving calls from various organizations, but the interview process was a reality check for me as my understanding of machine learning algorithms was only surface-level.
 
 ## Learning from failures
 
-In November, I learned some valuable lessons through my experiences.I would usually clear first round but would fail in second round one such example was I confidently answered questions related to my resume but was stumped when asked to elaborate on categorical data encoding like difference between label and hot encoding. Similarly, when asked about hypothesis testing, I gave a confused response and said alpha was 0.5 instead of 0.05. Despite making notes on Krish Naik's Live Statistics playlist, I hadn't covered these topics sincerely.
+In November, I learned some valuable lessons through my experiences.I would usually clear first round but would fail in second round one such example was I confidently answered questions related to my resume but was stumped when asked to elaborate on categorical data encoding like difference between label and hot encoding. Similarly, when asked about hypothesis testing, I gave a confused response and said alpha was 0.5 instead of 0.05. Despite making notes on Krish Naik's Live [Statistics playlist](https://www.youtube.com/watch?v=11unm2hmvOQ&list=PLZoTAELRMXVMgtxAboeAx-D9qbnY94Yay&ab_channel=KrishNaik), I hadn't covered these topics sincerely.
 
 However, instead of giving up, I used these experiences as motivation to learn and grow. I went back to my notes, re-studied the topics where I had made mistakes, and updated my notes accordingly. I realized that learning is a continuous process and that we can always improve.
 
@@ -35,7 +35,7 @@ Despite a dry spell in December where I didn't receive any recruiter calls, I di
 
 ## Silver Lining
 
-Long story short in January, I had received two offers with a 50% salary increase, but they were not in the FinTech industry, which was my goal. I was satisfied but not happy. Then, I cleared the first round of interviews for two companies, X and Y, on the same day while having a high fever (I am not bragging, I mentioned this to make the point that if you work hard you will gain confidence eventually). One of the interviewers suggested I should reschedule, but I declined as I did not want to tarnish my reputation.
+Long story short in January, I had received two offers with a 50% salary increase, but they were not in the FinTech industry, which was my goal. I was satisfied but not happy. Then, I cleared the first round of interviews for two companies, X and Y, on the same day while having a high fever (I'm not blowing my own trumpet, I mentioned this to make the point that if you work hard you will gain confidence eventually). One of the interviewers suggested I should reschedule, but I declined as I did not want to tarnish my reputation.
 
 ## All's Well that Ends Well
 
@@ -43,7 +43,7 @@ In February, I received an offer letter from company X with a 95% salary increas
 
 ## The Reality of Recruitment Process
 
-I realized early on that the recruitment process is not always straightforward. I cleared the first round in one organization, only to be informed weeks later that they had filled the position internally. In two other organizations, after clearing the first round, I was later told that openings were closed. In another organization, I cleared two rounds and even submitted my documents, only to be told later that I was the second priority and the position was filled via referral. However, I didn't let these setbacks discourage me, and I continued to persevere.
+I realized early on that the recruitment process is not always straightforward. I cleared the first round in one organization, only to be informed weeks later that they had filled the position internally. In two other organizations, after clearing the first round, I was later told that openings were closed. In another organization, I cleared three rounds and even submitted my documents, only to be told later that I was the second priority and the position was filled via referral. However, I didn't let these setbacks discourage me, and I continued to persevere.
 
 ## The Journey Continues
 
@@ -73,11 +73,11 @@ I learned that mistakes are an integral part of the learning process. Even thoug
 
 ## Study Sources
 
-I found the book "Approaching Almost Any Machine Learning Problem" by Abhishek Thakur to be an excellent resource for building a strong foundation in machine learning.
+I found the book "[Approaching Almost Any Machine Learning Problem](https://amzn.eu/d/6lPwBfQ)" by [Abhishek Thakur](https://twitter.com/abhi1thakur) to be an excellent resource for building a strong foundation in machine learning.
 
-I also relied heavily on online resources like Statquest and Krish Naik's videos, as well as blogs on various websites like Medium, Towards Data Science, and Analytics Vidhya, like for Decision tree I think KDnuggets have one of the finest blog on it.
+I also relied heavily on online resources like [Statquest](https://www.youtube.com/@statquest) and [Krish Naik's](https://www.youtube.com/@krishnaik06) videos, as well as blogs on various websites like Medium, Towards Data Science, and Analytics Vidhya, like for Decision tree I think KDnuggets have one of the finest [blog](https://www.kdnuggets.com/2020/01/decision-tree-algorithm-explained.html) on it.
 
-Machine Learning Interviews Book by Chip Huyen was another source from where I learned non technical (like how to negotiate salary) & technical aspect of interview.
+[Machine Learning Interviews Book by Chip Huyen](https://huyenchip.com/ml-interviews-book/) was another source from where I learned non technical (like how to negotiate salary) & technical aspect of interview.
 
 ## Conclusion
 

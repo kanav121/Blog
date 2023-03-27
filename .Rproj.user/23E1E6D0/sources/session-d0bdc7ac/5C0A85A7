@@ -1,12 +1,12 @@
 {
-    "id": "9413581A",
-    "path": "~/GitHub/Blog/posts/1st-Post/index.qmd",
-    "project_path": "posts/1st-Post/index.qmd",
+    "id": "5C0A85A7",
+    "path": "~/GitHub/Blog/posts/Job-Search/index.qmd",
+    "project_path": "posts/Job-Search/index.qmd",
     "type": "quarto_markdown",
-    "hash": "2539679002",
+    "hash": "0",
     "contents": "",
     "dirty": false,
-    "created": 1679683343467.0,
+    "created": 1679909190370.0,
     "source_on_save": false,
     "relative_order": 3,
     "properties": {
@@ -16,16 +16,14 @@
         "Source": "Source",
         "docOutlineVisible": "1",
         "rmdVisualCollapsedChunks": "",
-        "rmdVisualModeLocation": "8572:2992.800048828125",
-        "cursorPosition": "81,0",
-        "scrollLine": "0"
+        "rmdVisualModeLocation": "609:0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1679768781,
+    "lastKnownWriteTime": 1679828464,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1679768781607,
+    "last_content_update": 1679828464,
     "read_only": false,
     "read_only_alternatives": []
 }
