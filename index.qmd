@@ -1,5 +1,5 @@
 ---
-#title: "Blog"
+title: "Website is work in progress. Please don’t judge us by our homepage."
 listing:
   contents: posts
   sort: "date desc"

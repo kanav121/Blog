@@ -5,7 +5,7 @@ project:
 website:
   title: "Blog"
   site-url: https://mekanavsharma.github.io/Blog/
-  body-header: subscribe.html
+  #body-header: subscribe.html
   description: "Sample blog"
   navbar:
     right:
