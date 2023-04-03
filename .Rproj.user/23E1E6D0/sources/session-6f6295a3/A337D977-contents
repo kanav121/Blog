@@ -5,6 +5,7 @@ project:
 website:
   title: "Blog"
   site-url: https://mekanavsharma.github.io/Blog/
+  margin-header: subscribe.html
   description: "Sample blog"
   navbar:
     right:
