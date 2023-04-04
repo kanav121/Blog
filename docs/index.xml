@@ -86,36 +86,10 @@
 
  ]]></description>
   <category>Informative</category>
+  <category>Interview</category>
   <guid>https://mekanavsharma.github.io/Blog/posts/Job-Search/index.html</guid>
   <pubDate>Wed, 22 Mar 2023 18:30:00 GMT</pubDate>
   <media:content url="https://mekanavsharma.github.io/Blog/posts/Job-Search/image.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Post With Code</title>
-  <dc:creator>Harlow Malloc</dc:creator>
-  <link>https://mekanavsharma.github.io/Blog/posts/post-with-code/index.html</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>This is a post with executable code.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="dv" style="color: #AD0000;">1</span> <span class="sc" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">1</span></span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
-</div>
-</div>
-
-
-
- ]]></description>
-  <category>news</category>
-  <category>code</category>
-  <category>analysis</category>
-  <guid>https://mekanavsharma.github.io/Blog/posts/post-with-code/index.html</guid>
-  <pubDate>Wed, 22 Mar 2023 18:30:00 GMT</pubDate>
-  <media:content url="https://mekanavsharma.github.io/Blog/posts/post-with-code/image.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
