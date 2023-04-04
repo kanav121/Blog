@@ -13,6 +13,9 @@ about:
     - icon: github
       text: Github
       href: https://github.com
+    - icon: file-text
+      text: Resume
+      href: Resume_Kanav.pdf
 ---
 
 Welcome to my website! I am a data scientist who loves to explore the intersection of data and finance. Here you will find my projects, articles and insights on how data science can transform the fintech industry. Whether you are a fellow data enthusiast, a potential collaborator or just curious about fintech, I hope you will enjoy browsing through my website and learning something new.
