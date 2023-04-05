@@ -1,6 +1,7 @@
 ---
 title: "About"
 image: Kanav_profile.jpg
+resources: Resume_Kanav.pdf
 about:
   template: solana
   links:
