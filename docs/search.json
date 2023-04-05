@@ -7,6 +7,20 @@
     "text": "Welcome to my website! I am a data scientist who loves to explore the intersection of data and finance. Here you will find my projects, articles and insights on how data science can transform the fintech industry. Whether you are a fellow data enthusiast, a potential collaborator or just curious about fintech, I hope you will enjoy browsing through my website and learning something new."
   },
   {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "About",
+    "section": "Education",
+    "text": "Education\nSGVU, Jaipur | 2015-2019\nBtech - CSE | 7.96 CGPA"
+  },
+  {
+    "objectID": "about.html#experience",
+    "href": "about.html#experience",
+    "title": "About",
+    "section": "Experience",
+    "text": "Experience\nTransunion | Senior Analyst | March 2023 - Present\nKreate Energy Pvt Ltd | Junior Associate | Feb 2020 - March 2023\nRoboMq Pvt Ltd | Data Scientist | January 2019 - January 2020"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Website is work in progress. Please don’t judge us by our homepage.",
@@ -89,19 +103,5 @@
     "title": "How I got multiple offers and Landed My Dream Job in Fintech",
     "section": "Conclusion",
     "text": "Conclusion\nIn conclusion, my journey to landing a Senior Analyst role in a FinTech company was not easy, but it taught me valuable lessons about perseverance, learning from mistakes, and the importance of building a strong online profile. I hope my journey can inspire others to pursue their dreams and never give up, no matter how challenging the journey may be.\nHope that’s the key, be willing to work hard ‘you will get success may not be today but tomorrow you surely will’."
-  },
-  {
-    "objectID": "about.html#education",
-    "href": "about.html#education",
-    "title": "About",
-    "section": "Education",
-    "text": "Education\nSGVU, Jaipur | 2015-2019\nBtech - CSE | 7.96 CGPA"
-  },
-  {
-    "objectID": "about.html#experience",
-    "href": "about.html#experience",
-    "title": "About",
-    "section": "Experience",
-    "text": "Experience\nTransunion | Senior Analyst | March 2023 - Present\nKreate Energy Pvt Ltd | Junior Associate | Feb 2020 - March 2023\nRoboMq Pvt Ltd | Data Scientist | January 2019 - January 2020"
   }
 ]
