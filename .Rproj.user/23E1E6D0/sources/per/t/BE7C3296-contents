@@ -3,8 +3,8 @@ title: "Website is work in progress. Please don’t judge us by our homepage."
 listing:
   contents: posts
   sort: "date desc"
-  type: default
-  categories: true
+  type: table
+  categories: unnumbered
   sort-ui: false
   filter-ui: false
   feed: true
