@@ -5,7 +5,7 @@ date: "2023-03-23"
 categories: [Informative,Interview]
 image: "image.jpg"
 description: A blog regarding how I got what I wanted
-#title-block-banner: true
+title-block-banner: "sun_rise.jpg"  #it has image in title
 order: 0
 ---
 
@@ -49,7 +49,7 @@ I realized early on that the recruitment process is not always straightforward. 
 
 ## The Journey Continues
 
-I learned that mistakes are an integral part of the learning process. Even though I had an offer from TransUnion I gave another interview (just of fun). The interview taught me about SARIMAX (we can use this for multivariate time series) and I knew only about ARIMA,SARIMA etc which are uni-variate models. It was a humbling experience, but it taught me a valuable lesson that 'You may think you know but actually you don't'.
+I learned that mistakes are an integral part of the learning process. Even though I had an offer from TransUnion I gave another interview (just of fun). The interview taught me about SARIMAX (we can use this for multivariate time series) and I knew only about ARIMA,SARIMA etc. which are univariate models. It was a humbling experience, but it taught me a valuable lesson that 'You may think you know but actually you don't'.
 
 ## Insights
 
@@ -57,7 +57,7 @@ I learned that mistakes are an integral part of the learning process. Even thoug
 
 2\. I found that building a strong online profile is essential when looking for job opportunities even before you started preparing because it take time to get a call.
 
-3\. Tailor your resume and cover letter to each position. Highlight your relevant skills and experience and show how you can add value to the company.Make your resume is plain and simple & you should know what have you written in your resume.
+3\. Make your resume plain and simple. Tailor your resume and cover letter to each position. Highlight your relevant skills and experience and show how you can add value to the company.
 
 4\. Prepare for interviews by researching the company and practicing your responses to common interview questions. Dress professionally and arrive on time.
 

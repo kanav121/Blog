@@ -3,7 +3,7 @@ title: "Website is work in progress. Please don’t judge us by our homepage."
 listing:
   contents: posts
   sort: "date desc"
-  type: table
+  type: table # grid, default
   categories: unnumbered
   sort-ui: false
   filter-ui: false
