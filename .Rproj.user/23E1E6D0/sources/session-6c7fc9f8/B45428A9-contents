@@ -5,7 +5,7 @@ date: "2023-03-23"
 categories: [Informative,Interview]
 image: "image.jpg"
 description: A blog regarding how I got what I wanted
-title-block-banner: "sun_rise.jpg"  #it has image in title
+title-block-banner: true  #it has image in title
 order: 0
 ---
 
