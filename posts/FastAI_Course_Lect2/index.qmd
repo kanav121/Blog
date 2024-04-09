@@ -2,7 +2,7 @@
 title: "FastAI Course Lecture 2 Notes"
 author: "Kanav Sharma"
 date: "2024-04-09"
-categories: [Deep Learning, Computer Vision, FastAI]
+categories: [Computer Vision, FastAI]
 toc: true
 #image: "image.jpg"
 #description: Blog regarding re-creation of Lecture 2 of FastAI Course for own learning
