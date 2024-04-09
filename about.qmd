@@ -3,11 +3,14 @@ title: "About"
 image: Kanav_profile.jpg
 resources: Resume_Kanav.pdf
 about:
-  template: solana
+  template: solana # jolla, trestles, solana, marquee, broadside
   links:
-    #- icon: envelope
-    #  text: Email
-    #  href: kanav608@gmail.com
+    # - icon: twitter
+    #   text: Twitter
+    #   href: https://twitter.com/kanav608
+    # - icon: envelope
+    #   text: Email
+    #   href: kanav608@gmail.com
     - icon: github
       text: Github
       href: https://github.com/mekanavsharma
@@ -15,8 +18,9 @@ about:
     #  text: Resume
     #  href: Resume_Kanav.pdf
 ---
+Welcome to my digital space! I'm a data scientist in FinTech venturing into the exciting world of Deep Learning. Over the coming months, I'll share my data science projects and learnings here as I delve deeper into AI and its boundless potential.
 
-Hello and welcome to my website! I am a data scientist with a passion for fintech. On this website, you will find my portfolio of data science projects, my blog posts on fintech topics and my tips and tricks for acing data science interviews. I will also share my knowledge and experience with the R programming language, which is one of my favorite tools for data analysis. Whether you are a data lover, a fintech fan, a potential partner or just curious about what I do, I hope you will find something useful and interesting on my website. Enjoy!
+Whether you're a fellow data enthusiast, an AI aficionado, or simply curious, join me on this captivating journey. Get ready to explore the magic of data, algorithms, and the frontier of Deep Learning. Let's unravel mysteries and unlock new frontiers together! I'm always eager to learn, so if you'd like to provide feedback, guidance, or engage in discussion on any topic or project, feel free to reach out to me at `kanav608@gmail.com`.
 
 ## Education
 

@@ -1,12 +1,12 @@
 ---
-title: "Website is work in progress. Please don’t judge us by our homepage."
+description: "Collection of my Projects and Ideas" #title
 listing:
   contents: posts
-  sort: "date desc"
-  type: table # grid, default
-  categories: unnumbered
-  sort-ui: false
-  filter-ui: false
+  sort: "date desc" # "date asc", "date desc", "title asc" 
+  type: grid # grid, table, default
+  categories: numbered #unnumbered, numbered, cloud
+  sort-ui: false # true, false
+  filter-ui: false # true, false
   feed: true
 page-layout: full
 title-block-banner: true

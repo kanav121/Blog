@@ -8,9 +8,1051 @@
 <title>Blog</title>
 <link>https://mekanavsharma.github.io/Blog/index.html</link>
 <atom:link href="https://mekanavsharma.github.io/Blog/index.xml" rel="self" type="application/rss+xml"/>
-<description>Sample blog</description>
-<generator>quarto-1.2.335</generator>
-<lastBuildDate>Wed, 22 Mar 2023 18:30:00 GMT</lastBuildDate>
+<description>Collection of my Projects and Ideas</description>
+<generator>quarto-1.3.450</generator>
+<lastBuildDate>Mon, 08 Apr 2024 18:30:00 GMT</lastBuildDate>
+<item>
+  <title>FastAI Course Lecture 2 Notes</title>
+  <dc:creator>Kanav Sharma</dc:creator>
+  <link>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="this-notebook-is-to-enhance-my-learning-on-lecture-2-of-fast-ai-course-so-ill-be-creating-a-big-cat-classification-model" class="level1">
+<h1>This notebook is to enhance my learning on lecture 2 of FAST AI course so I’ll be creating a big cat classification model</h1>
+<p>Let’s install all required packages</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#hide</span></span>
+<span id="cb1-2"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span> [ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>e <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>content ] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;&amp;</span> pip install <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>Uqq fastbook</span>
+<span id="cb1-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> fastbook</span>
+<span id="cb1-4">fastbook.setup_book()</span>
+<span id="cb1-5"></span>
+<span id="cb1-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#hide</span></span>
+<span id="cb1-7"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> fastbook <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span>
+<span id="cb1-8"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> fastai.vision.widgets <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span></code></pre></div>
+<pre><code>[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m719.8/719.8 kB[0m [31m7.6 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m510.5/510.5 kB[0m [31m10.6 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m116.3/116.3 kB[0m [31m12.1 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m194.1/194.1 kB[0m [31m9.0 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m134.8/134.8 kB[0m [31m15.4 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m1.6/1.6 MB[0m [31m16.3 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m23.7/23.7 MB[0m [31m15.0 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m823.6/823.6 kB[0m [31m26.3 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m14.1/14.1 MB[0m [31m53.7 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m731.7/731.7 MB[0m [31m901.8 kB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m410.6/410.6 MB[0m [31m2.0 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m121.6/121.6 MB[0m [31m8.2 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m56.5/56.5 MB[0m [31m12.1 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m124.2/124.2 MB[0m [31m8.3 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m196.0/196.0 MB[0m [31m2.3 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m166.0/166.0 MB[0m [31m7.2 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m99.1/99.1 kB[0m [31m15.6 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m21.1/21.1 MB[0m [31m68.6 MB/s[0m eta [36m0:00:00[0m
+[?25hMounted at /content/gdrive</code></pre>
+<section id="download-and-sort-out-the-dataimages." class="level2">
+<h2 class="anchored" data-anchor-id="download-and-sort-out-the-dataimages.">1. Download and sort out the data(images).</h2>
+<p>Extract Data using <strong>DuckDuckGo</strong> function 1. Create dynamic path according to there name store file 2. Create a dictionary to track the number of downloaded images per category (e.g., cat).</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">??search_images_ddg</span></code></pre></div>
+<p><em>Signature</em>: search_images_ddg(term, max_images=200)</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">cat_types <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Leopard'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Cougar'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Tiger'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Lion'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Cheetah'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'SnowLeopard'</span></span>
+<span id="cb4-2">path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Path(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'CAT'</span>)</span>
+<span id="cb4-3"></span>
+<span id="cb4-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#remove folder with file in it</span></span>
+<span id="cb4-5"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> shutil</span>
+<span id="cb4-6"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> path.exists():</span>
+<span id="cb4-7">  shutil.rmtree(path)</span>
+<span id="cb4-8"></span>
+<span id="cb4-9">per_cat_count <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> {}</span>
+<span id="cb4-10"></span>
+<span id="cb4-11"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">not</span> path.exists():</span>
+<span id="cb4-12">    path.mkdir()</span>
+<span id="cb4-13">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> o <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> cat_types:</span>
+<span id="cb4-14">        dest <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (path<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>o)</span>
+<span id="cb4-15">        dest.mkdir(exist_ok<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span>
+<span id="cb4-16">        results <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> search_images_ddg(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>o<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>)</span>
+<span id="cb4-17">        download_images(dest, urls<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>results)</span>
+<span id="cb4-18">        per_cat_count[<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>o<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(results)</span></code></pre></div>
+<pre><code>/usr/lib/python3.10/multiprocessing/popen_fork.py:66: RuntimeWarning: os.fork() was called. os.fork() is incompatible with multithreaded code, and JAX is multithreaded, so this will likely lead to a deadlock.
+  self.pid = os.fork()</code></pre>
+<p>Count of Images per category</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1">per_cat_count</span></code></pre></div>
+<pre><code>{'Leopard': 200,
+ 'Cougar': 200,
+ 'Tiger': 200,
+ 'Lion': 200,
+ 'Cheetah': 200,
+ 'SnowLeopard': 200}</code></pre>
+<p>So we got 200 images per type</p>
+<p>While downloading we can get corrupt images lets first remove them. <code>verify_images()</code> will return path of such images and using <code>unlink</code> we can remove these files.</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">fns <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> get_image_files(path)</span>
+<span id="cb8-2">total_imagelength <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(fns)</span>
+<span id="cb8-3">failed <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> verify_images(fns)</span>
+<span id="cb8-4">failed_imagelength <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(failed)</span>
+<span id="cb8-5">failed</span></code></pre></div>
+<pre><code>(#51) [Path('CAT/Lion/d61427d6-f097-4727-a3ba-de31366199d6.jpg'),Path('CAT/Lion/85f17699-5ebe-4e88-9798-14b7e66281d7.png'),Path('CAT/Lion/84589c8d-a1da-45be-9fe6-1f87a34289b3.jpg'),Path('CAT/Lion/cf746926-23d6-4754-b7d0-25779410ee15.jpg'),Path('CAT/SnowLeopard/f3ce804b-5071-4312-8633-9895e721340c.jpg'),Path('CAT/SnowLeopard/961333aa-79da-4dc2-9f56-f4d07697a14e.jpg'),Path('CAT/SnowLeopard/57b3a667-1d3e-47bb-8fff-3e1505a5a12f.jpg'),Path('CAT/SnowLeopard/1b3f2639-1c5d-4e26-86c8-feb4b99bf76a.jpg'),Path('CAT/Cougar/cd7a89c9-8667-4d24-aceb-3a85bb7b247e.jpg'),Path('CAT/Cougar/44b6067c-f159-4d5f-819a-11e7d50a3fd8.jpg')...]</code></pre>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">failed.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">map</span>(Path.unlink)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb10-2">Dict <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> {<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Total_Image_Count"</span>: total_imagelength, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Failed_Image_Count"</span>: failed_imagelength}</span>
+<span id="cb10-3">Dict</span></code></pre></div>
+<pre><code>{'Total_Image_Count': 1115, 'Failed_Image_Count': 51}</code></pre>
+</section>
+<section id="prepare-data-for-model-training-data-loaders-data-augmentaion-etc.." class="level2">
+<h2 class="anchored" data-anchor-id="prepare-data-for-model-training-data-loaders-data-augmentaion-etc..">2. Prepare data for model training (Data Loaders, Data Augmentaion, etc.).</h2>
+<p>Create a data block and load that data block in data loader.</p>
+<ul>
+<li>Data Block - Is a blueprint on how to assemble data that we want to send for training.</li>
+<li>Data Loader - Is used to pass that data which is in batch format(i.e created using data blocks) to the GPU.</li>
+</ul>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">big_cat <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> DataBlock(</span>
+<span id="cb12-2">    blocks<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(ImageBlock, CategoryBlock),</span>
+<span id="cb12-3">    get_items<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>get_image_files,</span>
+<span id="cb12-4">    splitter<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>RandomSplitter(valid_pct<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, seed<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>),</span>
+<span id="cb12-5">    get_y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>parent_label,</span>
+<span id="cb12-6">    item_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>))</span>
+<span id="cb12-7">dls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> big_cat.dataloaders(path)</span></code></pre></div>
+<p><strong>DataBlock</strong> is a convenient way to organize the data loading, splitting, and transformation steps in preparation for training a deep learning model using the fastai library.</p>
+<p><code>DataBlock()</code>: is suitable for a classification task where you have a dataset of images, and each image belongs to a specific category (e.g., types of cats).</p>
+<p><code>blocks=(ImageBlock, CategoryBlock)</code>: It specify that our input are images &amp; our target are categories(types of cat)</p>
+<p><code>get_image_files</code>: this help to get list of all the images from subfolder.</p>
+<p><code>parent_label</code>: This is a function that extracts the labels (categories) for each item.’Leapord’,‘Tiger’,‘Lion’</p>
+<p>A <code>DataLoaders</code> includes validation and training <code>DataLoader</code>. Let’s check random validation dataset.</p>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1">dls.valid.show_batch(max_n<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>, nrows<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span></code></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/Lecture_2_Production_Self_files/Lecture_2_Production_Self_19_0.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">png</figcaption>
+</figure>
+</div>
+<p><strong>Squishing or Padding for Model Training :</strong></p>
+<ul>
+<li>Squishing or padding is applied to images during training.</li>
+<li>Cropping may result in data loss, while squishing/stretching can lead to unrealistic shapes, impacting accuracy.</li>
+<li>Padding may introduce excessive empty space, causing wasted computation.</li>
+</ul>
+<p><strong>Practical Approach - Data Augmentation:</strong> The idea of getting different picture every time from same image is called data augmentation.</p>
+<ul>
+<li>Randomly select and crop parts of the image during each epoch.</li>
+<li>Train the model on different image parts across multiple epochs.</li>
+<li>This approach creates random variations in input data without altering its meaning.</li>
+<li>Aiming to provide diverse perspectives, it ensures the model sees different pictures from the same image in each iteration..</li>
+</ul>
+<hr>
+<p>To train our model, we’ll use <code>RandomResizedCrop</code> with an image size of 224 px, which is fairly standard for image classification, and default <code>aug_transforms</code>:</p>
+<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1">big_cat <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> big_cat.new(</span>
+<span id="cb14-2">    item_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>RandomResizedCrop(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">224</span>, min_scale<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>),</span>
+<span id="cb14-3">    batch_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>aug_transforms())</span>
+<span id="cb14-4">big_cat_dls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> big_cat.dataloaders(path)</span>
+<span id="cb14-5">big_cat_dls.train.show_batch(max_n<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, nrows<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span></code></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/Lecture_2_Production_Self_files/Lecture_2_Production_Self_21_0.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">png</figcaption>
+</figure>
+</div>
+</section>
+<section id="train-the-model" class="level2">
+<h2 class="anchored" data-anchor-id="train-the-model">3. Train the model</h2>
+<p><strong>Tip1</strong> - Prioritaize to train a quick and simple model first, rather than going for big model directly.</p>
+<p><strong>Tip2</strong> - Build model first and then clean the data. And then again train the model.</p>
+<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">learn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> vision_learner(big_cat_dls, resnet18, metrics<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>error_rate)</span>
+<span id="cb15-2">learn.fine_tune(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>)</span></code></pre></div>
+
+
+<table class="dataframe table table-sm table-striped small">
+<thead>
+<tr>
+<th>
+epoch
+</th>
+<th>
+train_loss
+</th>
+<th>
+valid_loss
+</th>
+<th>
+error_rate
+</th>
+<th>
+time
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+1.878671
+</td>
+<td>
+0.548061
+</td>
+<td>
+0.183962
+</td>
+<td>
+00:36
+</td>
+</tr>
+</tbody>
+
+</table>
+
+
+<table class="dataframe table table-sm table-striped small">
+<thead>
+<tr>
+<th>
+epoch
+</th>
+<th>
+train_loss
+</th>
+<th>
+valid_loss
+</th>
+<th>
+error_rate
+</th>
+<th>
+time
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+0.669399
+</td>
+<td>
+0.442041
+</td>
+<td>
+0.160377
+</td>
+<td>
+00:36
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+0.566393
+</td>
+<td>
+0.425440
+</td>
+<td>
+0.136792
+</td>
+<td>
+00:38
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+0.476826
+</td>
+<td>
+0.555463
+</td>
+<td>
+0.179245
+</td>
+<td>
+00:38
+</td>
+</tr>
+<tr>
+<td>
+3
+</td>
+<td>
+0.429597
+</td>
+<td>
+0.524273
+</td>
+<td>
+0.146226
+</td>
+<td>
+00:37
+</td>
+</tr>
+<tr>
+<td>
+4
+</td>
+<td>
+0.367606
+</td>
+<td>
+0.519690
+</td>
+<td>
+0.117925
+</td>
+<td>
+00:36
+</td>
+</tr>
+<tr>
+<td>
+5
+</td>
+<td>
+0.319734
+</td>
+<td>
+0.529199
+</td>
+<td>
+0.113208
+</td>
+<td>
+00:37
+</td>
+</tr>
+<tr>
+<td>
+6
+</td>
+<td>
+0.287094
+</td>
+<td>
+0.516044
+</td>
+<td>
+0.127358
+</td>
+<td>
+00:38
+</td>
+</tr>
+<tr>
+<td>
+7
+</td>
+<td>
+0.260760
+</td>
+<td>
+0.514551
+</td>
+<td>
+0.132075
+</td>
+<td>
+00:36
+</td>
+</tr>
+</tbody>
+
+</table>
+<p>Here we see, in last epoch rise in error_rate which means that in stochastic gradient descent we have surpassed deepest point and trending towards upward direction which leads to higher loss rate. It indicates that the training process should likely be stopped to prevent further divergence from the optimal solution</p>
+<p>###Visualize Confusion Matrix</p>
+<div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1">interp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ClassificationInterpretation.from_learner(learn)</span>
+<span id="cb16-2">interp.plot_confusion_matrix()</span></code></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/Lecture_2_Production_Self_files/Lecture_2_Production_Self_26_4.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">png</figcaption>
+</figure>
+</div>
+<p><code>plot_top_losses</code> shows us the images with the highest loss in our dataset.</p>
+<div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1">interp.plot_top_losses(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, nrows<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, figsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">18</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>))</span></code></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/Lecture_2_Production_Self_files/Lecture_2_Production_Self_28_2.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">png</figcaption>
+</figure>
+</div>
+</section>
+<section id="clean-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="clean-the-data">4. Clean the data</h2>
+<p><code>ImageClassifierCleaner</code> enables us to review all images associated with a specific category and identify their placement within the dataloader, whether in the training or validation set.</p>
+<p>The images are organized in ascending order of confidence, prioritizing those with the highest loss. This allows for efficient data sorting by simply examining the initial images. Users can choose to keep, delete, or modify the category label (type of cat) as needed.</p>
+<div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#hide_output</span></span>
+<span id="cb18-2">cleaner <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ImageClassifierCleaner(learn)</span>
+<span id="cb18-3">cleaner</span></code></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<pre><code>VBox(children=(Dropdown(options=('Cheetah', 'Cougar', 'Leopard', 'Lion', 'SnowLeopard', 'Tiger'), value='Cheet…</code></pre>
+<p>The <code>Cleaner</code> possesses information regarding the files we deleted and whose labels we modified. Now, we will implement these changes.</p>
+<div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"></span>
+<span id="cb20-2"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> idx <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> cleaner.delete(): cleaner.fns[idx].unlink()</span>
+<span id="cb20-3"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> idx,cat <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> cleaner.change(): shutil.move(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>(cleaner.fns[idx]), path<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>cat)</span></code></pre></div>
+</section>
+<section id="re-train-the-model-using-updated-data" class="level2">
+<h2 class="anchored" data-anchor-id="re-train-the-model-using-updated-data">5. Re train the model using updated data</h2>
+<div class="sourceCode" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1">big_cat <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> DataBlock(</span>
+<span id="cb21-2">    blocks<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(ImageBlock, CategoryBlock),</span>
+<span id="cb21-3">    get_items<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>get_image_files,</span>
+<span id="cb21-4">    splitter<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>RandomSplitter(valid_pct<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, seed<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>),</span>
+<span id="cb21-5">    get_y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>parent_label,</span>
+<span id="cb21-6">    item_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>))</span>
+<span id="cb21-7">big_cat <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> big_cat.new(</span>
+<span id="cb21-8">    item_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>RandomResizedCrop(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">224</span>, min_scale<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>),</span>
+<span id="cb21-9">    batch_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>aug_transforms())</span>
+<span id="cb21-10">big_cat_dls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> big_cat.dataloaders(path)</span>
+<span id="cb21-11">big_cat_dls.train.show_batch(max_n<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, nrows<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb21-12"></span></code></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/Lecture_2_Production_Self_files/Lecture_2_Production_Self_35_0.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">png</figcaption>
+</figure>
+</div>
+<div class="sourceCode" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1">learn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> vision_learner(big_cat_dls, resnet34, metrics<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>error_rate)</span>
+<span id="cb22-2">learn.fine_tune(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>)</span></code></pre></div>
+<pre><code>Downloading: "https://download.pytorch.org/models/resnet34-b627a593.pth" to /root/.cache/torch/hub/checkpoints/resnet34-b627a593.pth
+100%|██████████| 83.3M/83.3M [00:00&lt;00:00, 121MB/s]</code></pre>
+
+
+<table class="dataframe table table-sm table-striped small">
+<thead>
+<tr>
+<th>
+epoch
+</th>
+<th>
+train_loss
+</th>
+<th>
+valid_loss
+</th>
+<th>
+error_rate
+</th>
+<th>
+time
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+1.839337
+</td>
+<td>
+0.557398
+</td>
+<td>
+0.161137
+</td>
+<td>
+00:36
+</td>
+</tr>
+</tbody>
+
+</table>
+
+
+<table class="dataframe table table-sm table-striped small">
+<thead>
+<tr>
+<th>
+epoch
+</th>
+<th>
+train_loss
+</th>
+<th>
+valid_loss
+</th>
+<th>
+error_rate
+</th>
+<th>
+time
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+0.552628
+</td>
+<td>
+0.516515
+</td>
+<td>
+0.137441
+</td>
+<td>
+00:37
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+0.457381
+</td>
+<td>
+0.544474
+</td>
+<td>
+0.175355
+</td>
+<td>
+00:42
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+0.399777
+</td>
+<td>
+0.615449
+</td>
+<td>
+0.146919
+</td>
+<td>
+00:38
+</td>
+</tr>
+<tr>
+<td>
+3
+</td>
+<td>
+0.345620
+</td>
+<td>
+0.601597
+</td>
+<td>
+0.151659
+</td>
+<td>
+00:40
+</td>
+</tr>
+<tr>
+<td>
+4
+</td>
+<td>
+0.293677
+</td>
+<td>
+0.630620
+</td>
+<td>
+0.146919
+</td>
+<td>
+00:37
+</td>
+</tr>
+<tr>
+<td>
+5
+</td>
+<td>
+0.256501
+</td>
+<td>
+0.669779
+</td>
+<td>
+0.137441
+</td>
+<td>
+00:37
+</td>
+</tr>
+<tr>
+<td>
+6
+</td>
+<td>
+0.227690
+</td>
+<td>
+0.648144
+</td>
+<td>
+0.142180
+</td>
+<td>
+00:36
+</td>
+</tr>
+<tr>
+<td>
+7
+</td>
+<td>
+0.207254
+</td>
+<td>
+0.651927
+</td>
+<td>
+0.137441
+</td>
+<td>
+00:37
+</td>
+</tr>
+</tbody>
+
+</table>
+<div class="sourceCode" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1">interp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ClassificationInterpretation.from_learner(learn)</span>
+<span id="cb24-2">interp.plot_confusion_matrix()</span></code></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/Lecture_2_Production_Self_files/Lecture_2_Production_Self_37_4.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">png</figcaption>
+</figure>
+</div>
+<div class="sourceCode" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1">interp.plot_top_losses(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, nrows<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, figsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">17</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>))</span></code></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/Lecture_2_Production_Self_files/Lecture_2_Production_Self_38_2.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">png</figcaption>
+</figure>
+</div>
+<section id="so-by-reading-confusion-matrix-and-looking-at-output-from-plot_top_losses-we-can-say-that-we-still-have-a-problem-with-our-data-and-it-will-take-lot-more-iteration-to-fix-it.-for-now-lets-conclude-our-efforts-at-this-point." class="level4">
+<h4 class="anchored" data-anchor-id="so-by-reading-confusion-matrix-and-looking-at-output-from-plot_top_losses-we-can-say-that-we-still-have-a-problem-with-our-data-and-it-will-take-lot-more-iteration-to-fix-it.-for-now-lets-conclude-our-efforts-at-this-point.">So by reading confusion matrix and looking at output from plot_top_losses, we can say that we still have a problem with our data and it will take lot more iteration to fix it. For now, let’s conclude our efforts at this point.</h4>
+</section>
+</section>
+<section id="lets-download-our-model-and-use-it-make-prediction.-in-next-lesson-." class="level2">
+<h2 class="anchored" data-anchor-id="lets-download-our-model-and-use-it-make-prediction.-in-next-lesson-.">6. Let’s download our model and use it make prediction. In next lesson 😊.</h2>
+<div class="sourceCode" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1">learn.export(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Lecture2_Big_Cat_Model.pkl'</span>)</span></code></pre></div>
+</section>
+<section id="live-model" class="level2">
+<h2 class="anchored" data-anchor-id="live-model">7. Live Model</h2>
+<p>You can access live model <a href="https://huggingface.co/spaces/mekanavsharma/minima">here</a> deployed using Hugging Face &amp; gradio. Wanna know how to do it ? refer <a href="https://www.tanishq.ai/blog/posts/2021-11-16-gradio-huggingface.html">Gradio-HuggingFace</a>.</p>
+<p>You can access repo <a href="https://huggingface.co/spaces/mekanavsharma/minima/tree/main">here</a></p>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>Deep Learning</category>
+  <category>Computer Vision</category>
+  <category>FastAI</category>
+  <guid>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/index.html</guid>
+  <pubDate>Mon, 08 Apr 2024 18:30:00 GMT</pubDate>
+</item>
 <item>
   <title>How I got multiple offers and Landed My Dream Job in Fintech</title>
   <dc:creator>Kanav Sharma</dc:creator>

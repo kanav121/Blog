@@ -1,0 +1,36 @@
+---
+title: "About"
+image: Kanav_profile.jpg
+resources: Resume_Kanav.pdf
+about:
+  template: solana # jolla, trestles, solana, marquee, broadside
+  links:
+    # - icon: twitter
+    #   text: Twitter
+    #   href: https://twitter.com/kanav608
+    # - icon: envelope
+    #   text: Email
+    #   href: kanav608@gmail.com
+    - icon: github
+      text: Github
+      href: https://github.com/mekanavsharma
+    #- icon: file-text
+    #  text: Resume
+    #  href: Resume_Kanav.pdf
+---
+
+Hello and welcome to my website! I am a data scientist with a passion for fintech. On this website, you will find my portfolio of data science projects, my blog posts on fintech topics and my tips and tricks for acing data science interviews. I will also share my knowledge and experience with the R programming language, which is one of my favorite tools for data analysis. Whether you are a data lover, a fintech fan, a potential partner or just curious about what I do, I hope you will find something useful and interesting on my website. Enjoy!
+
+## Education
+
+**SGVU, Jaipur** \| 2015-2019
+
+Btech - CSE \| 7.96 CGPA
+
+## Experience
+
+**Transunion** \| Senior Analyst \| March 2023 - Present
+
+**Kreate Energy Pvt Ltd** \| Junior Associate \| Feb 2020 - March 2023
+
+**RoboMq Pvt Ltd** \| Data Scientist \| January 2019 - January 2020
