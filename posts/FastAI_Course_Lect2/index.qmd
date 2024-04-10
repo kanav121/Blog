@@ -49,7 +49,7 @@ from fastai.vision.widgets import *
 ## 1. Download and sort out the data(images).
 
 Extract Data using **DuckDuckGo** function
-1.   Create dynamic path according to there name store file
+1.   Create dynamic path according to their name store file
 2.   Create a dictionary to track the number of downloaded images per category (e.g., cat).
 
 
@@ -111,7 +111,7 @@ per_cat_count
 
 So we got 200 images per type
 
-While downloading we can get corrupt images lets first remove them. `verify_images()` will return path of such images and using `unlink` we can remove these files.
+While downloading we can get corrupt images.So lets first remove them. `verify_images()` will return path of such images and using `unlink` we can remove these files.
 
 
 ```python
@@ -167,9 +167,9 @@ dls = big_cat.dataloaders(path)
 
 `DataBlock()`: is suitable for a classification task where you have a dataset of images, and each image belongs to a specific category (e.g., types of cats).
 
-`blocks=(ImageBlock, CategoryBlock)`: It specify that our input are images & our target are categories(types of cat)
+`blocks=(ImageBlock, CategoryBlock)`: It specify that our inputs are images & our targets are categories(types of big cat)
 
-`get_image_files`: this help to get list of all the images from subfolder.
+`get_image_files`: This helps to get list of all the images from subfolder.
 
 `parent_label`: This is a function that extracts the labels (categories) for each item.'Leapord','Tiger','Lion'
 
@@ -201,7 +201,7 @@ dls.valid.show_batch(max_n=6, nrows=2)
 *  Randomly select and crop parts of the image during each epoch.
 *  Train the model on different image parts across multiple epochs.
 *  This approach creates random variations in input data without altering its meaning.
-* Aiming to provide diverse perspectives, it ensures the model sees different pictures from the same image in each iteration..
+* Aiming to provide diverse perspectives, it ensures that the model sees different pictures from the same image in each iteration..
 
 ---
 
@@ -482,7 +482,7 @@ interp.plot_top_losses(4, nrows=1, figsize=(18,4))
 
 `ImageClassifierCleaner` enables us to review all images associated with a specific category and identify their placement within the dataloader, whether in the training or validation set.
 
-The images are organized in ascending order of confidence, prioritizing those with the highest loss. This allows for efficient data sorting by simply examining the initial images. Users can choose to keep, delete, or modify the category label (type of cat) as needed.
+The images are organized in ascending order of confidence, prioritizing those with the highest loss. This allows for efficient data sorting by simply examining the initial images. Users can choose to keep, delete, or modify the category label (type of cat) as required
 
 
 ```python
@@ -820,7 +820,7 @@ interp.plot_top_losses(4, nrows=1, figsize=(17,4))
     
 
 
-#### So by reading confusion matrix and looking at output from plot_top_losses, we can say that we still have a problem with our data and it will take lot more iteration to fix it. For now, let's conclude our efforts at this point.
+#### So by reading confusion matrix and looking at output from plot_top_losses, we can say that we still have a problem with our data and it will take a lot more iteration to fix it. For now, let's conclude our efforts at this point.
 
 ## 6. Let's download our model and use it make prediction. In next lesson 😊.
 
