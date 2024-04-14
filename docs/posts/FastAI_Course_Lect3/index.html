@@ -1,0 +1,2827 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Kanav Sharma">
+<meta name="dcterms.date" content="2024-04-14">
+
+<title>Blog - FastAI Course Lecture 3 Notes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/kanav608" rel="" target=""><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/kanav-sharma-896b1021b/" rel="" target=""><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">FastAI Course Lecture 3 Notes</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Computer Vision</div>
+                <div class="quarto-category">FastAI</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Kanav Sharma </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 14, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#this-code-aims-to-upscale-our-last-lession." id="toc-this-code-aims-to-upscale-our-last-lession." class="nav-link active" data-scroll-target="#this-code-aims-to-upscale-our-last-lession.">This code aims to upscale our last lession.</a>
+  <ul class="collapse">
+  <li><a href="#level-1-repeat-last-lesson" id="toc-level-1-repeat-last-lesson" class="nav-link" data-scroll-target="#level-1-repeat-last-lesson">Level 1 : Repeat last lesson</a>
+  <ul class="collapse">
+  <li><a href="#download-dataset-from-kaggle" id="toc-download-dataset-from-kaggle" class="nav-link" data-scroll-target="#download-dataset-from-kaggle">1.1 : Download dataset from Kaggle</a></li>
+  <li><a href="#prepare-data-for-model-training-data-loaders-data-augmentaion-etc.." id="toc-prepare-data-for-model-training-data-loaders-data-augmentaion-etc.." class="nav-link" data-scroll-target="#prepare-data-for-model-training-data-loaders-data-augmentaion-etc..">1.2 : Prepare data for model training (Data Loaders, Data Augmentaion, etc.).</a></li>
+  <li><a href="#train-model" id="toc-train-model" class="nav-link" data-scroll-target="#train-model">1.3 : Train Model</a></li>
+  <li><a href="#clear-the-data" id="toc-clear-the-data" class="nav-link" data-scroll-target="#clear-the-data">1.4 : Clear the data</a></li>
+  </ul></li>
+  <li><a href="#level-2-understand-computer-vision-architectures" id="toc-level-2-understand-computer-vision-architectures" class="nav-link" data-scroll-target="#level-2-understand-computer-vision-architectures">Level 2 : Understand Computer Vision Architectures</a>
+  <ul class="collapse">
+  <li><a href="#download-data" id="toc-download-data" class="nav-link" data-scroll-target="#download-data">2.1 : Download Data</a></li>
+  <li><a href="#plot-of-all-the-architectures." id="toc-plot-of-all-the-architectures." class="nav-link" data-scroll-target="#plot-of-all-the-architectures.">2.2 : Plot of all the architectures.</a></li>
+  <li><a href="#specific-architectures-plot" id="toc-specific-architectures-plot" class="nav-link" data-scroll-target="#specific-architectures-plot">2.3 : Specific Architectures Plot</a></li>
+  <li><a href="#family-connection-plot" id="toc-family-connection-plot" class="nav-link" data-scroll-target="#family-connection-plot">2.4 : Family Connection Plot</a></li>
+  </ul></li>
+  <li><a href="#level-3-build-a-model-using-convnextbasic-or-tiny" id="toc-level-3-build-a-model-using-convnextbasic-or-tiny" class="nav-link" data-scroll-target="#level-3-build-a-model-using-convnextbasic-or-tiny">Level 3 : Build a model using Convnext(basic or tiny)</a></li>
+  <li><a href="#level-4.-test-the-model" id="toc-level-4.-test-the-model" class="nav-link" data-scroll-target="#level-4.-test-the-model">Level 4. Test the Model</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="this-code-aims-to-upscale-our-last-lession." class="level1">
+<h1>This code aims to upscale our last lession.</h1>
+<p>Previously, we obtained our data from the DuckDuckGo API and built our model around that.</p>
+<p>This time, we will retrieve data from a Kaggle dataset, enhance our model, improve our understanding of different available pre-trained vision architectures in PyTorch using the <code>timm</code> library, and implement another model according to our requirements.</p>
+<section id="level-1-repeat-last-lesson" class="level2">
+<h2 class="anchored" data-anchor-id="level-1-repeat-last-lesson">Level 1 : Repeat last lesson</h2>
+<section id="download-dataset-from-kaggle" class="level3">
+<h3 class="anchored" data-anchor-id="download-dataset-from-kaggle">1.1 : Download dataset from Kaggle</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> files</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Upload the Kaggle API key JSON file</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>uploaded <span class="op">=</span> files.upload()</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install kaggle</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>mkdir <span class="op">-</span>p <span class="op">~/</span>.kaggle</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>mv kaggle.json <span class="op">~/</span>.kaggle<span class="op">/</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>chmod <span class="dv">600</span> <span class="op">~/</span>.kaggle<span class="op">/</span>kaggle.json</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>Saving kaggle.json to kaggle.json
+Requirement already satisfied: kaggle in /usr/local/lib/python3.10/dist-packages (1.5.16)
+Requirement already satisfied: six&gt;=1.10 in /usr/local/lib/python3.10/dist-packages (from kaggle) (1.16.0)
+Requirement already satisfied: certifi in /usr/local/lib/python3.10/dist-packages (from kaggle) (2024.2.2)
+Requirement already satisfied: python-dateutil in /usr/local/lib/python3.10/dist-packages (from kaggle) (2.8.2)
+Requirement already satisfied: requests in /usr/local/lib/python3.10/dist-packages (from kaggle) (2.31.0)
+Requirement already satisfied: tqdm in /usr/local/lib/python3.10/dist-packages (from kaggle) (4.66.2)
+Requirement already satisfied: python-slugify in /usr/local/lib/python3.10/dist-packages (from kaggle) (8.0.4)
+Requirement already satisfied: urllib3 in /usr/local/lib/python3.10/dist-packages (from kaggle) (2.0.7)
+Requirement already satisfied: bleach in /usr/local/lib/python3.10/dist-packages (from kaggle) (6.1.0)
+Requirement already satisfied: webencodings in /usr/local/lib/python3.10/dist-packages (from bleach-&gt;kaggle) (0.5.1)
+Requirement already satisfied: text-unidecode&gt;=1.3 in /usr/local/lib/python3.10/dist-packages (from python-slugify-&gt;kaggle) (1.3)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;kaggle) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;kaggle) (3.6)</code></pre>
+<section id="download-dataset" class="level4">
+<h4 class="anchored" data-anchor-id="download-dataset">Download dataset :</h4>
+<p>Open dataset in Kaggle, click on 3 vertical dots (ellipsis) then click on Copy API comamnd, and we are good to go.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>kaggle datasets download <span class="op">-</span>d gpiosenka<span class="op">/</span>cats<span class="op">-</span><span class="kw">in</span><span class="op">-</span>the<span class="op">-</span>wild<span class="op">-</span>image<span class="op">-</span>classification</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a folder called "Big Cat"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>mkdir <span class="op">-</span>p Big_Cat</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Unzip the dataset into the "Big Cat" folder</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>unzip cats<span class="op">-</span><span class="kw">in</span><span class="op">-</span>the<span class="op">-</span>wild<span class="op">-</span>image<span class="op">-</span>classification.<span class="bu">zip</span> <span class="op">-</span>d Big_Cat</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the zip file</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>rm cats<span class="op">-</span><span class="kw">in</span><span class="op">-</span>the<span class="op">-</span>wild<span class="op">-</span>image<span class="op">-</span>classification.<span class="bu">zip</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>Downloading cats-in-the-wild-image-classification.zip to /content
+ 96% 118M/123M [00:01&lt;00:00, 57.4MB/s]
+100% 123M/123M [00:01&lt;00:00, 65.0MB/s]
+Archive:  cats-in-the-wild-image-classification.zip
+  inflating: Big_Cat/EfficientNetB0-10-(224 X 224)-100.00.h5  
+  inflating: Big_Cat/MobileNetV3 small-10-(224 X 224)-95.96.h5  
+  inflating: Big_Cat/WILDCATS.CSV    
+  inflating: Big_Cat/test/AFRICAN LEOPARD/1.jpg  
+  inflating: Big_Cat/test/AFRICAN LEOPARD/5.jpg  
+  inflating: Big_Cat/test/CARACAL/1.jpg  
+  inflating: Big_Cat/test/CARACAL/5.jpg  
+  inflating: Big_Cat/test/CHEETAH/1.jpg  
+  inflating: Big_Cat/test/CHEETAH/5.jpg  
+  inflating: Big_Cat/test/CLOUDED LEOPARD/1.jpg  
+  inflating: Big_Cat/test/CLOUDED LEOPARD/5.jpg  
+  inflating: Big_Cat/test/JAGUAR/1.jpg  
+  inflating: Big_Cat/test/JAGUAR/5.jpg  
+  inflating: Big_Cat/test/LIONS/1.jpg  
+  inflating: Big_Cat/test/LIONS/5.jpg  
+  inflating: Big_Cat/test/OCELOT/1.jpg  
+  inflating: Big_Cat/test/OCELOT/5.jpg  
+  inflating: Big_Cat/test/PUMA/1.jpg  
+  inflating: Big_Cat/test/PUMA/5.jpg  
+  inflating: Big_Cat/test/SNOW LEOPARD/1.jpg  
+  inflating: Big_Cat/test/SNOW LEOPARD/5.jpg  
+  inflating: Big_Cat/test/TIGER/1.jpg  
+  inflating: Big_Cat/test/TIGER/5.jpg  
+  inflating: Big_Cat/train/AFRICAN LEOPARD/001.jpg  
+  inflating: Big_Cat/train/AFRICAN LEOPARD/236.jpg  
+  inflating: Big_Cat/train/CARACAL/001.jpg  
+  inflating: Big_Cat/train/CARACAL/236.jpg  
+  inflating: Big_Cat/train/CHEETAH/001.jpg  
+  inflating: Big_Cat/train/CHEETAH/235.jpg  
+  inflating: Big_Cat/train/CLOUDED LEOPARD/001.jpg  
+  inflating: Big_Cat/train/CLOUDED LEOPARD/229.jpg  
+  inflating: Big_Cat/train/JAGUAR/001.jpg  
+  inflating: Big_Cat/train/JAGUAR/238.jpg  
+  inflating: Big_Cat/train/LIONS/001.jpg  
+  inflating: Big_Cat/train/LIONS/228.jpg  
+  inflating: Big_Cat/train/OCELOT/001.jpg  
+  inflating: Big_Cat/train/OCELOT/233.jpg  
+  inflating: Big_Cat/train/PUMA/001.jpg  
+  inflating: Big_Cat/train/PUMA/236.jpg  
+  inflating: Big_Cat/train/SNOW LEOPARD/001.jpg  
+  inflating: Big_Cat/train/SNOW LEOPARD/231.jpg  
+  inflating: Big_Cat/train/TIGER/001.jpg  
+  inflating: Big_Cat/train/TIGER/237.jpg  
+  inflating: Big_Cat/valid/AFRICAN LEOPARD/1.jpg  
+  inflating: Big_Cat/valid/AFRICAN LEOPARD/5.jpg  
+  inflating: Big_Cat/valid/CARACAL/1.jpg
+  inflating: Big_Cat/valid/CARACAL/5.jpg  
+  inflating: Big_Cat/valid/CHEETAH/1.jpg  
+  inflating: Big_Cat/valid/CHEETAH/5.jpg  
+  inflating: Big_Cat/valid/CLOUDED LEOPARD/1.jpg  
+  inflating: Big_Cat/valid/CLOUDED LEOPARD/5.jpg  
+  inflating: Big_Cat/valid/JAGUAR/1.jpg  
+  inflating: Big_Cat/valid/JAGUAR/5.jpg  
+  inflating: Big_Cat/valid/LIONS/1.jpg  
+  inflating: Big_Cat/valid/LIONS/5.jpg  
+  inflating: Big_Cat/valid/OCELOT/1.jpg  
+  inflating: Big_Cat/valid/OCELOT/5.jpg  
+  inflating: Big_Cat/valid/PUMA/1.jpg  
+  inflating: Big_Cat/valid/PUMA/5.jpg  
+  inflating: Big_Cat/valid/SNOW LEOPARD/1.jpg  
+  inflating: Big_Cat/valid/SNOW LEOPARD/5.jpg  
+  inflating: Big_Cat/valid/TIGER/1.jpg  
+  inflating: Big_Cat/valid/TIGER/5.jpg  </code></pre>
+</section>
+<section id="remove-all-files-with-the-.h5-extension-and-move-images-from-the-valid-folder-to-their-corresponding-subfolders-in-the-train-folder" class="level4">
+<h4 class="anchored" data-anchor-id="remove-all-files-with-the-.h5-extension-and-move-images-from-the-valid-folder-to-their-corresponding-subfolders-in-the-train-folder">Remove all files with the “.h5” extension and move images from the “valid” folder to their corresponding subfolders in the “train” folder</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> shutil</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the absolute paths of main, train and valid folders</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>big_cat_folder <span class="op">=</span> <span class="st">'/content/Big_Cat/'</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>train_folder <span class="op">=</span> <span class="st">'/content/Big_Cat/train'</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>valid_folder <span class="op">=</span> <span class="st">'/content/Big_Cat/valid'</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove all files with ".h5" extension</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>find {big_cat_folder} <span class="op">-</span><span class="bu">type</span> f <span class="op">-</span>name <span class="st">'*.h5'</span> <span class="op">-</span>delete</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dictionary to track image counts</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>image_counts <span class="op">=</span> {}</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Get a list of subfolders in the train folder</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>train_subfolders <span class="op">=</span> [f.path <span class="cf">for</span> f <span class="kw">in</span> os.scandir(train_folder) <span class="cf">if</span> f.is_dir()]</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Get a list of subfolders in the valid folder</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>valid_subfolders <span class="op">=</span> [f.path <span class="cf">for</span> f <span class="kw">in</span> os.scandir(valid_folder) <span class="cf">if</span> f.is_dir()]</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Move images from valid to their corresponding subfolders in train</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> subfolder <span class="kw">in</span> valid_subfolders:</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    class_name <span class="op">=</span> os.path.basename(subfolder)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    train_subfolder <span class="op">=</span> os.path.join(train_folder, class_name)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create the train subfolder if it doesn't exist</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(train_subfolder):</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>        os.makedirs(train_subfolder)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Initialize counts in the dictionary</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    image_counts[<span class="ss">f"</span><span class="sc">{</span>class_name<span class="sc">}</span><span class="ss">_VALID"</span>] <span class="op">=</span> <span class="bu">len</span>(os.listdir(subfolder))</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Move images from valid to train subfolder and update counts</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="bu">file</span> <span class="kw">in</span> os.listdir(subfolder):</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>        file_path <span class="op">=</span> os.path.join(subfolder, <span class="bu">file</span>)</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>        dest_path <span class="op">=</span> os.path.join(train_subfolder, <span class="bu">file</span>)</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>        shutil.move(file_path, dest_path)</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the empty valid subfolders</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> subfolder <span class="kw">in</span> valid_subfolders:</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>    os.rmdir(subfolder)</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Get count of images in train folder so that we can understand on how much we are training</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> subfolder <span class="kw">in</span> train_subfolders:</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>    class_name <span class="op">=</span> os.path.basename(subfolder)</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>    image_counts[<span class="ss">f"</span><span class="sc">{</span>class_name<span class="sc">}</span><span class="ss">_TRAIN"</span>] <span class="op">=</span> <span class="bu">len</span>(os.listdir(subfolder))</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>sorted_image_counts <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">sorted</span>(image_counts.items()))</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the sorted image counts dictionary</span></span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Sorted Image Counts:"</span>)</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, value <span class="kw">in</span> sorted_image_counts.items():</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>value<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>Sorted Image Counts:
+AFRICAN LEOPARD_TRAIN: 241
+AFRICAN LEOPARD_VALID: 5
+CARACAL_TRAIN: 241
+CARACAL_VALID: 5
+CHEETAH_TRAIN: 240
+CHEETAH_VALID: 5
+CLOUDED LEOPARD_TRAIN: 234
+CLOUDED LEOPARD_VALID: 5
+JAGUAR_TRAIN: 243
+JAGUAR_VALID: 5
+LIONS_TRAIN: 233
+LIONS_VALID: 5
+OCELOT_TRAIN: 238
+OCELOT_VALID: 5
+PUMA_TRAIN: 241
+PUMA_VALID: 5
+SNOW LEOPARD_TRAIN: 236
+SNOW LEOPARD_VALID: 5
+TIGER_TRAIN: 242
+TIGER_VALID: 5</code></pre>
+</section>
+<section id="install-latest-fastai-version" class="level4">
+<h4 class="anchored" data-anchor-id="install-latest-fastai-version">Install latest FastAI Version</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#hide</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> [ <span class="op">-</span>e <span class="op">/</span>content ] <span class="op">&amp;&amp;</span> pip install <span class="op">-</span>Uqq fastbook</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> pip install timm</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> fastbook</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>fastbook.setup_book()</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> timm</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#hide</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastbook <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.vision.widgets <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.vision.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m719.8/719.8 kB[0m [31m7.1 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m510.5/510.5 kB[0m [31m11.6 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m116.3/116.3 kB[0m [31m13.7 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m194.1/194.1 kB[0m [31m2.0 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m134.8/134.8 kB[0m [31m12.0 MB/s[0m eta [36m0:00:00[0m
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m1.6/1.6 MB[0m [31m19.3 MB/s[0m eta [36m0:00:00[0m
+[?25hCollecting timm
+  Downloading timm-0.9.16-py3-none-any.whl (2.2 MB)
+[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m2.2/2.2 MB[0m [31m15.2 MB/s[0m eta [36m0:00:00[0m
+[?25hRequirement already satisfied: torch in /usr/local/lib/python3.10/dist-packages (from timm) (2.2.1+cu121)
+Requirement already satisfied: torchvision in /usr/local/lib/python3.10/dist-packages (from timm) (0.17.1+cu121)
+Requirement already satisfied: pyyaml in /usr/local/lib/python3.10/dist-packages (from timm) (6.0.1)
+Requirement already satisfied: huggingface_hub in /usr/local/lib/python3.10/dist-packages (from timm) (0.20.3)
+Requirement already satisfied: safetensors in /usr/local/lib/python3.10/dist-packages (from timm) (0.4.2)
+Requirement already satisfied: filelock in /usr/local/lib/python3.10/dist-packages (from huggingface_hub-&gt;timm) (3.13.3)
+Requirement already satisfied: fsspec&gt;=2023.5.0 in /usr/local/lib/python3.10/dist-packages (from huggingface_hub-&gt;timm) (2023.6.0)
+Requirement already satisfied: requests in /usr/local/lib/python3.10/dist-packages (from huggingface_hub-&gt;timm) (2.31.0)
+Requirement already satisfied: tqdm&gt;=4.42.1 in /usr/local/lib/python3.10/dist-packages (from huggingface_hub-&gt;timm) (4.66.2)
+Requirement already satisfied: typing-extensions&gt;=3.7.4.3 in /usr/local/lib/python3.10/dist-packages (from huggingface_hub-&gt;timm) (4.10.0)
+Requirement already satisfied: packaging&gt;=20.9 in /usr/local/lib/python3.10/dist-packages (from huggingface_hub-&gt;timm) (24.0)
+Requirement already satisfied: sympy in /usr/local/lib/python3.10/dist-packages (from torch-&gt;timm) (1.12)
+Requirement already satisfied: networkx in /usr/local/lib/python3.10/dist-packages (from torch-&gt;timm) (3.2.1)
+Requirement already satisfied: jinja2 in /usr/local/lib/python3.10/dist-packages (from torch-&gt;timm) (3.1.3)
+Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.1.105 in /usr/local/lib/python3.10/dist-packages (from torch-&gt;timm) (12.1.105)
+Requirement already satisfied: nvidia-cuda-runtime-cu12==12.1.105 in /usr/local/lib/python3.10/dist-packages (from torch-&gt;timm) (12.1.105)
+Requirement already satisfied: nvidia-cuda-cupti-cu12==12.1.105 in /usr/local/lib/python3.10/dist-packages (from torch-&gt;timm) (12.1.105)
+Requirement already satisfied: nvidia-cudnn-cu12==8.9.2.26 in /usr/local/lib/python3.10/dist-packages (from torch-&gt;timm) (8.9.2.26)
+Requirement already satisfied: nvidia-cublas-cu12==12.1.3.1 in /usr/local/lib/python3.10/dist-packages (from torch-&gt;timm) (12.1.3.1)
+Requirement already satisfied: nvidia-cufft-cu12==11.0.2.54 in /usr/local/lib/python3.10/dist-packages (from torch-&gt;timm) (11.0.2.54)
+Requirement already satisfied: nvidia-curand-cu12==10.3.2.106 in /usr/local/lib/python3.10/dist-packages (from torch-&gt;timm) (10.3.2.106)
+Requirement already satisfied: nvidia-cusolver-cu12==11.4.5.107 in /usr/local/lib/python3.10/dist-packages (from torch-&gt;timm) (11.4.5.107)
+Requirement already satisfied: nvidia-cusparse-cu12==12.1.0.106 in /usr/local/lib/python3.10/dist-packages (from torch-&gt;timm) (12.1.0.106)
+Requirement already satisfied: nvidia-nccl-cu12==2.19.3 in /usr/local/lib/python3.10/dist-packages (from torch-&gt;timm) (2.19.3)
+Requirement already satisfied: nvidia-nvtx-cu12==12.1.105 in /usr/local/lib/python3.10/dist-packages (from torch-&gt;timm) (12.1.105)
+Requirement already satisfied: triton==2.2.0 in /usr/local/lib/python3.10/dist-packages (from torch-&gt;timm) (2.2.0)
+Requirement already satisfied: nvidia-nvjitlink-cu12 in /usr/local/lib/python3.10/dist-packages (from nvidia-cusolver-cu12==11.4.5.107-&gt;torch-&gt;timm) (12.4.127)
+Requirement already satisfied: numpy in /usr/local/lib/python3.10/dist-packages (from torchvision-&gt;timm) (1.25.2)
+Requirement already satisfied: pillow!=8.3.*,&gt;=5.3.0 in /usr/local/lib/python3.10/dist-packages (from torchvision-&gt;timm) (9.4.0)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /usr/local/lib/python3.10/dist-packages (from jinja2-&gt;torch-&gt;timm) (2.1.5)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;huggingface_hub-&gt;timm) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;huggingface_hub-&gt;timm) (3.6)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;huggingface_hub-&gt;timm) (2.0.7)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;huggingface_hub-&gt;timm) (2024.2.2)
+Requirement already satisfied: mpmath&gt;=0.19 in /usr/local/lib/python3.10/dist-packages (from sympy-&gt;torch-&gt;timm) (1.3.0)
+Installing collected packages: timm
+Successfully installed timm-0.9.16
+Mounted at /content/gdrive</code></pre>
+<p><code>verify_images()</code> will return path of images which are corrupt and using <code>unlink</code> we can remove these files.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> Path(<span class="st">'Big_Cat'</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>fns <span class="op">=</span> get_image_files(path)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>total_imagelength <span class="op">=</span> <span class="bu">len</span>(fns)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>failed <span class="op">=</span> verify_images(fns)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>failed_imagelength <span class="op">=</span> <span class="bu">len</span>(failed)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>failed.<span class="bu">map</span>(Path.unlink)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>Image_Count_Dict <span class="op">=</span> {<span class="st">"Total_Image_Count"</span>: total_imagelength, <span class="st">"Failed_Image_Count"</span>: failed_imagelength}</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>Image_Count_Dict</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>/usr/lib/python3.10/multiprocessing/popen_fork.py:66: RuntimeWarning: os.fork() was called. os.fork() is incompatible with multithreaded code, and JAX is multithreaded, so this will likely lead to a deadlock.
+  self.pid = os.fork()
+
+
+
+
+
+{'Total_Image_Count': 2439, 'Failed_Image_Count': 0}</code></pre>
+<p>We have good chunk of images to be trained on</p>
+</section>
+</section>
+<section id="prepare-data-for-model-training-data-loaders-data-augmentaion-etc.." class="level3">
+<h3 class="anchored" data-anchor-id="prepare-data-for-model-training-data-loaders-data-augmentaion-etc..">1.2 : Prepare data for model training (Data Loaders, Data Augmentaion, etc.).</h3>
+<section id="data-loaders" class="level4">
+<h4 class="anchored" data-anchor-id="data-loaders">Data Loaders</h4>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>big_cat <span class="op">=</span> DataBlock(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    blocks<span class="op">=</span>(ImageBlock, CategoryBlock),</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    get_items<span class="op">=</span>get_image_files,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    splitter<span class="op">=</span>RandomSplitter(valid_pct<span class="op">=</span><span class="fl">0.2</span>, seed<span class="op">=</span><span class="dv">42</span>),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    get_y<span class="op">=</span>parent_label,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    item_tfms<span class="op">=</span>Resize(<span class="dv">128</span>))</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> big_cat.dataloaders(path)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>dls.valid.show_batch(max_n<span class="op">=</span><span class="dv">8</span>, nrows<span class="op">=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Lecture_3_Deployment_Self_files/Lecture_3_Deployment_Self_15_0.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">png</figcaption>
+</figure>
+</div>
+</section>
+<section id="data-augmentation" class="level4">
+<h4 class="anchored" data-anchor-id="data-augmentation">Data Augmentation</h4>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>big_cat <span class="op">=</span> big_cat.new(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    item_tfms<span class="op">=</span>RandomResizedCrop(<span class="dv">224</span>, min_scale<span class="op">=</span><span class="fl">0.5</span>),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    batch_tfms<span class="op">=</span>aug_transforms())</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>big_cat_dls <span class="op">=</span> big_cat.dataloaders(path)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>big_cat_dls.train.show_batch(max_n<span class="op">=</span><span class="dv">8</span>, nrows<span class="op">=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Lecture_3_Deployment_Self_files/Lecture_3_Deployment_Self_17_0.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">png</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="train-model" class="level3">
+<h3 class="anchored" data-anchor-id="train-model">1.3 : Train Model</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> vision_learner(big_cat_dls, resnet34, metrics<span class="op">=</span>error_rate)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>learn.fine_tune(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>Downloading: "https://download.pytorch.org/models/resnet34-b627a593.pth" to /root/.cache/torch/hub/checkpoints/resnet34-b627a593.pth
+100%|██████████| 83.3M/83.3M [00:00&lt;00:00, 164MB/s]</code></pre>
+
+
+<table class="dataframe table table-sm table-striped small">
+<thead>
+<tr>
+<th>
+epoch
+</th>
+<th>
+train_loss
+</th>
+<th>
+valid_loss
+</th>
+<th>
+error_rate
+</th>
+<th>
+time
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+1.837715
+</td>
+<td>
+0.237122
+</td>
+<td>
+0.088296
+</td>
+<td>
+00:13
+</td>
+</tr>
+</tbody>
+
+</table>
+
+
+<table class="dataframe table table-sm table-striped small">
+<thead>
+<tr>
+<th>
+epoch
+</th>
+<th>
+train_loss
+</th>
+<th>
+valid_loss
+</th>
+<th>
+error_rate
+</th>
+<th>
+time
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+0.565063
+</td>
+<td>
+0.141556
+</td>
+<td>
+0.041068
+</td>
+<td>
+00:18
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+0.431256
+</td>
+<td>
+0.147855
+</td>
+<td>
+0.051335
+</td>
+<td>
+00:20
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+0.337753
+</td>
+<td>
+0.119496
+</td>
+<td>
+0.036961
+</td>
+<td>
+00:17
+</td>
+</tr>
+<tr>
+<td>
+3
+</td>
+<td>
+0.268090
+</td>
+<td>
+0.115800
+</td>
+<td>
+0.032854
+</td>
+<td>
+00:14
+</td>
+</tr>
+</tbody>
+
+</table>
+<p>understand structure of model</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>learn.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<pre><code>Sequential (Input shape: 64 x 3 x 224 x 224)
+============================================================================
+Layer (type)         Output Shape         Param #    Trainable 
+============================================================================
+                     64 x 64 x 112 x 112 
+Conv2d                                    9408       True      
+BatchNorm2d                               128        True      
+ReLU                                                           
+____________________________________________________________________________
+                     64 x 64 x 56 x 56   
+MaxPool2d                                                      
+Conv2d                                    36864      True      
+BatchNorm2d                               128        True      
+ReLU                                                           
+Conv2d                                    36864      True      
+BatchNorm2d                               128        True      
+Conv2d                                    36864      True      
+BatchNorm2d                               128        True      
+ReLU                                                           
+Conv2d                                    36864      True      
+BatchNorm2d                               128        True      
+Conv2d                                    36864      True      
+BatchNorm2d                               128        True      
+ReLU                                                           
+Conv2d                                    36864      True      
+BatchNorm2d                               128        True      
+____________________________________________________________________________
+                     64 x 128 x 28 x 28  
+Conv2d                                    73728      True      
+BatchNorm2d                               256        True      
+ReLU                                                           
+Conv2d                                    147456     True      
+BatchNorm2d                               256        True      
+Conv2d                                    8192       True      
+BatchNorm2d                               256        True      
+Conv2d                                    147456     True      
+BatchNorm2d                               256        True      
+ReLU                                                           
+Conv2d                                    147456     True      
+BatchNorm2d                               256        True      
+Conv2d                                    147456     True      
+BatchNorm2d                               256        True      
+ReLU                                                           
+Conv2d                                    147456     True      
+BatchNorm2d                               256        True      
+Conv2d                                    147456     True      
+BatchNorm2d                               256        True      
+ReLU                                                           
+Conv2d                                    147456     True      
+BatchNorm2d                               256        True      
+____________________________________________________________________________
+                     64 x 256 x 14 x 14  
+Conv2d                                    294912     True      
+BatchNorm2d                               512        True      
+ReLU                                                           
+Conv2d                                    589824     True      
+BatchNorm2d                               512        True      
+Conv2d                                    32768      True      
+BatchNorm2d                               512        True      
+Conv2d                                    589824     True      
+BatchNorm2d                               512        True      
+ReLU                                                           
+Conv2d                                    589824     True      
+BatchNorm2d                               512        True      
+Conv2d                                    589824     True      
+BatchNorm2d                               512        True      
+ReLU                                                           
+Conv2d                                    589824     True      
+BatchNorm2d                               512        True      
+Conv2d                                    589824     True      
+BatchNorm2d                               512        True      
+ReLU                                                           
+Conv2d                                    589824     True      
+BatchNorm2d                               512        True      
+Conv2d                                    589824     True      
+BatchNorm2d                               512        True      
+ReLU                                                           
+Conv2d                                    589824     True      
+BatchNorm2d                               512        True      
+Conv2d                                    589824     True      
+BatchNorm2d                               512        True      
+ReLU                                                           
+Conv2d                                    589824     True      
+BatchNorm2d                               512        True      
+____________________________________________________________________________
+                     64 x 512 x 7 x 7    
+Conv2d                                    1179648    True      
+BatchNorm2d                               1024       True      
+ReLU                                                           
+Conv2d                                    2359296    True      
+BatchNorm2d                               1024       True      
+Conv2d                                    131072     True      
+BatchNorm2d                               1024       True      
+Conv2d                                    2359296    True      
+BatchNorm2d                               1024       True      
+ReLU                                                           
+Conv2d                                    2359296    True      
+BatchNorm2d                               1024       True      
+Conv2d                                    2359296    True      
+BatchNorm2d                               1024       True      
+ReLU                                                           
+Conv2d                                    2359296    True      
+BatchNorm2d                               1024       True      
+____________________________________________________________________________
+                     64 x 512 x 1 x 1    
+AdaptiveAvgPool2d                                              
+AdaptiveMaxPool2d                                              
+____________________________________________________________________________
+                     64 x 1024           
+Flatten                                                        
+BatchNorm1d                               2048       True      
+Dropout                                                        
+____________________________________________________________________________
+                     64 x 512            
+Linear                                    524288     True      
+ReLU                                                           
+BatchNorm1d                               1024       True      
+Dropout                                                        
+____________________________________________________________________________
+                     64 x 10             
+Linear                                    5120       True      
+____________________________________________________________________________
+
+Total params: 21,817,152
+Total trainable params: 21,817,152
+Total non-trainable params: 0
+
+Optimizer used: &lt;function Adam at 0x7b5a37dbbeb0&gt;
+Loss function: FlattenedLoss of CrossEntropyLoss()
+
+Model unfrozen
+
+Callbacks:
+  - TrainEvalCallback
+  - CastToTensor
+  - Recorder
+  - ProgressCallback</code></pre>
+<section id="confusion-metric" class="level4">
+<h4 class="anchored" data-anchor-id="confusion-metric">Confusion Metric</h4>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>interp <span class="op">=</span> ClassificationInterpretation.from_learner(learn)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>interp.plot_confusion_matrix()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Lecture_3_Deployment_Self_files/Lecture_3_Deployment_Self_23_4.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">png</figcaption>
+</figure>
+</div>
+</section>
+<section id="display-images-with-highest-loss-to-get-the-picture" class="level4">
+<h4 class="anchored" data-anchor-id="display-images-with-highest-loss-to-get-the-picture">Display Images with highest loss, to Get the picture 😊</h4>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>interp.plot_top_losses(<span class="dv">6</span>, nrows<span class="op">=</span><span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">18</span>,<span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Lecture_3_Deployment_Self_files/Lecture_3_Deployment_Self_25_2.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">png</figcaption>
+</figure>
+</div>
+<p>We can observe from both the confusion matrix and visual representation that the model is having difficulty differentiating between the Jaguar and the African Leopard. Even I find it challenging to distinguish between the two. 😵 So, we can let it be.</p>
+</section>
+</section>
+<section id="clear-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="clear-the-data">1.4 : Clear the data</h3>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#hide_output</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>cleaner <span class="op">=</span> ImageClassifierCleaner(learn)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>cleaner</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<pre><code>VBox(children=(Dropdown(options=('AFRICAN LEOPARD', 'CARACAL', 'CHEETAH', 'CLOUDED LEOPARD', 'JAGUAR', 'LIONS'…</code></pre>
+<section id="apply-those-changes" class="level4">
+<h4 class="anchored" data-anchor-id="apply-those-changes">Apply those changes</h4>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx <span class="kw">in</span> cleaner.delete(): cleaner.fns[idx].unlink()</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx,cat <span class="kw">in</span> cleaner.change(): shutil.move(<span class="bu">str</span>(cleaner.fns[idx]), path<span class="op">/</span>cat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+</section>
+<section id="level-2-understand-computer-vision-architectures" class="level2">
+<h2 class="anchored" data-anchor-id="level-2-understand-computer-vision-architectures">Level 2 : Understand Computer Vision Architectures</h2>
+<section id="timm-is-a-wonderful-library-by-ross-wightman-which-provides-state-of-the-art-pre-trained-computer-vision-models.-its-like-huggingface-transformers-but-for-computer-vision-instead-of-nlp." class="level4">
+<h4 class="anchored" data-anchor-id="timm-is-a-wonderful-library-by-ross-wightman-which-provides-state-of-the-art-pre-trained-computer-vision-models.-its-like-huggingface-transformers-but-for-computer-vision-instead-of-nlp."><a href="https://timm.fast.ai/">timm</a> is a wonderful library by Ross Wightman which provides state-of-the-art pre-trained computer vision models. It’s like Huggingface Transformers, but for computer vision instead of NLP.</h4>
+</section>
+<section id="download-data" class="level3">
+<h3 class="anchored" data-anchor-id="download-data">2.1 : Download Data</h3>
+<p>Let’s download Ross’s GitHub repository, which is regularly updated with benchmark data for computer vision architectures. These benchmark are created on <strong>Imagenet.</strong></p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> git clone <span class="op">--</span>depth <span class="dv">1</span> https:<span class="op">//</span>github.com<span class="op">/</span>rwightman<span class="op">/</span>pytorch<span class="op">-</span>image<span class="op">-</span>models.git</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>cd pytorch<span class="op">-</span>image<span class="op">-</span>models<span class="op">/</span>results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>Cloning into 'pytorch-image-models'...
+remote: Enumerating objects: 572, done.[K
+remote: Counting objects: 100% (572/572), done.[K
+remote: Compressing objects: 100% (403/403), done.[K
+remote: Total 572 (delta 222), reused 341 (delta 163), pack-reused 0[K
+Receiving objects: 100% (572/572), 2.59 MiB | 4.87 MiB/s, done.
+Resolving deltas: 100% (222/222), done.
+/content/pytorch-image-models/results/pytorch-image-models/results</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>Benchmark_Result <span class="op">=</span> pd.read_csv(<span class="st">'results-imagenet.csv'</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>Benchmark_Result[<span class="st">'model_org'</span>] <span class="op">=</span> Benchmark_Result[<span class="st">'model'</span>]</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>Benchmark_Result[<span class="st">'model'</span>] <span class="op">=</span> Benchmark_Result[<span class="st">'model'</span>].<span class="bu">str</span>.split(<span class="st">'.'</span>).<span class="bu">str</span>[<span class="dv">0</span>]</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>Benchmark_Result.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<table class="dataframe table table-sm table-striped small">
+<thead>
+<tr>
+<th>
+</th>
+<th>
+model
+</th>
+<th>
+top1
+</th>
+<th>
+top1_err
+</th>
+<th>
+top5
+</th>
+<th>
+top5_err
+</th>
+<th>
+param_count
+</th>
+<th>
+img_size
+</th>
+<th>
+crop_pct
+</th>
+<th>
+interpolation
+</th>
+<th>
+model_org
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+eva02_large_patch14_448
+</td>
+<td>
+90.052
+</td>
+<td>
+9.948
+</td>
+<td>
+99.048
+</td>
+<td>
+0.952
+</td>
+<td>
+305.08
+</td>
+<td>
+448
+</td>
+<td>
+1.0
+</td>
+<td>
+bicubic
+</td>
+<td>
+eva02_large_patch14_448.mim_m38m_ft_in22k_in1k
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+eva02_large_patch14_448
+</td>
+<td>
+89.970
+</td>
+<td>
+10.030
+</td>
+<td>
+99.012
+</td>
+<td>
+0.988
+</td>
+<td>
+305.08
+</td>
+<td>
+448
+</td>
+<td>
+1.0
+</td>
+<td>
+bicubic
+</td>
+<td>
+eva02_large_patch14_448.mim_in22k_ft_in22k_in1k
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+eva_giant_patch14_560
+</td>
+<td>
+89.786
+</td>
+<td>
+10.214
+</td>
+<td>
+98.992
+</td>
+<td>
+1.008
+</td>
+<td>
+1,014.45
+</td>
+<td>
+560
+</td>
+<td>
+1.0
+</td>
+<td>
+bicubic
+</td>
+<td>
+eva_giant_patch14_560.m30m_ft_in22k_in1k
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+eva02_large_patch14_448
+</td>
+<td>
+89.622
+</td>
+<td>
+10.378
+</td>
+<td>
+98.950
+</td>
+<td>
+1.050
+</td>
+<td>
+305.08
+</td>
+<td>
+448
+</td>
+<td>
+1.0
+</td>
+<td>
+bicubic
+</td>
+<td>
+eva02_large_patch14_448.mim_in22k_ft_in1k
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+eva02_large_patch14_448
+</td>
+<td>
+89.574
+</td>
+<td>
+10.426
+</td>
+<td>
+98.924
+</td>
+<td>
+1.076
+</td>
+<td>
+305.08
+</td>
+<td>
+448
+</td>
+<td>
+1.0
+</td>
+<td>
+bicubic
+</td>
+<td>
+eva02_large_patch14_448.mim_m38m_ft_in1k
+</td>
+</tr>
+</tbody>
+
+</table>
+<p>Let’s add a “family” column that will allow us to group architectures into categories with similar characteristics:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_data(part, col):</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_csv(<span class="ss">f'benchmark-</span><span class="sc">{</span>part<span class="sc">}</span><span class="ss">-amp-nhwc-pt111-cu113-rtx3090.csv'</span>).merge(Benchmark_Result, on<span class="op">=</span><span class="st">'model'</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'secs'</span>] <span class="op">=</span> <span class="fl">1.</span> <span class="op">/</span> df[col]</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'family'</span>] <span class="op">=</span> df.model.<span class="bu">str</span>.extract(<span class="st">'^([a-z]+?(?:v2)?)(?:\d|_|$)'</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df[<span class="op">~</span>df.model.<span class="bu">str</span>.endswith(<span class="st">'gn'</span>)]</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    df.loc[df.model.<span class="bu">str</span>.contains(<span class="st">'in22'</span>),<span class="st">'family'</span>] <span class="op">=</span> df.loc[df.model.<span class="bu">str</span>.contains(<span class="st">'in22'</span>),<span class="st">'family'</span>] <span class="op">+</span> <span class="st">'_in22'</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    df.loc[df.model.<span class="bu">str</span>.contains(<span class="st">'resnet.*d'</span>),<span class="st">'family'</span>] <span class="op">=</span> df.loc[df.model.<span class="bu">str</span>.contains(<span class="st">'resnet.*d'</span>),<span class="st">'family'</span>] <span class="op">+</span> <span class="st">'d'</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df[df.family.<span class="bu">str</span>.contains(<span class="st">'^re[sg]netd?|beit|convnext|levit|efficient|vit|vgg|swin'</span>)]</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>Inference_Data <span class="op">=</span> get_data(<span class="st">'infer'</span>, <span class="st">'infer_samples_per_sec'</span>)</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>Inference_Data.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<table class="dataframe table table-sm table-striped small">
+<thead>
+<tr>
+<th>
+</th>
+<th>
+model
+</th>
+<th>
+infer_samples_per_sec
+</th>
+<th>
+infer_step_time
+</th>
+<th>
+infer_batch_size
+</th>
+<th>
+infer_img_size
+</th>
+<th>
+param_count_x
+</th>
+<th>
+top1
+</th>
+<th>
+top1_err
+</th>
+<th>
+top5
+</th>
+<th>
+top5_err
+</th>
+<th>
+param_count_y
+</th>
+<th>
+img_size
+</th>
+<th>
+crop_pct
+</th>
+<th>
+interpolation
+</th>
+<th>
+model_org
+</th>
+<th>
+secs
+</th>
+<th>
+family
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+12
+</th>
+<td>
+levit_128s
+</td>
+<td>
+21485.80
+</td>
+<td>
+47.648
+</td>
+<td>
+1024
+</td>
+<td>
+224
+</td>
+<td>
+7.78
+</td>
+<td>
+76.526
+</td>
+<td>
+23.474
+</td>
+<td>
+92.872
+</td>
+<td>
+7.128
+</td>
+<td>
+7.78
+</td>
+<td>
+224
+</td>
+<td>
+0.900
+</td>
+<td>
+bicubic
+</td>
+<td>
+levit_128s.fb_dist_in1k
+</td>
+<td>
+0.000047
+</td>
+<td>
+levit
+</td>
+</tr>
+<tr>
+<th>
+13
+</th>
+<td>
+regnetx_002
+</td>
+<td>
+17821.98
+</td>
+<td>
+57.446
+</td>
+<td>
+1024
+</td>
+<td>
+224
+</td>
+<td>
+2.68
+</td>
+<td>
+68.752
+</td>
+<td>
+31.248
+</td>
+<td>
+88.542
+</td>
+<td>
+11.458
+</td>
+<td>
+2.68
+</td>
+<td>
+224
+</td>
+<td>
+0.875
+</td>
+<td>
+bicubic
+</td>
+<td>
+regnetx_002.pycls_in1k
+</td>
+<td>
+0.000056
+</td>
+<td>
+regnetx
+</td>
+</tr>
+<tr>
+<th>
+15
+</th>
+<td>
+regnety_002
+</td>
+<td>
+16673.08
+</td>
+<td>
+61.405
+</td>
+<td>
+1024
+</td>
+<td>
+224
+</td>
+<td>
+3.16
+</td>
+<td>
+70.280
+</td>
+<td>
+29.720
+</td>
+<td>
+89.530
+</td>
+<td>
+10.470
+</td>
+<td>
+3.16
+</td>
+<td>
+224
+</td>
+<td>
+0.875
+</td>
+<td>
+bicubic
+</td>
+<td>
+regnety_002.pycls_in1k
+</td>
+<td>
+0.000060
+</td>
+<td>
+regnety
+</td>
+</tr>
+<tr>
+<th>
+17
+</th>
+<td>
+levit_128
+</td>
+<td>
+14657.83
+</td>
+<td>
+69.849
+</td>
+<td>
+1024
+</td>
+<td>
+224
+</td>
+<td>
+9.21
+</td>
+<td>
+78.490
+</td>
+<td>
+21.510
+</td>
+<td>
+94.012
+</td>
+<td>
+5.988
+</td>
+<td>
+9.21
+</td>
+<td>
+224
+</td>
+<td>
+0.900
+</td>
+<td>
+bicubic
+</td>
+<td>
+levit_128.fb_dist_in1k
+</td>
+<td>
+0.000068
+</td>
+<td>
+levit
+</td>
+</tr>
+<tr>
+<th>
+18
+</th>
+<td>
+regnetx_004
+</td>
+<td>
+14440.03
+</td>
+<td>
+70.903
+</td>
+<td>
+1024
+</td>
+<td>
+224
+</td>
+<td>
+5.16
+</td>
+<td>
+72.402
+</td>
+<td>
+27.598
+</td>
+<td>
+90.826
+</td>
+<td>
+9.174
+</td>
+<td>
+5.16
+</td>
+<td>
+224
+</td>
+<td>
+0.875
+</td>
+<td>
+bicubic
+</td>
+<td>
+regnetx_004.pycls_in1k
+</td>
+<td>
+0.000069
+</td>
+<td>
+regnetx
+</td>
+</tr>
+</tbody>
+
+</table>
+</section>
+<section id="plot-of-all-the-architectures." class="level3">
+<h3 class="anchored" data-anchor-id="plot-of-all-the-architectures.">2.2 : Plot of all the architectures.</h3>
+<p>Here’s the results for inference performance (see the last section for training performance). In this chart:</p>
+<ul>
+<li><p>the x axis shows how many seconds it takes to process one image (note: it’s a log scale)</p></li>
+<li><p>the y axis is the accuracy on Imagenet</p></li>
+<li><p>the size of each bubble is proportional to the size of images used in testing</p></li>
+<li><p>the color shows what “family” the architecture is from.</p></li>
+</ul>
+<p>Hover your mouse over a marker to see details about the model. Double-click in the legend to display just one family. Single-click in the legend to show or hide a family.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>w,h <span class="op">=</span> <span class="dv">1000</span>,<span class="dv">800</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_all(Inference_Data, title, size):</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> px.scatter(Inference_Data, width<span class="op">=</span>w, height<span class="op">=</span>h, size<span class="op">=</span>Inference_Data[size]<span class="op">**</span><span class="dv">2</span>, title<span class="op">=</span>title,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span><span class="st">'secs'</span>,  y<span class="op">=</span><span class="st">'top1'</span>, log_x<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span><span class="st">'family'</span>, hover_name<span class="op">=</span><span class="st">'model_org'</span>, hover_data<span class="op">=</span>[size])</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>show_all(Inference_Data, <span class="st">'Inference'</span>, <span class="st">'infer_img_size'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="Lecture_3_Deployment_Self_files/Lecture_3_Deployment_Self_30_2.PNG" class="img-fluid"></p>
+</section>
+<section id="specific-architectures-plot" class="level3">
+<h3 class="anchored" data-anchor-id="specific-architectures-plot">2.3 : Specific Architectures Plot</h3>
+<p>Let’s create a plot for selected architectures which we would like to use normally</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter data only for convnext, resnet</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>keywords <span class="op">=</span> [<span class="st">'convnext'</span>, <span class="st">'resnet'</span>,<span class="st">'levit'</span>,<span class="st">'beit'</span>]</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter rows based on the exact keywords</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>Best_Model_Df <span class="op">=</span> Inference_Data[Inference_Data[<span class="st">'family'</span>].isin(keywords)]</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>show_all(Best_Model_Df, <span class="st">'Inference'</span>, <span class="st">'infer_img_size'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="Lecture_3_Deployment_Self_files/Lecture_3_Deployment_Self_30_3.PNG" class="img-fluid"></p>
+</section>
+<section id="family-connection-plot" class="level3">
+<h3 class="anchored" data-anchor-id="family-connection-plot">2.4 : Family Connection Plot</h3>
+<p>Let’s add lines through the points of each family, to help see how they compare – but note that we can see that a linear fit isn’t actually ideal here! It’s just there to help visually see the groups.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>subs <span class="op">=</span> <span class="st">'levit|resnetd?|regnetx|vgg|convnext.*|efficientnetv2|beit|swin'</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_subs(Inference_Data, title, size):</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    df_subs <span class="op">=</span> Inference_Data[Inference_Data.family.<span class="bu">str</span>.fullmatch(subs)]</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> px.scatter(df_subs, width<span class="op">=</span>w, height<span class="op">=</span>h, size<span class="op">=</span>df_subs[size]<span class="op">**</span><span class="dv">2</span>, title<span class="op">=</span>title,</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        trendline<span class="op">=</span><span class="st">"ols"</span>, trendline_options<span class="op">=</span>{<span class="st">'log_x'</span>:<span class="va">True</span>},</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span><span class="st">'secs'</span>,  y<span class="op">=</span><span class="st">'top1'</span>, log_x<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span><span class="st">'family'</span>, hover_name<span class="op">=</span><span class="st">'model_org'</span>, hover_data<span class="op">=</span>[size])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>show_subs(Inference_Data, <span class="st">'Inference'</span>, <span class="st">'infer_img_size'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="Lecture_3_Deployment_Self_files/Lecture_3_Deployment_Self_30_4.PNG" class="img-fluid"></p>
+<section id="we-can-conclude-that-convnext-can-be-go-to-model-with-decent-gpu-at-our-dispocal-because-it-has-more-accuracy-then-resenet-and-it-take-less-time-than-beit" class="level4">
+<h4 class="anchored" data-anchor-id="we-can-conclude-that-convnext-can-be-go-to-model-with-decent-gpu-at-our-dispocal-because-it-has-more-accuracy-then-resenet-and-it-take-less-time-than-beit">We can conclude that <code>Convnext</code> can be go to model with decent GPU at our dispocal, because it has more accuracy then resenet and it take less time than <code>beit</code></h4>
+</section>
+</section>
+</section>
+<section id="level-3-build-a-model-using-convnextbasic-or-tiny" class="level2">
+<h2 class="anchored" data-anchor-id="level-3-build-a-model-using-convnextbasic-or-tiny">Level 3 : Build a model using Convnext(basic or tiny)</h2>
+<p>List of all the basic &amp; tiny version models in <code>Convnext</code> and choose the best.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>[model <span class="cf">for</span> model <span class="kw">in</span> timm.list_models(<span class="st">'convnext*'</span>) <span class="cf">if</span> <span class="st">'base'</span> <span class="kw">in</span> model <span class="kw">or</span> <span class="st">'tiny'</span> <span class="kw">in</span> model]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>['convnext_base',
+ 'convnext_tiny',
+ 'convnext_tiny_hnf',
+ 'convnextv2_base',
+ 'convnextv2_tiny']</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>learn_conv <span class="op">=</span> vision_learner(dls, convnext_base, metrics<span class="op">=</span>error_rate).to_fp16()</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>learn_conv.fine_tune(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>/usr/local/lib/python3.10/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.10/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ConvNeXt_Base_Weights.IMAGENET1K_V1`. You can also use `weights=ConvNeXt_Base_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)</code></pre>
+
+
+<table class="dataframe table table-sm table-striped small">
+<thead>
+<tr>
+<th>
+epoch
+</th>
+<th>
+train_loss
+</th>
+<th>
+valid_loss
+</th>
+<th>
+error_rate
+</th>
+<th>
+time
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+1.130588
+</td>
+<td>
+0.183650
+</td>
+<td>
+0.045175
+</td>
+<td>
+00:17
+</td>
+</tr>
+</tbody>
+
+</table>
+<pre><code>/usr/lib/python3.10/multiprocessing/popen_fork.py:66: RuntimeWarning: os.fork() was called. os.fork() is incompatible with multithreaded code, and JAX is multithreaded, so this will likely lead to a deadlock.
+  self.pid = os.fork()
+/usr/lib/python3.10/multiprocessing/popen_fork.py:66: RuntimeWarning: os.fork() was called. os.fork() is incompatible with multithreaded code, and JAX is multithreaded, so this will likely lead to a deadlock.
+  self.pid = os.fork()</code></pre>
+
+
+<table class="dataframe table table-sm table-striped small">
+<thead>
+<tr>
+<th>
+epoch
+</th>
+<th>
+train_loss
+</th>
+<th>
+valid_loss
+</th>
+<th>
+error_rate
+</th>
+<th>
+time
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+0.306945
+</td>
+<td>
+0.164550
+</td>
+<td>
+0.047228
+</td>
+<td>
+00:20
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+0.253462
+</td>
+<td>
+0.118687
+</td>
+<td>
+0.026694
+</td>
+<td>
+00:11
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+0.207020
+</td>
+<td>
+0.103058
+</td>
+<td>
+0.024641
+</td>
+<td>
+00:11
+</td>
+</tr>
+<tr>
+<td>
+3
+</td>
+<td>
+0.175618
+</td>
+<td>
+0.094374
+</td>
+<td>
+0.020534
+</td>
+<td>
+00:11
+</td>
+</tr>
+<tr>
+<td>
+4
+</td>
+<td>
+0.151438
+</td>
+<td>
+0.092010
+</td>
+<td>
+0.020534
+</td>
+<td>
+00:13
+</td>
+</tr>
+</tbody>
+
+</table>
+<p>Compared to the <code>resnet34</code> model, which had an error rate of 32%, the <code>convnext_base</code> model demonstrates a significant improvement with an error rate of just 21%</p>
+<p>Structure of the architecture</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>learn_conv.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<pre><code>Sequential (Input shape: 64 x 3 x 128 x 128)
+============================================================================
+Layer (type)         Output Shape         Param #    Trainable 
+============================================================================
+                     64 x 128 x 32 x 32  
+Conv2d                                    6272       True      
+LayerNorm2d                               256        True      
+Conv2d                                    6400       True      
+____________________________________________________________________________
+                     64 x 32 x 32 x 128  
+Permute                                                        
+LayerNorm                                 256        True      
+____________________________________________________________________________
+                     64 x 32 x 32 x 512  
+Linear                                    66048      True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 32 x 32 x 128  
+Linear                                    65664      True      
+____________________________________________________________________________
+                     64 x 128 x 32 x 32  
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    6400       True      
+____________________________________________________________________________
+                     64 x 32 x 32 x 128  
+Permute                                                        
+LayerNorm                                 256        True      
+____________________________________________________________________________
+                     64 x 32 x 32 x 512  
+Linear                                    66048      True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 32 x 32 x 128  
+Linear                                    65664      True      
+____________________________________________________________________________
+                     64 x 128 x 32 x 32  
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    6400       True      
+____________________________________________________________________________
+                     64 x 32 x 32 x 128  
+Permute                                                        
+LayerNorm                                 256        True      
+____________________________________________________________________________
+                     64 x 32 x 32 x 512  
+Linear                                    66048      True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 32 x 32 x 128  
+Linear                                    65664      True      
+____________________________________________________________________________
+                     64 x 128 x 32 x 32  
+Permute                                                        
+StochasticDepth                                                
+LayerNorm2d                               256        True      
+____________________________________________________________________________
+                     64 x 256 x 16 x 16  
+Conv2d                                    131328     True      
+Conv2d                                    12800      True      
+____________________________________________________________________________
+                     64 x 16 x 16 x 256  
+Permute                                                        
+LayerNorm                                 512        True      
+____________________________________________________________________________
+                     64 x 16 x 16 x 1024 
+Linear                                    263168     True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 16 x 16 x 256  
+Linear                                    262400     True      
+____________________________________________________________________________
+                     64 x 256 x 16 x 16  
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    12800      True      
+____________________________________________________________________________
+                     64 x 16 x 16 x 256  
+Permute                                                        
+LayerNorm                                 512        True      
+____________________________________________________________________________
+                     64 x 16 x 16 x 1024 
+Linear                                    263168     True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 16 x 16 x 256  
+Linear                                    262400     True      
+____________________________________________________________________________
+                     64 x 256 x 16 x 16  
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    12800      True      
+____________________________________________________________________________
+                     64 x 16 x 16 x 256  
+Permute                                                        
+LayerNorm                                 512        True      
+____________________________________________________________________________
+                     64 x 16 x 16 x 1024 
+Linear                                    263168     True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 16 x 16 x 256  
+Linear                                    262400     True      
+____________________________________________________________________________
+                     64 x 256 x 16 x 16  
+Permute                                                        
+StochasticDepth                                                
+LayerNorm2d                               512        True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Conv2d                                    524800     True      
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    25600      True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Permute                                                        
+LayerNorm                                 1024       True      
+____________________________________________________________________________
+                     64 x 8 x 8 x 2048   
+Linear                                    1050624    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 8 x 8 x 512    
+Linear                                    1049088    True      
+____________________________________________________________________________
+                     64 x 512 x 8 x 8    
+Permute                                                        
+StochasticDepth                                                
+LayerNorm2d                               1024       True      
+____________________________________________________________________________
+                     64 x 1024 x 4 x 4   
+Conv2d                                    2098176    True      
+Conv2d                                    51200      True      
+____________________________________________________________________________
+                     64 x 4 x 4 x 1024   
+Permute                                                        
+LayerNorm                                 2048       True      
+____________________________________________________________________________
+                     64 x 4 x 4 x 4096   
+Linear                                    4198400    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 4 x 4 x 1024   
+Linear                                    4195328    True      
+____________________________________________________________________________
+                     64 x 1024 x 4 x 4   
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    51200      True      
+____________________________________________________________________________
+                     64 x 4 x 4 x 1024   
+Permute                                                        
+LayerNorm                                 2048       True      
+____________________________________________________________________________
+                     64 x 4 x 4 x 4096   
+Linear                                    4198400    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 4 x 4 x 1024   
+Linear                                    4195328    True      
+____________________________________________________________________________
+                     64 x 1024 x 4 x 4   
+Permute                                                        
+StochasticDepth                                                
+Conv2d                                    51200      True      
+____________________________________________________________________________
+                     64 x 4 x 4 x 1024   
+Permute                                                        
+LayerNorm                                 2048       True      
+____________________________________________________________________________
+                     64 x 4 x 4 x 4096   
+Linear                                    4198400    True      
+GELU                                                           
+____________________________________________________________________________
+                     64 x 4 x 4 x 1024   
+Linear                                    4195328    True      
+____________________________________________________________________________
+                     64 x 1024 x 4 x 4   
+Permute                                                        
+StochasticDepth                                                
+____________________________________________________________________________
+                     64 x 1024 x 1 x 1   
+AdaptiveAvgPool2d                                              
+AdaptiveMaxPool2d                                              
+____________________________________________________________________________
+                     64 x 2048           
+Flatten                                                        
+BatchNorm1d                               4096       True      
+Dropout                                                        
+____________________________________________________________________________
+                     64 x 512            
+Linear                                    1048576    True      
+ReLU                                                           
+BatchNorm1d                               1024       True      
+Dropout                                                        
+____________________________________________________________________________
+                     64 x 10             
+Linear                                    5120       True      
+____________________________________________________________________________
+
+Total params: 88,605,184
+Total trainable params: 88,605,184
+Total non-trainable params: 0
+
+Optimizer used: &lt;function Adam at 0x7b5a37dbbeb0&gt;
+Loss function: FlattenedLoss of CrossEntropyLoss()
+
+Model unfrozen
+
+Callbacks:
+  - TrainEvalCallback
+  - CastToTensor
+  - MixedPrecision
+  - Recorder
+  - ProgressCallback</code></pre>
+<p>Let’s downlod the model for future reference</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>learn_conv.export(<span class="st">'Big_Cat_Convnext_Model.pkl'</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co">#learn_conv.export('/content/drive/MyDrive/Colab Notebooks/FastAI Course/Big_Cat_Convnext_Model.pkl')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="level-4.-test-the-model" class="level2">
+<h2 class="anchored" data-anchor-id="level-4.-test-the-model">Level 4. Test the Model</h2>
+<p>Let’s test the model with an image</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.vision.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gradio <span class="im">as</span> gr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> PILImage.create(<span class="st">'/content/drive/MyDrive/Colab Notebooks/FastAI Course/SnowLeopard.jpg'</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>im.thumbnail((<span class="dv">224</span>,<span class="dv">224</span>))</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>im</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="Lecture_3_Deployment_Self_files/Lecture_3_Deployment_Self_59_0.png" class="img-fluid"></p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>learn_conv <span class="op">=</span> load_learner(<span class="st">'/content/drive/MyDrive/Colab Notebooks/FastAI Course/Big_Cat_Convnext_Model.pkl'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>learn_conv.predict(im)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<pre><code>('CHEETAH',
+ tensor(2),
+ tensor([1.0988e-04, 8.7617e-05, 9.2564e-01, 2.9294e-06, 1.2592e-06, 1.6162e-06,
+         2.6748e-02, 6.5111e-07, 4.7398e-02, 7.3348e-06]))</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>learn_conv.dls.vocab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>['AFRICAN LEOPARD', 'CARACAL', 'CHEETAH', 'CLOUDED LEOPARD', 'JAGUAR', 'LIONS', 'OCELOT', 'PUMA', 'SNOW LEOPARD', 'TIGER']</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>categories <span class="op">=</span> learn_conv.dls.vocab</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>pred, idx, probs <span class="op">=</span> learn_conv.predict(im)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(categories, <span class="bu">map</span>(<span class="bu">float</span>,probs)))</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<pre><code>{'AFRICAN LEOPARD': 0.00010988322173943743,
+ 'CARACAL': 8.761714707361534e-05,
+ 'CHEETAH': 0.9256432056427002,
+ 'CLOUDED LEOPARD': 2.929433776444057e-06,
+ 'JAGUAR': 1.2592141729328432e-06,
+ 'LIONS': 1.6162448446266353e-06,
+ 'OCELOT': 0.026747871190309525,
+ 'PUMA': 6.511066317216319e-07,
+ 'SNOW LEOPARD': 0.04739758372306824,
+ 'TIGER': 7.334848760365276e-06}</code></pre>
+<p>Top 3 Predicted Cat Names with Highest Probability”</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>sorted_result <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">sorted</span>(result.items(), key<span class="op">=</span><span class="kw">lambda</span> item: item[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>))</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>top_classes <span class="op">=</span> <span class="bu">list</span>(sorted_result.keys())[:<span class="dv">3</span>]</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>top_classes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>['CHEETAH', 'SNOW LEOPARD', 'OCELOT']</code></pre>
+<p>So our model predicted <code>CHEETAH</code> with probablity of 93%</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
