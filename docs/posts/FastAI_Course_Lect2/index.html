@@ -233,7 +233,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 [?25hMounted at /content/gdrive</code></pre>
 <section id="download-and-sort-out-the-dataimages." class="level2">
 <h2 class="anchored" data-anchor-id="download-and-sort-out-the-dataimages.">1. Download and sort out the data(images).</h2>
-<p>Extract Data using <strong>DuckDuckGo</strong> function 1. Create dynamic path according to their name store file 2. Create a dictionary to track the number of downloaded images per category (e.g., cat).</p>
+<p>Extract Data using <strong>DuckDuckGo</strong> function</p>
+<ol type="1">
+<li><p>Create dynamic path according to their name store file</p></li>
+<li><p>Create a dictionary to track the number of downloaded images per category (e.g., cat).</p></li>
+</ol>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>??search_images_ddg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><em>Signature</em>: search_images_ddg(term, max_images=200)</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cat_types <span class="op">=</span> <span class="st">'Leopard'</span>,<span class="st">'Cougar'</span>,<span class="st">'Tiger'</span>,<span class="st">'Lion'</span>,<span class="st">'Cheetah'</span>,<span class="st">'SnowLeopard'</span></span>
@@ -265,7 +269,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  'Cheetah': 200,
  'SnowLeopard': 200}</code></pre>
 <p>So we got 200 images per type</p>
-<p>While downloading we can get corrupt images lets first remove them. <code>verify_images()</code> will return path of such images and using <code>unlink</code> we can remove these files.</p>
+<p>While downloading we can get corrupt images.So lets first remove them. <code>verify_images()</code> will return path of such images and using <code>unlink</code> we can remove these files.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fns <span class="op">=</span> get_image_files(path)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>total_imagelength <span class="op">=</span> <span class="bu">len</span>(fns)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>failed <span class="op">=</span> verify_images(fns)</span>
@@ -293,8 +297,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> big_cat.dataloaders(path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>DataBlock</strong> is a convenient way to organize the data loading, splitting, and transformation steps in preparation for training a deep learning model using the fastai library.</p>
 <p><code>DataBlock()</code>: is suitable for a classification task where you have a dataset of images, and each image belongs to a specific category (e.g., types of cats).</p>
-<p><code>blocks=(ImageBlock, CategoryBlock)</code>: It specify that our input are images &amp; our target are categories(types of cat)</p>
-<p><code>get_image_files</code>: this help to get list of all the images from subfolder.</p>
+<p><code>blocks=(ImageBlock, CategoryBlock)</code>: It specify that our inputs are images &amp; our targets are categories(types of big cat)</p>
+<p><code>get_image_files</code>: This helps to get list of all the images from subfolder.</p>
 <p><code>parent_label</code>: This is a function that extracts the labels (categories) for each item.’Leapord’,‘Tiger’,‘Lion’</p>
 <p>A <code>DataLoaders</code> includes validation and training <code>DataLoader</code>. Let’s check random validation dataset.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>dls.valid.show_batch(max_n<span class="op">=</span><span class="dv">6</span>, nrows<span class="op">=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -315,7 +319,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Randomly select and crop parts of the image during each epoch.</li>
 <li>Train the model on different image parts across multiple epochs.</li>
 <li>This approach creates random variations in input data without altering its meaning.</li>
-<li>Aiming to provide diverse perspectives, it ensures the model sees different pictures from the same image in each iteration..</li>
+<li>Aiming to provide diverse perspectives, it ensures that the model sees different pictures from the same image in each iteration..</li>
 </ul>
 <hr>
 <p>To train our model, we’ll use <code>RandomResizedCrop</code> with an image size of 224 px, which is fairly standard for image classification, and default <code>aug_transforms</code>:</p>
@@ -337,210 +341,138 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Tip2</strong> - Build model first and then clean the data. And then again train the model.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> vision_learner(big_cat_dls, resnet18, metrics<span class="op">=</span>error_rate)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>learn.fine_tune(<span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-
-<table class="dataframe table table-sm table-striped small">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 11%">
+</colgroup>
 <thead>
-<tr>
-<th>
-epoch
-</th>
-<th>
-train_loss
-</th>
-<th>
-valid_loss
-</th>
-<th>
-error_rate
-</th>
-<th>
-time
-</th>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>
-0
-</td>
-<td>
-1.878671
-</td>
-<td>
-0.548061
-</td>
-<td>
-0.183962
-</td>
-<td>
-00:36
-</td>
+<tr class="odd">
+<td>0</td>
+<td>1.878671</td>
+<td>0.548061</td>
+<td>0.183962</td>
+<td>00:36</td>
 </tr>
 </tbody>
-
 </table>
-
-
-<table class="dataframe table table-sm table-striped small">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 11%">
+</colgroup>
 <thead>
-<tr>
-<th>
-epoch
-</th>
-<th>
-train_loss
-</th>
-<th>
-valid_loss
-</th>
-<th>
-error_rate
-</th>
-<th>
-time
-</th>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>
-0
-</td>
-<td>
-0.669399
-</td>
-<td>
-0.442041
-</td>
-<td>
-0.160377
-</td>
-<td>
-00:36
-</td>
+<tr class="odd">
+<td>0</td>
+<td>0.669399</td>
+<td>0.442041</td>
+<td>0.160377</td>
+<td>00:36</td>
 </tr>
-<tr>
-<td>
-1
-</td>
-<td>
-0.566393
-</td>
-<td>
-0.425440
-</td>
-<td>
-0.136792
-</td>
-<td>
-00:38
-</td>
+<tr class="even">
+<td>1</td>
+<td>0.566393</td>
+<td>0.425440</td>
+<td>0.136792</td>
+<td>00:38</td>
 </tr>
-<tr>
-<td>
-2
-</td>
-<td>
-0.476826
-</td>
-<td>
-0.555463
-</td>
-<td>
-0.179245
-</td>
-<td>
-00:38
-</td>
+<tr class="odd">
+<td>2</td>
+<td>0.476826</td>
+<td>0.555463</td>
+<td>0.179245</td>
+<td>00:38</td>
 </tr>
-<tr>
-<td>
-3
-</td>
-<td>
-0.429597
-</td>
-<td>
-0.524273
-</td>
-<td>
-0.146226
-</td>
-<td>
-00:37
-</td>
+<tr class="even">
+<td>3</td>
+<td>0.429597</td>
+<td>0.524273</td>
+<td>0.146226</td>
+<td>00:37</td>
 </tr>
-<tr>
-<td>
-4
-</td>
-<td>
-0.367606
-</td>
-<td>
-0.519690
-</td>
-<td>
-0.117925
-</td>
-<td>
-00:36
-</td>
+<tr class="odd">
+<td>4</td>
+<td>0.367606</td>
+<td>0.519690</td>
+<td>0.117925</td>
+<td>00:36</td>
 </tr>
-<tr>
-<td>
-5
-</td>
-<td>
-0.319734
-</td>
-<td>
-0.529199
-</td>
-<td>
-0.113208
-</td>
-<td>
-00:37
-</td>
+<tr class="even">
+<td>5</td>
+<td>0.319734</td>
+<td>0.529199</td>
+<td>0.113208</td>
+<td>00:37</td>
 </tr>
-<tr>
-<td>
-6
-</td>
-<td>
-0.287094
-</td>
-<td>
-0.516044
-</td>
-<td>
-0.127358
-</td>
-<td>
-00:38
-</td>
+<tr class="odd">
+<td>6</td>
+<td>0.287094</td>
+<td>0.516044</td>
+<td>0.127358</td>
+<td>00:38</td>
 </tr>
-<tr>
-<td>
-7
-</td>
-<td>
-0.260760
-</td>
-<td>
-0.514551
-</td>
-<td>
-0.132075
-</td>
-<td>
-00:36
-</td>
+<tr class="even">
+<td>7</td>
+<td>0.260760</td>
+<td>0.514551</td>
+<td>0.132075</td>
+<td>00:36</td>
 </tr>
 </tbody>
-
 </table>
 <p>Here we see, in last epoch rise in error_rate which means that in stochastic gradient descent we have surpassed deepest point and trending towards upward direction which leads to higher loss rate. It indicates that the training process should likely be stopped to prevent further divergence from the optimal solution</p>
 <p>###Visualize Confusion Matrix</p>
@@ -609,7 +541,7 @@ time
 <section id="clean-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="clean-the-data">4. Clean the data</h2>
 <p><code>ImageClassifierCleaner</code> enables us to review all images associated with a specific category and identify their placement within the dataloader, whether in the training or validation set.</p>
-<p>The images are organized in ascending order of confidence, prioritizing those with the highest loss. This allows for efficient data sorting by simply examining the initial images. Users can choose to keep, delete, or modify the category label (type of cat) as needed.</p>
+<p>The images are organized in ascending order of confidence, prioritizing those with the highest loss. This allows for efficient data sorting by simply examining the initial images. Users can choose to keep, delete, or modify the category label (type of cat) as required</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#hide_output</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>cleaner <span class="op">=</span> ImageClassifierCleaner(learn)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>cleaner</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -661,8 +593,7 @@ time
 <span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    item_tfms<span class="op">=</span>RandomResizedCrop(<span class="dv">224</span>, min_scale<span class="op">=</span><span class="fl">0.5</span>),</span>
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    batch_tfms<span class="op">=</span>aug_transforms())</span>
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>big_cat_dls <span class="op">=</span> big_cat.dataloaders(path)</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>big_cat_dls.train.show_batch(max_n<span class="op">=</span><span class="dv">8</span>, nrows<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>big_cat_dls.train.show_batch(max_n<span class="op">=</span><span class="dv">8</span>, nrows<span class="op">=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="Lecture_2_Production_Self_files/Lecture_2_Production_Self_35_0.png" class="img-fluid figure-img"></p>
@@ -673,210 +604,138 @@ time
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>learn.fine_tune(<span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre><code>Downloading: "https://download.pytorch.org/models/resnet34-b627a593.pth" to /root/.cache/torch/hub/checkpoints/resnet34-b627a593.pth
 100%|██████████| 83.3M/83.3M [00:00&lt;00:00, 121MB/s]</code></pre>
-
-
-<table class="dataframe table table-sm table-striped small">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 11%">
+</colgroup>
 <thead>
-<tr>
-<th>
-epoch
-</th>
-<th>
-train_loss
-</th>
-<th>
-valid_loss
-</th>
-<th>
-error_rate
-</th>
-<th>
-time
-</th>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>
-0
-</td>
-<td>
-1.839337
-</td>
-<td>
-0.557398
-</td>
-<td>
-0.161137
-</td>
-<td>
-00:36
-</td>
+<tr class="odd">
+<td>0</td>
+<td>1.839337</td>
+<td>0.557398</td>
+<td>0.161137</td>
+<td>00:36</td>
 </tr>
 </tbody>
-
 </table>
-
-
-<table class="dataframe table table-sm table-striped small">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 11%">
+</colgroup>
 <thead>
-<tr>
-<th>
-epoch
-</th>
-<th>
-train_loss
-</th>
-<th>
-valid_loss
-</th>
-<th>
-error_rate
-</th>
-<th>
-time
-</th>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>
-0
-</td>
-<td>
-0.552628
-</td>
-<td>
-0.516515
-</td>
-<td>
-0.137441
-</td>
-<td>
-00:37
-</td>
+<tr class="odd">
+<td>0</td>
+<td>0.552628</td>
+<td>0.516515</td>
+<td>0.137441</td>
+<td>00:37</td>
 </tr>
-<tr>
-<td>
-1
-</td>
-<td>
-0.457381
-</td>
-<td>
-0.544474
-</td>
-<td>
-0.175355
-</td>
-<td>
-00:42
-</td>
+<tr class="even">
+<td>1</td>
+<td>0.457381</td>
+<td>0.544474</td>
+<td>0.175355</td>
+<td>00:42</td>
 </tr>
-<tr>
-<td>
-2
-</td>
-<td>
-0.399777
-</td>
-<td>
-0.615449
-</td>
-<td>
-0.146919
-</td>
-<td>
-00:38
-</td>
+<tr class="odd">
+<td>2</td>
+<td>0.399777</td>
+<td>0.615449</td>
+<td>0.146919</td>
+<td>00:38</td>
 </tr>
-<tr>
-<td>
-3
-</td>
-<td>
-0.345620
-</td>
-<td>
-0.601597
-</td>
-<td>
-0.151659
-</td>
-<td>
-00:40
-</td>
+<tr class="even">
+<td>3</td>
+<td>0.345620</td>
+<td>0.601597</td>
+<td>0.151659</td>
+<td>00:40</td>
 </tr>
-<tr>
-<td>
-4
-</td>
-<td>
-0.293677
-</td>
-<td>
-0.630620
-</td>
-<td>
-0.146919
-</td>
-<td>
-00:37
-</td>
+<tr class="odd">
+<td>4</td>
+<td>0.293677</td>
+<td>0.630620</td>
+<td>0.146919</td>
+<td>00:37</td>
 </tr>
-<tr>
-<td>
-5
-</td>
-<td>
-0.256501
-</td>
-<td>
-0.669779
-</td>
-<td>
-0.137441
-</td>
-<td>
-00:37
-</td>
+<tr class="even">
+<td>5</td>
+<td>0.256501</td>
+<td>0.669779</td>
+<td>0.137441</td>
+<td>00:37</td>
 </tr>
-<tr>
-<td>
-6
-</td>
-<td>
-0.227690
-</td>
-<td>
-0.648144
-</td>
-<td>
-0.142180
-</td>
-<td>
-00:36
-</td>
+<tr class="odd">
+<td>6</td>
+<td>0.227690</td>
+<td>0.648144</td>
+<td>0.142180</td>
+<td>00:36</td>
 </tr>
-<tr>
-<td>
-7
-</td>
-<td>
-0.207254
-</td>
-<td>
-0.651927
-</td>
-<td>
-0.137441
-</td>
-<td>
-00:37
-</td>
+<tr class="even">
+<td>7</td>
+<td>0.207254</td>
+<td>0.651927</td>
+<td>0.137441</td>
+<td>00:37</td>
 </tr>
 </tbody>
-
 </table>
 <div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>interp <span class="op">=</span> ClassificationInterpretation.from_learner(learn)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>interp.plot_confusion_matrix()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -938,8 +797,8 @@ time
 <figcaption class="figure-caption">png</figcaption>
 </figure>
 </div>
-<section id="so-by-reading-confusion-matrix-and-looking-at-output-from-plot_top_losses-we-can-say-that-we-still-have-a-problem-with-our-data-and-it-will-take-lot-more-iteration-to-fix-it.-for-now-lets-conclude-our-efforts-at-this-point." class="level4">
-<h4 class="anchored" data-anchor-id="so-by-reading-confusion-matrix-and-looking-at-output-from-plot_top_losses-we-can-say-that-we-still-have-a-problem-with-our-data-and-it-will-take-lot-more-iteration-to-fix-it.-for-now-lets-conclude-our-efforts-at-this-point.">So by reading confusion matrix and looking at output from plot_top_losses, we can say that we still have a problem with our data and it will take lot more iteration to fix it. For now, let’s conclude our efforts at this point.</h4>
+<section id="so-by-reading-confusion-matrix-and-looking-at-output-from-plot_top_losses-we-can-say-that-we-still-have-a-problem-with-our-data-and-it-will-take-a-lot-more-iteration-to-fix-it.-for-now-lets-conclude-our-efforts-at-this-point." class="level4">
+<h4 class="anchored" data-anchor-id="so-by-reading-confusion-matrix-and-looking-at-output-from-plot_top_losses-we-can-say-that-we-still-have-a-problem-with-our-data-and-it-will-take-a-lot-more-iteration-to-fix-it.-for-now-lets-conclude-our-efforts-at-this-point.">So by reading confusion matrix and looking at output from plot_top_losses, we can say that we still have a problem with our data and it will take a lot more iteration to fix it. For now, let’s conclude our efforts at this point.</h4>
 </section>
 </section>
 <section id="lets-download-our-model-and-use-it-make-prediction.-in-next-lesson-." class="level2">
