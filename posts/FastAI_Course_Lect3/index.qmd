@@ -1161,7 +1161,7 @@ show_subs(Inference_Data, 'Inference', 'infer_img_size')
 ![](Lecture_3_Deployment_Self_files/Lecture_3_Deployment_Self_30_4.PNG)
 
 
-#### We can conclude that `Convnext` can be go to model with decent GPU at our dispocal, because it has more accuracy then resenet and it take less time than `beit`
+#### We can conclude that `Convnext` can be go to model with decent GPU at our disposal, because it has more accuracy then resenet and it take less time than `beit`
 
 ## Level 3 : Build a model using Convnext(basic or tiny)
 
