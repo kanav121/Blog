@@ -182,7 +182,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#this-chapter-focus-on-tabular-data" id="toc-this-chapter-focus-on-tabular-data" class="nav-link active" data-scroll-target="#this-chapter-focus-on-tabular-data">This chapter focus on Tabular Data</a></li>
+  <li><a href="#this-chapter-focuses-on-tabular-data" id="toc-this-chapter-focuses-on-tabular-data" class="nav-link active" data-scroll-target="#this-chapter-focuses-on-tabular-data">This chapter focuses on Tabular Data</a></li>
   <li><a href="#read-prepare-the-data" id="toc-read-prepare-the-data" class="nav-link" data-scroll-target="#read-prepare-the-data">Read &amp; Prepare the data</a></li>
   <li><a href="#train-the-model" id="toc-train-the-model" class="nav-link" data-scroll-target="#train-the-model">Train the model</a></li>
   <li><a href="#learning-rate" id="toc-learning-rate" class="nav-link" data-scroll-target="#learning-rate">Learning Rate</a></li>
@@ -199,10 +199,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="focusing-on-computer-vision-and-tabular-data" class="level4">
 <h4 class="anchored" data-anchor-id="focusing-on-computer-vision-and-tabular-data">Focusing on Computer Vision and Tabular Data</h4>
-<p>My primary focus is to write on the lessons and techniques related to building and training models for Computer Vision tasks, such as image classification, object detection, and segmentation. Additionally, I’ll be exploring the methods and best practices for working with Tabular Data for this lecutre only.</p>
+<p>My primary focus is to write on the lessons and techniques related to building and training models for Computer Vision tasks, such as image classification, object detection, and segmentation. Additionally, I’ll be exploring the methods and best practices for working with Tabular Data for this lecture only.</p>
 </section>
-<section id="this-chapter-focus-on-tabular-data" class="level3">
-<h3 class="anchored" data-anchor-id="this-chapter-focus-on-tabular-data">This chapter focus on Tabular Data</h3>
+<section id="this-chapter-focuses-on-tabular-data" class="level3">
+<h3 class="anchored" data-anchor-id="this-chapter-focuses-on-tabular-data">This chapter focuses on Tabular Data</h3>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.tabular.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>set_seed(<span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
@@ -226,19 +226,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 <table class="table">
 <colgroup>
-<col style="width: 3%">
-<col style="width: 8%">
-<col style="width: 6%">
-<col style="width: 5%">
-<col style="width: 33%">
-<col style="width: 5%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 11%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 6%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -432,7 +432,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>df[‘Alone’] = df.Family == 0</strong> It will create a column ‘Alone’ for those who don’t have family.</li>
 <li><strong>df[‘TicketFreq’] = df.groupby(‘Ticket’)[‘Ticket’].transform(‘count’)</strong> Adds a ‘TicketFreq’ column, representing the frequency of each ticket in the dataset.</li>
 <li><strong>df[‘Title’] = df.Name.str.split(‘,’, expand=True)[1].str.split(‘.’, expand=True)[0]</strong> Extracts the title from the ‘Name’ column (e.g., Mr, Miss, Mrs) and assigns it to a new ‘Title’ column.</li>
-<li><strong>df[‘Title’] = df.Title.map(dict(Mr=“Mr”,Miss=“Miss”,Mrs=“Mrs”,Master=“Master”))</strong> Will take into account only these 3 titles anything else will be labell as “NAN”.</li>
+<li><strong>df[‘Title’] = df.Title.map(dict(Mr=“Mr”,Miss=“Miss”,Mrs=“Mrs”,Master=“Master”))</strong> Will take into account only these 3 titles anything else will be labelled as “NAN”.</li>
 </ul>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#we can use RandomSplitter to separate out the training and validation sets:</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    </span>
@@ -471,8 +471,8 @@ For example, when doing 'df[col].method(value, inplace=True)', try using 'df.met
 <h3 class="anchored" data-anchor-id="learning-rate">Learning Rate</h3>
 <p><a href="https://forums.fast.ai/t/new-lr-finder-output/89236/3">New Lr Finder Output</a></p>
 <p><em>lr_min, lr_steep, lr_valley, lr_slide = learn.lr_find(suggest_funcs=(minimum, steep, valley, slide))</em></p>
-<p><strong>Lr_find(suggest_func= (slide, valley))</strong> is great way to find learning rate for any model. There are multiple ways of doing this thing in this case we are using slide&amp; valley.And pick 1 value among these 2 values we will get pretty good value</p>
-<p>General it is established that: Valley &gt; Slide &gt; Steep &gt; Minimum. Hence by defualt we use valley &amp; slide to get best of both.</p>
+<p><strong>Lr_find(suggest_func= (slide, valley))</strong> is great way to find learning rate for any model. There are multiple ways of do this, and in this case, we are using slide&amp; valley methods. By picking one value among these two values we will get pretty good learning rate value</p>
+<p>Generally it is established that: Valley &gt; Slide &gt; Steep &gt; Minimum. Hence by defualt we use valley &amp; slide to get best of both.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>learn.lr_find(suggest_funcs<span class="op">=</span>(slide, valley))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <style>
     /* Turns off some styling */
@@ -509,13 +509,6 @@ For example, when doing 'df[col].method(value, inplace=True)', try using 'df.met
     }
 </style>
 <table class="table">
-<colgroup>
-<col style="width: 13%">
-<col style="width: 18%">
-<col style="width: 18%">
-<col style="width: 15%">
-<col style="width: 13%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>epoch</th>

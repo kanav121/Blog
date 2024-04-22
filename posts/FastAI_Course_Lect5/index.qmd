@@ -12,9 +12,9 @@ order: 0
 
 #### Focusing on Computer Vision and Tabular Data
 
-My primary focus is to write on the lessons and techniques related to building and training models for Computer Vision tasks, such as image classification, object detection, and segmentation. Additionally, I'll be exploring the methods and best practices for working with Tabular Data for this lecutre only.
+My primary focus is to write on the lessons and techniques related to building and training models for Computer Vision tasks, such as image classification, object detection, and segmentation. Additionally, I'll be exploring the methods and best practices for working with Tabular Data for this lecture only.
 
-### This chapter focus on Tabular Data
+### This chapter focuses on Tabular Data
 
 ``` python
 from fastai.tabular.all import *
@@ -46,7 +46,7 @@ df.head(10)
 </style>
 ```
 |     | PassengerId | Survived | Pclass | Name                                                | Sex    | Age   | SibSp | Parch | Ticket           | Fare  | Cabin | Embarked |
-|------|------|------|------|----------|------|------|------|------|------|------|------|------|
+|------|------|------|------|------|------|------|------|------|------|------|------|------|
 | 0   | 1           | 0        | 3      | Braund, Mr. Owen Harris                             | male   | 22.00 | 1     | 0     | A/5 21171        | 7.25  | NaN   | S        |
 | 1   | 2           | 1        | 1      | Cumings, Mrs. John Bradley (Florence Briggs Thayer) | female | 38.00 | 1     | 0     | PC 17599         | 71.28 | C85   | C        |
 | 2   | 3           | 1        | 3      | Heikkinen, Miss. Laina                              | female | 26.00 | 0     | 0     | STON/O2. 3101282 | 7.92  | NaN   | S        |
@@ -89,7 +89,7 @@ add_features(df)
 -   **df\['Alone'\] = df.Family == 0** It will create a column 'Alone' for those who don't have family.
 -   **df\['TicketFreq'\] = df.groupby('Ticket')\['Ticket'\].transform('count')** Adds a 'TicketFreq' column, representing the frequency of each ticket in the dataset.
 -   **df\['Title'\] = df.Name.str.split(', ', expand=True)\[1\].str.split('.', expand=True)\[0\]** Extracts the title from the 'Name' column (e.g., Mr, Miss, Mrs) and assigns it to a new 'Title' column.
--   **df\['Title'\] = df.Title.map(dict(Mr="Mr",Miss="Miss",Mrs="Mrs",Master="Master"))** Will take into account only these 3 titles anything else will be labell as "NAN".
+-   **df\['Title'\] = df.Title.map(dict(Mr="Mr",Miss="Miss",Mrs="Mrs",Master="Master"))** Will take into account only these 3 titles anything else will be labelled as "NAN".
 
 ``` python
 #we can use RandomSplitter to separate out the training and validation sets:
@@ -149,9 +149,9 @@ learn = tabular_learner(dls, metrics=accuracy, layers=[15,19])
 
 *lr_min, lr_steep, lr_valley, lr_slide = learn.lr_find(suggest_funcs=(minimum, steep, valley, slide))*
 
-**Lr_find(suggest_func= (slide, valley))** is great way to find learning rate for any model. There are multiple ways of doing this thing in this case we are using slide& valley.And pick 1 value among these 2 values we will get pretty good value
+**Lr_find(suggest_func= (slide, valley))** is great way to find learning rate for any model. There are multiple ways of do this, and in this case, we are using slide& valley methods. By picking one value among these two values we will get pretty good learning rate value
 
-General it is established that: Valley \> Slide \> Steep \> Minimum. Hence by defualt we use valley & slide to get best of both.
+Generally it is established that: Valley \> Slide \> Steep \> Minimum. Hence by defualt we use valley & slide to get best of both.
 
 ``` python
 learn.lr_find(suggest_funcs=(slide, valley))
