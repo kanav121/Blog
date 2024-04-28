@@ -374,11 +374,9 @@ Downloading: "https://download.pytorch.org/models/resnet34-b627a593.pth" to /roo
     }
 </style>
 ```
-+-------+------------+------------+------------+-------+
 | epoch | train_loss | valid_loss | error_rate | time  |
-+=======+============+============+============+=======+
+|-------|------------|------------|------------|-------|
 | 0     | 1.837715   | 0.237122   | 0.088296   | 00:13 |
-+-------+------------+------------+------------+-------+
 
 ```{=html}
 <style>
@@ -397,17 +395,12 @@ Downloading: "https://download.pytorch.org/models/resnet34-b627a593.pth" to /roo
     }
 </style>
 ```
-+-------+------------+------------+------------+-------+
 | epoch | train_loss | valid_loss | error_rate | time  |
-+=======+============+============+============+=======+
+|-------|------------|------------|------------|-------|
 | 0     | 0.565063   | 0.141556   | 0.041068   | 00:18 |
-+-------+------------+------------+------------+-------+
 | 1     | 0.431256   | 0.147855   | 0.051335   | 00:20 |
-+-------+------------+------------+------------+-------+
 | 2     | 0.337753   | 0.119496   | 0.036961   | 00:17 |
-+-------+------------+------------+------------+-------+
 | 3     | 0.268090   | 0.115800   | 0.032854   | 00:14 |
-+-------+------------+------------+------------+-------+
 
 understand structure of model
 
@@ -728,90 +721,13 @@ Benchmark_Result['model'] = Benchmark_Result['model'].str.split('.').str[0]
 Benchmark_Result.head(5)
 ```
 
-<table>
-<thead>
-<tr class="header">
-<th><p></p></th>
-<th><p>model</p></th>
-<th><p>top1</p></th>
-<th><p>top1_err</p></th>
-<th><p>top5</p></th>
-<th><p>top5_err</p></th>
-<th><p>param_count</p></th>
-<th><p>img_size</p></th>
-<th><p>crop_pct</p></th>
-<th><p>interpolation</p></th>
-<th><p>model_org</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p>0</p></td>
-<td><p>eva02_large_patch14_448</p></td>
-<td><p>90.052</p></td>
-<td><p>9.948</p></td>
-<td><p>99.048</p></td>
-<td><p>0.952</p></td>
-<td><p>305.08</p></td>
-<td><p>448</p></td>
-<td><p>1.0</p></td>
-<td><p>bicubic</p></td>
-<td><p>eva02_large_patch14_448.mim_m38m_ft_in22k_in1k</p></td>
-</tr>
-<tr class="even">
-<td><p>1</p></td>
-<td><p>eva02_large_patch14_448</p></td>
-<td><p>89.970</p></td>
-<td><p>10.030</p></td>
-<td><p>99.012</p></td>
-<td><p>0.988</p></td>
-<td><p>305.08</p></td>
-<td><p>448</p></td>
-<td><p>1.0</p></td>
-<td><p>bicubic</p></td>
-<td><p>eva02_large_patch14_448.mim_in22k_ft_in22k_in1k</p></td>
-</tr>
-<tr class="odd">
-<td><p>2</p></td>
-<td><p>eva_giant_patch14_560</p></td>
-<td><p>89.786</p></td>
-<td><p>10.214</p></td>
-<td><p>98.992</p></td>
-<td><p>1.008</p></td>
-<td><p>1,014.45</p></td>
-<td><p>560</p></td>
-<td><p>1.0</p></td>
-<td><p>bicubic</p></td>
-<td><p>eva_giant_patch14_560.m30m_ft_in22k_in1k</p></td>
-</tr>
-<tr class="even">
-<td><p>3</p></td>
-<td><p>eva02_large_patch14_448</p></td>
-<td><p>89.622</p></td>
-<td><p>10.378</p></td>
-<td><p>98.950</p></td>
-<td><p>1.050</p></td>
-<td><p>305.08</p></td>
-<td><p>448</p></td>
-<td><p>1.0</p></td>
-<td><p>bicubic</p></td>
-<td><p>eva02_large_patch14_448.mim_in22k_ft_in1k</p></td>
-</tr>
-<tr class="odd">
-<td><p>4</p></td>
-<td><p>eva02_large_patch14_448</p></td>
-<td><p>89.574</p></td>
-<td><p>10.426</p></td>
-<td><p>98.924</p></td>
-<td><p>1.076</p></td>
-<td><p>305.08</p></td>
-<td><p>448</p></td>
-<td><p>1.0</p></td>
-<td><p>bicubic</p></td>
-<td><p>eva02_large_patch14_448.mim_m38m_ft_in1k</p></td>
-</tr>
-</tbody>
-</table>
+|     | model                   | top1   | top1_err | top5   | top5_err | param_count | img_size | crop_pct | interpolation | model_org                                       |
+|-----|-------------------------|--------|----------|--------|----------|-------------|----------|----------|---------------|-------------------------------------------------|
+| 0   | eva02_large_patch14_448 | 90.052 | 9.948    | 99.048 | 0.952    | 305.08      | 448      | 1.0      | bicubic       | eva02_large_patch14_448.mim_m38m_ft_in22k_in1k  |
+| 1   | eva02_large_patch14_448 | 89.970 | 10.030   | 99.012 | 0.988    | 305.08      | 448      | 1.0      | bicubic       | eva02_large_patch14_448.mim_in22k_ft_in22k_in1k |
+| 2   | eva_giant_patch14_560   | 89.786 | 10.214   | 98.992 | 1.008    | 1,014.45    | 560      | 1.0      | bicubic       | eva_giant_patch14_560.m30m_ft_in22k_in1k        |
+| 3   | eva02_large_patch14_448 | 89.622 | 10.378   | 98.950 | 1.050    | 305.08      | 448      | 1.0      | bicubic       | eva02_large_patch14_448.mim_in22k_ft_in1k       |
+| 4   | eva02_large_patch14_448 | 89.574 | 10.426   | 98.924 | 1.076    | 305.08      | 448      | 1.0      | bicubic       | eva02_large_patch14_448.mim_m38m_ft_in1k        |
 
 Let's add a "family" column that will allow us to group architectures into categories with similar characteristics:
 
@@ -829,132 +745,13 @@ Inference_Data = get_data('infer', 'infer_samples_per_sec')
 Inference_Data.head(5)
 ```
 
-<table>
-<thead>
-<tr class="header">
-<th><p></p></th>
-<th><p>model</p></th>
-<th><p>infer_samples_per_sec</p></th>
-<th><p>infer_step_time</p></th>
-<th><p>infer_batch_size</p></th>
-<th><p>infer_img_size</p></th>
-<th><p>param_count_x</p></th>
-<th><p>top1</p></th>
-<th><p>top1_err</p></th>
-<th><p>top5</p></th>
-<th><p>top5_err</p></th>
-<th><p>param_count_y</p></th>
-<th><p>img_size</p></th>
-<th><p>crop_pct</p></th>
-<th><p>interpolation</p></th>
-<th><p>model_org</p></th>
-<th><p>secs</p></th>
-<th><p>family</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p>12</p></td>
-<td><p>levit_128s</p></td>
-<td><p>21485.80</p></td>
-<td><p>47.648</p></td>
-<td><p>1024</p></td>
-<td><p>224</p></td>
-<td><p>7.78</p></td>
-<td><p>76.526</p></td>
-<td><p>23.474</p></td>
-<td><p>92.872</p></td>
-<td><p>7.128</p></td>
-<td><p>7.78</p></td>
-<td><p>224</p></td>
-<td><p>0.900</p></td>
-<td><p>bicubic</p></td>
-<td><p>levit_128s.fb_dist_in1k</p></td>
-<td><p>0.000047</p></td>
-<td><p>levit</p></td>
-</tr>
-<tr class="even">
-<td><p>13</p></td>
-<td><p>regnetx_002</p></td>
-<td><p>17821.98</p></td>
-<td><p>57.446</p></td>
-<td><p>1024</p></td>
-<td><p>224</p></td>
-<td><p>2.68</p></td>
-<td><p>68.752</p></td>
-<td><p>31.248</p></td>
-<td><p>88.542</p></td>
-<td><p>11.458</p></td>
-<td><p>2.68</p></td>
-<td><p>224</p></td>
-<td><p>0.875</p></td>
-<td><p>bicubic</p></td>
-<td><p>regnetx_002.pycls_in1k</p></td>
-<td><p>0.000056</p></td>
-<td><p>regnetx</p></td>
-</tr>
-<tr class="odd">
-<td><p>15</p></td>
-<td><p>regnety_002</p></td>
-<td><p>16673.08</p></td>
-<td><p>61.405</p></td>
-<td><p>1024</p></td>
-<td><p>224</p></td>
-<td><p>3.16</p></td>
-<td><p>70.280</p></td>
-<td><p>29.720</p></td>
-<td><p>89.530</p></td>
-<td><p>10.470</p></td>
-<td><p>3.16</p></td>
-<td><p>224</p></td>
-<td><p>0.875</p></td>
-<td><p>bicubic</p></td>
-<td><p>regnety_002.pycls_in1k</p></td>
-<td><p>0.000060</p></td>
-<td><p>regnety</p></td>
-</tr>
-<tr class="even">
-<td><p>17</p></td>
-<td><p>levit_128</p></td>
-<td><p>14657.83</p></td>
-<td><p>69.849</p></td>
-<td><p>1024</p></td>
-<td><p>224</p></td>
-<td><p>9.21</p></td>
-<td><p>78.490</p></td>
-<td><p>21.510</p></td>
-<td><p>94.012</p></td>
-<td><p>5.988</p></td>
-<td><p>9.21</p></td>
-<td><p>224</p></td>
-<td><p>0.900</p></td>
-<td><p>bicubic</p></td>
-<td><p>levit_128.fb_dist_in1k</p></td>
-<td><p>0.000068</p></td>
-<td><p>levit</p></td>
-</tr>
-<tr class="odd">
-<td><p>18</p></td>
-<td><p>regnetx_004</p></td>
-<td><p>14440.03</p></td>
-<td><p>70.903</p></td>
-<td><p>1024</p></td>
-<td><p>224</p></td>
-<td><p>5.16</p></td>
-<td><p>72.402</p></td>
-<td><p>27.598</p></td>
-<td><p>90.826</p></td>
-<td><p>9.174</p></td>
-<td><p>5.16</p></td>
-<td><p>224</p></td>
-<td><p>0.875</p></td>
-<td><p>bicubic</p></td>
-<td><p>regnetx_004.pycls_in1k</p></td>
-<td><p>0.000069</p></td>
-<td><p>regnetx</p></td>
-</tr>
-</tbody>
-</table>
+|     | model       | infer_samples_per_sec | infer_step_time | infer_batch_size | infer_img_size | param_count_x | top1   | top1_err | top5   | top5_err | param_count_y | img_size | crop_pct | interpolation | model_org               | secs     | family  |
+|-----|-------------|-----------------------|-----------------|------------------|----------------|---------------|--------|----------|--------|----------|---------------|----------|----------|---------------|-------------------------|----------|---------|
+| 12  | levit_128s  | 21485.80              | 47.648          | 1024             | 224            | 7.78          | 76.526 | 23.474   | 92.872 | 7.128    | 7.78          | 224      | 0.900    | bicubic       | levit_128s.fb_dist_in1k | 0.000047 | levit   |
+| 13  | regnetx_002 | 17821.98              | 57.446          | 1024             | 224            | 2.68          | 68.752 | 31.248   | 88.542 | 11.458   | 2.68          | 224      | 0.875    | bicubic       | regnetx_002.pycls_in1k  | 0.000056 | regnetx |
+| 15  | regnety_002 | 16673.08              | 61.405          | 1024             | 224            | 3.16          | 70.280 | 29.720   | 89.530 | 10.470   | 3.16          | 224      | 0.875    | bicubic       | regnety_002.pycls_in1k  | 0.000060 | regnety |
+| 17  | levit_128   | 14657.83              | 69.849          | 1024             | 224            | 9.21          | 78.490 | 21.510   | 94.012 | 5.988    | 9.21          | 224      | 0.900    | bicubic       | levit_128.fb_dist_in1k  | 0.000068 | levit   |
+| 18  | regnetx_004 | 14440.03              | 70.903          | 1024             | 224            | 5.16          | 72.402 | 27.598   | 90.826 | 9.174    | 5.16          | 224      | 0.875    | bicubic       | regnetx_004.pycls_in1k  | 0.000069 | regnetx |
 
 ### 2.2 : Plot of all the architectures.
 
@@ -977,7 +774,6 @@ w,h = 1000,800
 def show_all(Inference_Data, title, size):
     return px.scatter(Inference_Data, width=w, height=h, size=Inference_Data[size]**2, title=title,
         x='secs',  y='top1', log_x=True, color='family', hover_name='model_org', hover_data=[size])
-
 ```
 
 ``` python
@@ -1069,11 +865,9 @@ learn_conv.fine_tune(5)
     }
 </style>
 ```
-+-------+------------+------------+------------+-------+
 | epoch | train_loss | valid_loss | error_rate | time  |
-+=======+============+============+============+=======+
+|-------|------------|------------|------------|-------|
 | 0     | 1.130588   | 0.183650   | 0.045175   | 00:17 |
-+-------+------------+------------+------------+-------+
 
 ```         
 /usr/lib/python3.10/multiprocessing/popen_fork.py:66: RuntimeWarning: os.fork() was called. os.fork() is incompatible with multithreaded code, and JAX is multithreaded, so this will likely lead to a deadlock.
@@ -1099,19 +893,13 @@ learn_conv.fine_tune(5)
     }
 </style>
 ```
-+-------+------------+------------+------------+-------+
 | epoch | train_loss | valid_loss | error_rate | time  |
-+=======+============+============+============+=======+
+|-------|------------|------------|------------|-------|
 | 0     | 0.306945   | 0.164550   | 0.047228   | 00:20 |
-+-------+------------+------------+------------+-------+
 | 1     | 0.253462   | 0.118687   | 0.026694   | 00:11 |
-+-------+------------+------------+------------+-------+
 | 2     | 0.207020   | 0.103058   | 0.024641   | 00:11 |
-+-------+------------+------------+------------+-------+
 | 3     | 0.175618   | 0.094374   | 0.020534   | 00:11 |
-+-------+------------+------------+------------+-------+
 | 4     | 0.151438   | 0.092010   | 0.020534   | 00:13 |
-+-------+------------+------------+------------+-------+
 
 Compared to the `resnet34` model, which had an error rate of 32%, the `convnext_base` model demonstrates a significant improvement with an error rate of just 21%
 

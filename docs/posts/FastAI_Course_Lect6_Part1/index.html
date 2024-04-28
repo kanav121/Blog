@@ -1,0 +1,2045 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Kanav Sharma">
+<meta name="dcterms.date" content="2024-04-28">
+
+<title>Blog - FastAI Course Lecture 6 Part 1 Notes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/kanav608" rel="" target=""><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/kanav-sharma-896b1021b/" rel="" target=""><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">FastAI Course Lecture 6 Part 1 Notes</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Computer Vision</div>
+                <div class="quarto-category">FastAI</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Kanav Sharma </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 28, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#computer-vision-models-understanding" id="toc-computer-vision-models-understanding" class="nav-link active" data-scroll-target="#computer-vision-models-understanding">Computer Vision Model(s) Understanding</a>
+  <ul class="collapse">
+  <li><a href="#install-fastai" id="toc-install-fastai" class="nav-link" data-scroll-target="#install-fastai">Install FastAI</a></li>
+  <li><a href="#get-data-from-fastai-of-food" id="toc-get-data-from-fastai-of-food" class="nav-link" data-scroll-target="#get-data-from-fastai-of-food">Get data from FastAI of Food</a></li>
+  </ul></li>
+  <li><a href="#create-test-dataset" id="toc-create-test-dataset" class="nav-link" data-scroll-target="#create-test-dataset">1. Create Test dataset</a>
+  <ul class="collapse">
+  <li><a href="#lets-view-random-5-food-items" id="toc-lets-view-random-5-food-items" class="nav-link" data-scroll-target="#lets-view-random-5-food-items">Let’s View Random 5 Food Items</a></li>
+  <li><a href="#remove-images-that-are-corrupt" id="toc-remove-images-that-are-corrupt" class="nav-link" data-scroll-target="#remove-images-that-are-corrupt">Remove images that are corrupt</a></li>
+  <li><a href="#standardise-the-size-of-images" id="toc-standardise-the-size-of-images" class="nav-link" data-scroll-target="#standardise-the-size-of-images">Standardise the size of Images</a></li>
+  </ul></li>
+  <li><a href="#data-loader" id="toc-data-loader" class="nav-link" data-scroll-target="#data-loader">2. Data Loader</a></li>
+  <li><a href="#model-building" id="toc-model-building" class="nav-link" data-scroll-target="#model-building">3. Model Building</a>
+  <ul class="collapse">
+  <li><a href="#with-floating-point" id="toc-with-floating-point" class="nav-link" data-scroll-target="#with-floating-point">With floating point</a></li>
+  <li><a href="#without-floating-point" id="toc-without-floating-point" class="nav-link" data-scroll-target="#without-floating-point">Without floating point</a></li>
+  <li><a href="#learning-rate" id="toc-learning-rate" class="nav-link" data-scroll-target="#learning-rate">Learning Rate</a></li>
+  <li><a href="#final-model" id="toc-final-model" class="nav-link" data-scroll-target="#final-model">Final Model</a></li>
+  <li><a href="#lets-export-the-model" id="toc-lets-export-the-model" class="nav-link" data-scroll-target="#lets-export-the-model">Let’s Export the model</a></li>
+  </ul></li>
+  <li><a href="#run-of-test-data" id="toc-run-of-test-data" class="nav-link" data-scroll-target="#run-of-test-data">4. Run of Test Data</a>
+  <ul class="collapse">
+  <li><a href="#read-test-data" id="toc-read-test-data" class="nav-link" data-scroll-target="#read-test-data">Read test data</a></li>
+  <li><a href="#map-the-number-with-name" id="toc-map-the-number-with-name" class="nav-link" data-scroll-target="#map-the-number-with-name">Map the number with name</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="computer-vision-models-understanding" class="level2">
+<h2 class="anchored" data-anchor-id="computer-vision-models-understanding">Computer Vision Model(s) Understanding</h2>
+<p>In <a href="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect3/">previous lecture</a> we referred <a href="https://www.kaggle.com/code/jhoward/which-image-models-are-best">Which Image models are best?</a> to understand Computer vision models in general which among them works best.</p>
+<p>But this time we will be deep diving into these models : <a href="https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning">Best Vision Model for fine-tuning</a>. We have divided our testing in 2 parts :</p>
+<ol type="1">
+<li>Existing Images : Our models such as ConvNext and ResNet, have been trained on a set of 22,000 images from the <strong>ImageNet</strong> dataset. It is highly probable that our model has already been exposed to commonly encountered categories such as cats, cars, musical instruments, and more during its training.<br>
+</li>
+<li>New Images : Here we are using Images that most probabily are not in <strong>ImagNet</strong> dataset, like Satellite Images, Medical Images etc.</li>
+</ol>
+<p>Our key findings :</p>
+<ul>
+<li><p>In Case 1, both <strong>convnext_tiny_in22k</strong> and <strong>convnext_tiny</strong> emerged as go-to models, selected based on their impressive accuracy and efficient training times.</p></li>
+<li><p>In Case 2, models like ViT (Vision Transformer) and Swin demonstrated excellent performance. Their transformer architecture proved beneficial in understanding patterns from the data they are not trained on previously. namely - <strong>vit_small_patch32_224, vit_small_patch16_224, swin_base_patch4_window7_224_in22k</strong>.</p></li>
+<li><p>Tip - ViT model work only on 224 pixel image so to train our image data on ViT images should be of 224*224 pixels</p></li>
+</ul>
+<section id="install-fastai" class="level3">
+<h3 class="anchored" data-anchor-id="install-fastai">Install FastAI</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#hide</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>Uqq fastbook</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install timm</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> fastbook</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>fastbook.setup_book()</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> timm</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#hide</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastbook <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.vision.widgets <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.vision.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>Requirement already satisfied: timm in /opt/conda/lib/python3.10/site-packages (0.9.16)
+Requirement already satisfied: torch in /opt/conda/lib/python3.10/site-packages (from timm) (2.1.2)
+Requirement already satisfied: torchvision in /opt/conda/lib/python3.10/site-packages (from timm) (0.16.2)
+Requirement already satisfied: pyyaml in /opt/conda/lib/python3.10/site-packages (from timm) (6.0.1)
+Requirement already satisfied: huggingface_hub in /opt/conda/lib/python3.10/site-packages (from timm) (0.20.3)
+Requirement already satisfied: safetensors in /opt/conda/lib/python3.10/site-packages (from timm) (0.4.2)
+Requirement already satisfied: filelock in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (3.13.1)
+Requirement already satisfied: fsspec&gt;=2023.5.0 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (2024.2.0)
+Requirement already satisfied: requests in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (2.31.0)
+Requirement already satisfied: tqdm&gt;=4.42.1 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (4.66.1)
+Requirement already satisfied: typing-extensions&gt;=3.7.4.3 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (4.9.0)
+Requirement already satisfied: packaging&gt;=20.9 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (21.3)
+Requirement already satisfied: sympy in /opt/conda/lib/python3.10/site-packages (from torch-&gt;timm) (1.12)
+Requirement already satisfied: networkx in /opt/conda/lib/python3.10/site-packages (from torch-&gt;timm) (3.2.1)
+Requirement already satisfied: jinja2 in /opt/conda/lib/python3.10/site-packages (from torch-&gt;timm) (3.1.2)
+Requirement already satisfied: numpy in /opt/conda/lib/python3.10/site-packages (from torchvision-&gt;timm) (1.26.4)
+Requirement already satisfied: pillow!=8.3.*,&gt;=5.3.0 in /opt/conda/lib/python3.10/site-packages (from torchvision-&gt;timm) (9.5.0)
+Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /opt/conda/lib/python3.10/site-packages (from packaging&gt;=20.9-&gt;huggingface_hub-&gt;timm) (3.1.1)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /opt/conda/lib/python3.10/site-packages (from jinja2-&gt;torch-&gt;timm) (2.1.3)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (3.6)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (1.26.18)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (2024.2.2)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/lib/python3.10/site-packages (from sympy-&gt;torch-&gt;timm) (1.3.0)</code></pre>
+</section>
+<section id="get-data-from-fastai-of-food" class="level3">
+<h3 class="anchored" data-anchor-id="get-data-from-fastai-of-food">Get data from FastAI of Food</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> Path(<span class="st">'/content'</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>untar_data(URLs.FOOD, data<span class="op">=</span>path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div>
+<progress value="5686607872" class="" max="5686607260" style="width:300px; height:20px; vertical-align: middle;">
+</progress>
+<p>100.00% [5686607872/5686607260 01:54&lt;00:00]</p>
+</div>
+<pre><code>Path('/content/food-101')</code></pre>
+</section>
+</section>
+<section id="create-test-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="create-test-dataset">1. Create Test dataset</h2>
+<p>We do not have test dataset let’s randomly create a <code>test</code> folder which will have 15% of the images from train folder &amp; we will not train our model on these images.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> shutil</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> move_images_to_test(source_folder, test_folder, percentage<span class="op">=</span><span class="fl">0.1</span>):</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create the test folder if it doesn't exist</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    os.makedirs(test_folder, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Iterate through each subfolder in the source folder</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> subfolder <span class="kw">in</span> os.listdir(source_folder):</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        subfolder_path <span class="op">=</span> os.path.join(source_folder, subfolder)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Check if it's a directory</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.isdir(subfolder_path):</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Get a list of all image files in the subfolder</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>            image_files <span class="op">=</span> [f <span class="cf">for</span> f <span class="kw">in</span> os.listdir(subfolder_path) <span class="cf">if</span> f.endswith(<span class="st">'.jpg'</span>)]</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Calculate the number of images to move</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>            num_images_to_move <span class="op">=</span> <span class="bu">int</span>(<span class="bu">len</span>(image_files) <span class="op">*</span> percentage)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Randomly select images to move</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>            images_to_move <span class="op">=</span> random.sample(image_files, num_images_to_move)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Move selected images to the test folder</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> image <span class="kw">in</span> images_to_move:</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>                source_path <span class="op">=</span> os.path.join(subfolder_path, image)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>                dest_path <span class="op">=</span> os.path.join(test_folder, image)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>                shutil.move(source_path, dest_path)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    train_path <span class="op">=</span> Path(<span class="st">'/content/food-101/images'</span>)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    test_path <span class="op">=</span> Path(<span class="st">'/content/food-101/test'</span>)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    move_images_to_test(train_path, test_path, percentage<span class="op">=</span><span class="fl">0.15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df_train_json <span class="op">=</span> pd.read_json(<span class="st">'/content/food-101/train.json'</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df_train_json.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>churros</th>
+<th>hot_and_sour_soup</th>
+<th>samosa</th>
+<th>sashimi</th>
+<th>pork_chop</th>
+<th>spring_rolls</th>
+<th>panna_cotta</th>
+<th>beef_tartare</th>
+<th>greek_salad</th>
+<th>foie_gras</th>
+<th>tacos</th>
+<th>pad_thai</th>
+<th>poutine</th>
+<th>ramen</th>
+<th>pulled_pork_sandwich</th>
+<th>bibimbap</th>
+<th>beignets</th>
+<th>apple_pie</th>
+<th>crab_cakes</th>
+<th>risotto</th>
+<th>paella</th>
+<th>steak</th>
+<th>baby_back_ribs</th>
+<th>miso_soup</th>
+<th>frozen_yogurt</th>
+<th>club_sandwich</th>
+<th>carrot_cake</th>
+<th>falafel</th>
+<th>bread_pudding</th>
+<th>chicken_wings</th>
+<th>gnocchi</th>
+<th>caprese_salad</th>
+<th>creme_brulee</th>
+<th>escargots</th>
+<th>chocolate_cake</th>
+<th>tiramisu</th>
+<th>spaghetti_bolognese</th>
+<th>mussels</th>
+<th>scallops</th>
+<th>baklava</th>
+<th>edamame</th>
+<th>macaroni_and_cheese</th>
+<th>pancakes</th>
+<th>garlic_bread</th>
+<th>beet_salad</th>
+<th>onion_rings</th>
+<th>red_velvet_cake</th>
+<th>grilled_salmon</th>
+<th>chicken_curry</th>
+<th>deviled_eggs</th>
+<th>caesar_salad</th>
+<th>hummus</th>
+<th>fish_and_chips</th>
+<th>lasagna</th>
+<th>peking_duck</th>
+<th>guacamole</th>
+<th>strawberry_shortcake</th>
+<th>clam_chowder</th>
+<th>croque_madame</th>
+<th>french_onion_soup</th>
+<th>beef_carpaccio</th>
+<th>fried_rice</th>
+<th>donuts</th>
+<th>gyoza</th>
+<th>ravioli</th>
+<th>fried_calamari</th>
+<th>spaghetti_carbonara</th>
+<th>french_toast</th>
+<th>lobster_bisque</th>
+<th>ceviche</th>
+<th>bruschetta</th>
+<th>french_fries</th>
+<th>shrimp_and_grits</th>
+<th>filet_mignon</th>
+<th>hamburger</th>
+<th>dumplings</th>
+<th>tuna_tartare</th>
+<th>sushi</th>
+<th>cheese_plate</th>
+<th>eggs_benedict</th>
+<th>cup_cakes</th>
+<th>takoyaki</th>
+<th>chocolate_mousse</th>
+<th>breakfast_burrito</th>
+<th>hot_dog</th>
+<th>macarons</th>
+<th>waffles</th>
+<th>seaweed_salad</th>
+<th>cannoli</th>
+<th>huevos_rancheros</th>
+<th>pizza</th>
+<th>chicken_quesadilla</th>
+<th>pho</th>
+<th>prime_rib</th>
+<th>cheesecake</th>
+<th>ice_cream</th>
+<th>omelette</th>
+<th>grilled_cheese_sandwich</th>
+<th>lobster_roll_sandwich</th>
+<th>nachos</th>
+<th>oysters</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>churros/1004234</td>
+<td>hot_and_sour_soup/1002782</td>
+<td>samosa/1008131</td>
+<td>sashimi/1001239</td>
+<td>pork_chop/1000802</td>
+<td>spring_rolls/1002160</td>
+<td>panna_cotta/1001332</td>
+<td>beef_tartare/1000431</td>
+<td>greek_salad/1007149</td>
+<td>foie_gras/1004944</td>
+<td>tacos/1002217</td>
+<td>pad_thai/1004763</td>
+<td>poutine/1005364</td>
+<td>ramen/1002305</td>
+<td>pulled_pork_sandwich/1004064</td>
+<td>bibimbap/1002297</td>
+<td>beignets/1000911</td>
+<td>apple_pie/1005649</td>
+<td>crab_cakes/100038</td>
+<td>risotto/1004412</td>
+<td>paella/1000388</td>
+<td>steak/1000205</td>
+<td>baby_back_ribs/1005293</td>
+<td>miso_soup/1032814</td>
+<td>frozen_yogurt/1000735</td>
+<td>club_sandwich/1017761</td>
+<td>carrot_cake/1000447</td>
+<td>falafel/1003181</td>
+<td>bread_pudding/1004499</td>
+<td>chicken_wings/1003533</td>
+<td>gnocchi/100409</td>
+<td>caprese_salad/1001946</td>
+<td>creme_brulee/1000711</td>
+<td>escargots/1011707</td>
+<td>chocolate_cake/1001084</td>
+<td>tiramisu/1002946</td>
+<td>spaghetti_bolognese/100127</td>
+<td>mussels/1015628</td>
+<td>scallops/1002727</td>
+<td>baklava/1006121</td>
+<td>edamame/1000653</td>
+<td>macaroni_and_cheese/1004059</td>
+<td>pancakes/1009131</td>
+<td>garlic_bread/100478</td>
+<td>beet_salad/1003501</td>
+<td>onion_rings/1017468</td>
+<td>red_velvet_cake/1012312</td>
+<td>grilled_salmon/1002334</td>
+<td>chicken_curry/1004867</td>
+<td>deviled_eggs/1008777</td>
+<td>caesar_salad/1000016</td>
+<td>hummus/1000314</td>
+<td>fish_and_chips/1001881</td>
+<td>lasagna/1004570</td>
+<td>peking_duck/10055</td>
+<td>guacamole/1005906</td>
+<td>strawberry_shortcake/1009217</td>
+<td>clam_chowder/1000678</td>
+<td>croque_madame/1009085</td>
+<td>french_onion_soup/1006274</td>
+<td>beef_carpaccio/1011469</td>
+<td>fried_rice/1004221</td>
+<td>donuts/100076</td>
+<td>gyoza/1003912</td>
+<td>ravioli/1008464</td>
+<td>fried_calamari/100411</td>
+<td>spaghetti_carbonara/1005482</td>
+<td>french_toast/100223</td>
+<td>lobster_bisque/1022294</td>
+<td>ceviche/1006106</td>
+<td>bruschetta/1003796</td>
+<td>french_fries/100148</td>
+<td>shrimp_and_grits/1002860</td>
+<td>filet_mignon/1001477</td>
+<td>hamburger/100057</td>
+<td>dumplings/1000786</td>
+<td>tuna_tartare/1010528</td>
+<td>sushi/100332</td>
+<td>cheese_plate/100370</td>
+<td>eggs_benedict/1000104</td>
+<td>cup_cakes/1005580</td>
+<td>takoyaki/1002167</td>
+<td>chocolate_mousse/1013482</td>
+<td>breakfast_burrito/1000351</td>
+<td>hot_dog/1000288</td>
+<td>macarons/1001193</td>
+<td>waffles/100242</td>
+<td>seaweed_salad/1007167</td>
+<td>cannoli/1007970</td>
+<td>huevos_rancheros/100439</td>
+<td>pizza/1008104</td>
+<td>chicken_quesadilla/1004279</td>
+<td>pho/1005681</td>
+<td>prime_rib/1001089</td>
+<td>cheesecake/1001446</td>
+<td>ice_cream/1012277</td>
+<td>omelette/1001719</td>
+<td>grilled_cheese_sandwich/1003153</td>
+<td>lobster_roll_sandwich/100009</td>
+<td>nachos/100284</td>
+<td>oysters/1008124</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>churros/1013460</td>
+<td>hot_and_sour_soup/1003688</td>
+<td>samosa/1011601</td>
+<td>sashimi/1001363</td>
+<td>pork_chop/1006233</td>
+<td>spring_rolls/1003056</td>
+<td>panna_cotta/1003460</td>
+<td>beef_tartare/1005746</td>
+<td>greek_salad/1009138</td>
+<td>foie_gras/1008577</td>
+<td>tacos/1005454</td>
+<td>pad_thai/1009595</td>
+<td>poutine/1019904</td>
+<td>ramen/1002843</td>
+<td>pulled_pork_sandwich/1005662</td>
+<td>bibimbap/1006709</td>
+<td>beignets/1002569</td>
+<td>apple_pie/1014775</td>
+<td>crab_cakes/1003375</td>
+<td>risotto/1009354</td>
+<td>paella/1000412</td>
+<td>steak/100135</td>
+<td>baby_back_ribs/1007102</td>
+<td>miso_soup/1038398</td>
+<td>frozen_yogurt/100093</td>
+<td>club_sandwich/1020435</td>
+<td>carrot_cake/1003032</td>
+<td>falafel/1008896</td>
+<td>bread_pudding/1004540</td>
+<td>chicken_wings/1008504</td>
+<td>gnocchi/100680</td>
+<td>caprese_salad/1024778</td>
+<td>creme_brulee/1004352</td>
+<td>escargots/1014257</td>
+<td>chocolate_cake/1007122</td>
+<td>tiramisu/100504</td>
+<td>spaghetti_bolognese/1004943</td>
+<td>mussels/102234</td>
+<td>scallops/1007089</td>
+<td>baklava/1014880</td>
+<td>edamame/1006400</td>
+<td>macaroni_and_cheese/1012508</td>
+<td>pancakes/1010075</td>
+<td>garlic_bread/1012618</td>
+<td>beet_salad/1005864</td>
+<td>onion_rings/1019009</td>
+<td>red_velvet_cake/1027041</td>
+<td>grilled_salmon/1018852</td>
+<td>chicken_curry/1014843</td>
+<td>deviled_eggs/1010482</td>
+<td>caesar_salad/1000435</td>
+<td>hummus/1000605</td>
+<td>fish_and_chips/1003726</td>
+<td>lasagna/1005119</td>
+<td>peking_duck/101235</td>
+<td>guacamole/1014777</td>
+<td>strawberry_shortcake/1013981</td>
+<td>clam_chowder/100792</td>
+<td>croque_madame/1009303</td>
+<td>french_onion_soup/1008414</td>
+<td>beef_carpaccio/1013939</td>
+<td>fried_rice/1008935</td>
+<td>donuts/100576</td>
+<td>gyoza/1020354</td>
+<td>ravioli/1010610</td>
+<td>fried_calamari/10044</td>
+<td>spaghetti_carbonara/1007514</td>
+<td>french_toast/100344</td>
+<td>lobster_bisque/102237</td>
+<td>ceviche/1013481</td>
+<td>bruschetta/1031947</td>
+<td>french_fries/1008945</td>
+<td>shrimp_and_grits/1003400</td>
+<td>filet_mignon/1002767</td>
+<td>hamburger/100517</td>
+<td>dumplings/100251</td>
+<td>tuna_tartare/1010786</td>
+<td>sushi/1005352</td>
+<td>cheese_plate/1003804</td>
+<td>eggs_benedict/1002786</td>
+<td>cup_cakes/1008351</td>
+<td>takoyaki/1002237</td>
+<td>chocolate_mousse/1018802</td>
+<td>breakfast_burrito/1000669</td>
+<td>hot_dog/1011661</td>
+<td>macarons/1001527</td>
+<td>waffles/100353</td>
+<td>seaweed_salad/1014295</td>
+<td>cannoli/1008331</td>
+<td>huevos_rancheros/100486</td>
+<td>pizza/1008144</td>
+<td>chicken_quesadilla/1009225</td>
+<td>pho/1011443</td>
+<td>prime_rib/1006320</td>
+<td>cheesecake/1004515</td>
+<td>ice_cream/101858</td>
+<td>omelette/1007843</td>
+<td>grilled_cheese_sandwich/10060</td>
+<td>lobster_roll_sandwich/1001432</td>
+<td>nachos/1009513</td>
+<td>oysters/1016229</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>churros/1016791</td>
+<td>hot_and_sour_soup/1008185</td>
+<td>samosa/101365</td>
+<td>sashimi/1002556</td>
+<td>pork_chop/1019530</td>
+<td>spring_rolls/1003507</td>
+<td>panna_cotta/1011097</td>
+<td>beef_tartare/1009672</td>
+<td>greek_salad/1010520</td>
+<td>foie_gras/1011711</td>
+<td>tacos/1007867</td>
+<td>pad_thai/1011059</td>
+<td>poutine/1028984</td>
+<td>ramen/1004562</td>
+<td>pulled_pork_sandwich/1008770</td>
+<td>bibimbap/1009730</td>
+<td>beignets/1005233</td>
+<td>apple_pie/1026328</td>
+<td>crab_cakes/1006485</td>
+<td>risotto/1014631</td>
+<td>paella/1004897</td>
+<td>steak/101312</td>
+<td>baby_back_ribs/1007272</td>
+<td>miso_soup/1043862</td>
+<td>frozen_yogurt/1014166</td>
+<td>club_sandwich/102978</td>
+<td>carrot_cake/1011021</td>
+<td>falafel/1016116</td>
+<td>bread_pudding/1006034</td>
+<td>chicken_wings/1009927</td>
+<td>gnocchi/1011446</td>
+<td>caprese_salad/1030908</td>
+<td>creme_brulee/1008678</td>
+<td>escargots/1017301</td>
+<td>chocolate_cake/1007412</td>
+<td>tiramisu/1015080</td>
+<td>spaghetti_bolognese/1005431</td>
+<td>mussels/102600</td>
+<td>scallops/101158</td>
+<td>baklava/1021344</td>
+<td>edamame/1018242</td>
+<td>macaroni_and_cheese/101810</td>
+<td>pancakes/101450</td>
+<td>garlic_bread/1030410</td>
+<td>beet_salad/1006123</td>
+<td>onion_rings/1020126</td>
+<td>red_velvet_cake/1041227</td>
+<td>grilled_salmon/1019062</td>
+<td>chicken_curry/1022681</td>
+<td>deviled_eggs/101298</td>
+<td>caesar_salad/1011441</td>
+<td>hummus/1010716</td>
+<td>fish_and_chips/100968</td>
+<td>lasagna/1015789</td>
+<td>peking_duck/1015952</td>
+<td>guacamole/1016594</td>
+<td>strawberry_shortcake/1017466</td>
+<td>clam_chowder/1019961</td>
+<td>croque_madame/1013932</td>
+<td>french_onion_soup/1012354</td>
+<td>beef_carpaccio/1021977</td>
+<td>fried_rice/1015700</td>
+<td>donuts/100786</td>
+<td>gyoza/1024150</td>
+<td>ravioli/1012118</td>
+<td>fried_calamari/100736</td>
+<td>spaghetti_carbonara/1012273</td>
+<td>french_toast/1006538</td>
+<td>lobster_bisque/1030246</td>
+<td>ceviche/1014769</td>
+<td>bruschetta/1033851</td>
+<td>french_fries/1009455</td>
+<td>shrimp_and_grits/100346</td>
+<td>filet_mignon/100639</td>
+<td>hamburger/100719</td>
+<td>dumplings/100262</td>
+<td>tuna_tartare/101595</td>
+<td>sushi/1012499</td>
+<td>cheese_plate/10057</td>
+<td>eggs_benedict/1008725</td>
+<td>cup_cakes/1009501</td>
+<td>takoyaki/1003289</td>
+<td>chocolate_mousse/1026492</td>
+<td>breakfast_burrito/1002929</td>
+<td>hot_dog/1013916</td>
+<td>macarons/1003207</td>
+<td>waffles/1005295</td>
+<td>seaweed_salad/101671</td>
+<td>cannoli/1015289</td>
+<td>huevos_rancheros/1005451</td>
+<td>pizza/1008844</td>
+<td>chicken_quesadilla/1011413</td>
+<td>pho/1012513</td>
+<td>prime_rib/100945</td>
+<td>cheesecake/1004807</td>
+<td>ice_cream/102595</td>
+<td>omelette/1015300</td>
+<td>grilled_cheese_sandwich/1007544</td>
+<td>lobster_roll_sandwich/100646</td>
+<td>nachos/1011394</td>
+<td>oysters/1023832</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>churros/102100</td>
+<td>hot_and_sour_soup/1008701</td>
+<td>samosa/1015943</td>
+<td>sashimi/1007253</td>
+<td>pork_chop/1019569</td>
+<td>spring_rolls/1008736</td>
+<td>panna_cotta/1013000</td>
+<td>beef_tartare/1012128</td>
+<td>greek_salad/1011665</td>
+<td>foie_gras/1017233</td>
+<td>tacos/1015285</td>
+<td>pad_thai/1011238</td>
+<td>poutine/102911</td>
+<td>ramen/101297</td>
+<td>pulled_pork_sandwich/1037387</td>
+<td>bibimbap/1011217</td>
+<td>beignets/1011780</td>
+<td>apple_pie/1028787</td>
+<td>crab_cakes/1013559</td>
+<td>risotto/1017141</td>
+<td>paella/1018124</td>
+<td>steak/1021458</td>
+<td>baby_back_ribs/1008749</td>
+<td>miso_soup/1046478</td>
+<td>frozen_yogurt/1017177</td>
+<td>club_sandwich/102996</td>
+<td>carrot_cake/1024932</td>
+<td>falafel/102463</td>
+<td>bread_pudding/100939</td>
+<td>chicken_wings/101104</td>
+<td>gnocchi/1029180</td>
+<td>caprese_salad/103421</td>
+<td>creme_brulee/1010919</td>
+<td>escargots/1019707</td>
+<td>chocolate_cake/1009391</td>
+<td>tiramisu/1023537</td>
+<td>spaghetti_bolognese/1016511</td>
+<td>mussels/1026090</td>
+<td>scallops/1012281</td>
+<td>baklava/1024334</td>
+<td>edamame/102048</td>
+<td>macaroni_and_cheese/1018941</td>
+<td>pancakes/1014974</td>
+<td>garlic_bread/1031308</td>
+<td>beet_salad/1011225</td>
+<td>onion_rings/102531</td>
+<td>red_velvet_cake/1043495</td>
+<td>grilled_salmon/1026062</td>
+<td>chicken_curry/1027623</td>
+<td>deviled_eggs/1025242</td>
+<td>caesar_salad/1013504</td>
+<td>hummus/1014424</td>
+<td>fish_and_chips/1010511</td>
+<td>lasagna/1019253</td>
+<td>peking_duck/101675</td>
+<td>guacamole/1017481</td>
+<td>strawberry_shortcake/1022070</td>
+<td>clam_chowder/1020283</td>
+<td>croque_madame/1015306</td>
+<td>french_onion_soup/1020156</td>
+<td>beef_carpaccio/102840</td>
+<td>fried_rice/1019981</td>
+<td>donuts/1008454</td>
+<td>gyoza/103201</td>
+<td>ravioli/1014283</td>
+<td>fried_calamari/1018068</td>
+<td>spaghetti_carbonara/1012528</td>
+<td>french_toast/1025962</td>
+<td>lobster_bisque/1030273</td>
+<td>ceviche/1015455</td>
+<td>bruschetta/1034274</td>
+<td>french_fries/1020588</td>
+<td>shrimp_and_grits/1006712</td>
+<td>filet_mignon/1007877</td>
+<td>hamburger/1007277</td>
+<td>dumplings/1002996</td>
+<td>tuna_tartare/1016519</td>
+<td>sushi/1013418</td>
+<td>cheese_plate/1008229</td>
+<td>eggs_benedict/1010197</td>
+<td>cup_cakes/1010744</td>
+<td>takoyaki/1012802</td>
+<td>chocolate_mousse/1027823</td>
+<td>breakfast_burrito/1006144</td>
+<td>hot_dog/101571</td>
+<td>macarons/1003224</td>
+<td>waffles/1011635</td>
+<td>seaweed_salad/1019344</td>
+<td>cannoli/1019714</td>
+<td>huevos_rancheros/1008025</td>
+<td>pizza/1008941</td>
+<td>chicken_quesadilla/1023828</td>
+<td>pho/1019401</td>
+<td>prime_rib/10120</td>
+<td>cheesecake/1017408</td>
+<td>ice_cream/1044117</td>
+<td>omelette/1029915</td>
+<td>grilled_cheese_sandwich/1013343</td>
+<td>lobster_roll_sandwich/100655</td>
+<td>nachos/1013641</td>
+<td>oysters/103236</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>churros/1025494</td>
+<td>hot_and_sour_soup/1008924</td>
+<td>samosa/1016296</td>
+<td>sashimi/1010510</td>
+<td>pork_chop/1025391</td>
+<td>spring_rolls/1012525</td>
+<td>panna_cotta/1020036</td>
+<td>beef_tartare/1027680</td>
+<td>greek_salad/1012989</td>
+<td>foie_gras/1023512</td>
+<td>tacos/1023154</td>
+<td>pad_thai/1013966</td>
+<td>poutine/1036670</td>
+<td>ramen/1014141</td>
+<td>pulled_pork_sandwich/1040750</td>
+<td>bibimbap/1014434</td>
+<td>beignets/1019643</td>
+<td>apple_pie/1043283</td>
+<td>crab_cakes/1026455</td>
+<td>risotto/1018227</td>
+<td>paella/1028277</td>
+<td>steak/1032846</td>
+<td>baby_back_ribs/1009028</td>
+<td>miso_soup/1050730</td>
+<td>frozen_yogurt/1017511</td>
+<td>club_sandwich/1040746</td>
+<td>carrot_cake/1038934</td>
+<td>falafel/1033721</td>
+<td>bread_pudding/1018769</td>
+<td>chicken_wings/1012615</td>
+<td>gnocchi/1034178</td>
+<td>caprese_salad/103452</td>
+<td>creme_brulee/1015138</td>
+<td>escargots/1020134</td>
+<td>chocolate_cake/1012239</td>
+<td>tiramisu/1026043</td>
+<td>spaghetti_bolognese/102916</td>
+<td>mussels/1032420</td>
+<td>scallops/1025170</td>
+<td>baklava/1031470</td>
+<td>edamame/1021273</td>
+<td>macaroni_and_cheese/1024001</td>
+<td>pancakes/101644</td>
+<td>garlic_bread/1038093</td>
+<td>beet_salad/1015901</td>
+<td>onion_rings/1037898</td>
+<td>red_velvet_cake/104733</td>
+<td>grilled_salmon/1053214</td>
+<td>chicken_curry/102896</td>
+<td>deviled_eggs/102827</td>
+<td>caesar_salad/1019118</td>
+<td>hummus/1014861</td>
+<td>fish_and_chips/1012859</td>
+<td>lasagna/1028961</td>
+<td>peking_duck/1019978</td>
+<td>guacamole/1023237</td>
+<td>strawberry_shortcake/1030449</td>
+<td>clam_chowder/1023442</td>
+<td>croque_madame/1016269</td>
+<td>french_onion_soup/1020179</td>
+<td>beef_carpaccio/1028573</td>
+<td>fried_rice/1021229</td>
+<td>donuts/101905</td>
+<td>gyoza/1036466</td>
+<td>ravioli/1019632</td>
+<td>fried_calamari/1021250</td>
+<td>spaghetti_carbonara/1014928</td>
+<td>french_toast/102612</td>
+<td>lobster_bisque/1033811</td>
+<td>ceviche/1027751</td>
+<td>bruschetta/1034665</td>
+<td>french_fries/1026314</td>
+<td>shrimp_and_grits/1011064</td>
+<td>filet_mignon/1015486</td>
+<td>hamburger/100930</td>
+<td>dumplings/100410</td>
+<td>tuna_tartare/1052688</td>
+<td>sushi/1018953</td>
+<td>cheese_plate/1008347</td>
+<td>eggs_benedict/1018581</td>
+<td>cup_cakes/1027241</td>
+<td>takoyaki/1016334</td>
+<td>chocolate_mousse/1034251</td>
+<td>breakfast_burrito/1010145</td>
+<td>hot_dog/1017226</td>
+<td>macarons/1004903</td>
+<td>waffles/1013333</td>
+<td>seaweed_salad/1019648</td>
+<td>cannoli/1021048</td>
+<td>huevos_rancheros/1014671</td>
+<td>pizza/1011404</td>
+<td>chicken_quesadilla/1024740</td>
+<td>pho/1021371</td>
+<td>prime_rib/1016126</td>
+<td>cheesecake/1021942</td>
+<td>ice_cream/104465</td>
+<td>omelette/1038109</td>
+<td>grilled_cheese_sandwich/1016030</td>
+<td>lobster_roll_sandwich/100702</td>
+<td>nachos/1014846</td>
+<td>oysters/1038150</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df_train_txt <span class="op">=</span> pd.read_csv(<span class="st">'/content/food-101/train.txt'</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df_train_txt.head(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th>apple_pie/1005649</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>apple_pie/1014775</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>apple_pie/1026328</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>apple_pie/1028787</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>apple_pie/1043283</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>apple_pie/1050519</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>apple_pie/1057749</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>apple_pie/1057810</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>apple_pie/1072416</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td>apple_pie/1074856</td>
+</tr>
+<tr class="even">
+<td>9</td>
+<td>apple_pie/1074942</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>We can see that .txt file is of no use</p>
+<section id="lets-view-random-5-food-items" class="level3">
+<h3 class="anchored" data-anchor-id="lets-view-random-5-food-items">Let’s View Random 5 Food Items</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># actual path to train image folder</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>train_path <span class="op">=</span> <span class="st">'/content/food-101/images'</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to get a list of all image paths in the specified folder</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_image_paths(folder):</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    image_paths <span class="op">=</span> []</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> root, dirs, files <span class="kw">in</span> os.walk(folder):</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="bu">file</span> <span class="kw">in</span> files:</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">file</span>.lower().endswith((<span class="st">'.png'</span>, <span class="st">'.jpg'</span>, <span class="st">'.jpeg'</span>, <span class="st">'.gif'</span>, <span class="st">'.bmp'</span>)):</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>                image_paths.append(os.path.join(root, <span class="bu">file</span>))</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> image_paths</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to randomly select and display 5 larger images</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_random_images(image_paths, num_images<span class="op">=</span><span class="dv">5</span>, display_size<span class="op">=</span>(<span class="dv">25</span>, <span class="dv">25</span>)):</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    selected_images <span class="op">=</span> random.sample(image_paths, <span class="bu">min</span>(num_images, <span class="bu">len</span>(image_paths)))</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, num_images, figsize<span class="op">=</span>display_size)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ax, image_path <span class="kw">in</span> <span class="bu">zip</span>(axes, selected_images):</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>        img <span class="op">=</span> Image.<span class="bu">open</span>(image_path)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>        img <span class="op">=</span> img.resize((display_size[<span class="dv">0</span>]<span class="op">*</span><span class="dv">50</span>, display_size[<span class="dv">1</span>]<span class="op">*</span><span class="dv">50</span>))  <span class="co"># Increase size</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        ax.imshow(img)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>        ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Get a list of all image paths in the specified folder</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>all_image_paths <span class="op">=</span> get_image_paths(train_path)</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Show 5 random larger images</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>show_random_images(all_image_paths, num_images<span class="op">=</span><span class="dv">5</span>, display_size<span class="op">=</span>(<span class="dv">25</span>, <span class="dv">25</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="lecture-6-road-to-the-top-part-1-self_files/lecture-6-road-to-the-top-part-1-self_12_0.png" class="img-fluid"></p>
+</section>
+<section id="remove-images-that-are-corrupt" class="level3">
+<h3 class="anchored" data-anchor-id="remove-images-that-are-corrupt">Remove images that are corrupt</h3>
+<p><code>verify_images()</code> will return path of images which are corrupt and using <code>unlink</code> we can remove these files.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fns_train <span class="op">=</span> get_image_files(train_path)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>fns_test <span class="op">=</span> get_image_files(test_path)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>total_train_imagelength <span class="op">=</span> <span class="bu">len</span>(fns_train)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>total_test_imagelength <span class="op">=</span> <span class="bu">len</span>(fns_test)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>failed <span class="op">=</span> verify_images(fns_train)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>failed_imagelength <span class="op">=</span> <span class="bu">len</span>(failed)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># remove images that are corrupt</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>failed.<span class="bu">map</span>(Path.unlink)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co"># The images are in train_images, so let's grab a list of all of them:</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co"># trn_path = path/'train'</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># files = get_image_files(trn_path)</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>Image_Count_Dict <span class="op">=</span> {<span class="st">"Total_Train_Image_Count"</span>: total_train_imagelength, </span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Failed_Train_Image_Count"</span>: failed_imagelength,</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"Total_Test_Image_Count"</span>: total_test_imagelength}</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>Image_Count_Dict</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>{'Total_Train_Image_Count': 85850,
+ 'Failed_Train_Image_Count': 0,
+ 'Total_Test_Image_Count': 15150}</code></pre>
+</section>
+<section id="standardise-the-size-of-images" class="level3">
+<h3 class="anchored" data-anchor-id="standardise-the-size-of-images">Standardise the size of Images</h3>
+<p>Let’s check all their sizes. This is faster if we do it in <code>parallel</code>, it helps to execute function in parallel.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastcore.parallel <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(o): <span class="cf">return</span> PILImage.create(o).size</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>sizes <span class="op">=</span> parallel(f, fns_train, n_workers<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>pd.Series(sizes).value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>(512, 512)    52962
+(512, 384)    12531
+(384, 512)     5522
+(382, 512)     2431
+(512, 382)     2118
+              ...  
+(489, 512)        1
+(469, 512)        1
+(405, 512)        1
+(407, 512)        1
+(279, 512)        1
+Name: count, Length: 453, dtype: int64</code></pre>
+<p>We can see that we have lot’s of different size of images. We need to standardised it.</p>
+</section>
+</section>
+<section id="data-loader" class="level2">
+<h2 class="anchored" data-anchor-id="data-loader">2. Data Loader</h2>
+<p>But our images are of size of 512(multiple of 32) , let’s resize it to 480( multiple of 32) .</p>
+<ul>
+<li><strong>Tip</strong> If Image is in rectangular format (640,480) with aspect ratio (4:3) then if we want to resize those images do it in same aspect ratio for example (256,192) &amp; if possible set new size to be multiple of <strong>32</strong>. CNN works great with 32* size.</li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> ImageDataLoaders.from_folder(train_path, valid_pct<span class="op">=</span><span class="fl">0.2</span>, seed<span class="op">=</span><span class="dv">42</span>,</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    item_tfms<span class="op">=</span>Resize(<span class="dv">480</span>, method<span class="op">=</span><span class="st">'squish'</span>),</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    batch_tfms<span class="op">=</span>aug_transforms(size<span class="op">=</span><span class="dv">128</span>, min_scale<span class="op">=</span><span class="fl">0.75</span>))</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>dls.show_batch(max_n<span class="op">=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="lecture-6-road-to-the-top-part-1-self_files/lecture-6-road-to-the-top-part-1-self_20_0.png" class="img-fluid"></p>
+<p>By referring <a href="https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning">Best Vision models for fine-tuning</a> we can make a case that <code>resnet26d</code>, which is the fastest resolution-independent model which gets into the top-15 lists there</p>
+<ul>
+<li><strong>Goal</strong> Is not get best possible result but to get things going with simple models &amp; then improve on it.</li>
+</ul>
+</section>
+<section id="model-building" class="level2">
+<h2 class="anchored" data-anchor-id="model-building">3. Model Building</h2>
+<p><strong>Half-precision floating-point [.to_fp16()]</strong> uses 16 bits to store a number, while single precision (float32) uses 32 bits and double precision (float64) uses 64 bits. It is useful in deep learning for its reduced memory usage.</p>
+<p>And it is great tool to be used during the <em>inference phase to save memory and computational resources</em>.</p>
+<section id="with-floating-point" class="level3">
+<h3 class="anchored" data-anchor-id="with-floating-point">With floating point</h3>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>learn_with_fp <span class="op">=</span> vision_learner(dls, <span class="st">'resnet26d'</span>, metrics<span class="op">=</span>error_rate, path<span class="op">=</span><span class="st">'.'</span>).to_fp16()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>learn_with_fp.fine_tune(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.790304</td>
+<td>2.355953</td>
+<td>0.580431</td>
+<td>06:11</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.105901</td>
+<td>1.847007</td>
+<td>0.469715</td>
+<td>06:12</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1.867976</td>
+<td>1.591036</td>
+<td>0.411415</td>
+<td>06:14</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>1.614650</td>
+<td>1.446619</td>
+<td>0.375655</td>
+<td>06:16</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>1.456076</td>
+<td>1.420436</td>
+<td>0.368957</td>
+<td>06:15</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="without-floating-point" class="level3">
+<h3 class="anchored" data-anchor-id="without-floating-point">Without floating point</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>learn_without_fp <span class="op">=</span> vision_learner(dls, <span class="st">'resnet26d'</span>, metrics<span class="op">=</span>error_rate, path<span class="op">=</span><span class="st">'.'</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>learn_without_fp.fine_tune(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>model.safetensors:   0%|          | 0.00/64.2M [00:00&lt;?, ?B/s]</code></pre>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.788730</td>
+<td>2.332079</td>
+<td>0.579849</td>
+<td>06:15</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.188421</td>
+<td>1.854993</td>
+<td>0.471870</td>
+<td>06:26</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1.821760</td>
+<td>1.596297</td>
+<td>0.414735</td>
+<td>06:32</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>1.586775</td>
+<td>1.457398</td>
+<td>0.379907</td>
+<td>06:45</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>1.483222</td>
+<td>1.437040</td>
+<td>0.376878</td>
+<td>06:35</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>Comparing both we can say that floating point didn’t come as handy as it should have been accuracy and time are same</p></li>
+<li><p>Also remember in our 1st task on classification of Big cat with very small data we were having such higher accuracy. However, despite the abundance of images (85,850) in this case, we still encounter significant inaccuracies. This discrepancy suggests that the model is encountering learning challenges, possibly due to issues with the training data or the images being too similar. For instance, there may be minimal variation in certain dishes despite being categorized differently, such as <code>Veg Pulao &amp; Briyani.</code></p></li>
+</ul>
+</section>
+<section id="learning-rate" class="level3">
+<h3 class="anchored" data-anchor-id="learning-rate">Learning Rate</h3>
+<p><a href="https://forums.fast.ai/t/new-lr-finder-output/89236/3">Learning Rate blog</a></p>
+<p>As discussed earlier Valley &amp; Slide give us best of result so we don’t need to call other 2 functions. Our default value for learning rate is <strong>0.02.</strong></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>learn_without_fp.lr_find(suggest_funcs<span class="op">=</span>(valley, slide))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<pre><code>SuggestedLRs(valley=1.2022644114040304e-05, slide=0.019054606556892395)</code></pre>
+<p><img src="lecture-6-road-to-the-top-part-1-self_files/lecture-6-road-to-the-top-part-1-self_30_3.png" class="img-fluid"></p>
+<p>So it was the learning rate that cause such high error rate as we can in our plot, let’s reduce near to <code>valley</code> point</p>
+</section>
+<section id="final-model" class="level3">
+<h3 class="anchored" data-anchor-id="final-model">Final Model</h3>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>learn_without_fp.fit(<span class="dv">4</span>, lr<span class="op">=</span><span class="fl">0.0002</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>1.489364</td>
+<td>1.298432</td>
+<td>0.340885</td>
+<td>06:29</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1.253947</td>
+<td>1.154729</td>
+<td>0.307047</td>
+<td>06:29</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>1.164939</td>
+<td>1.070023</td>
+<td>0.283518</td>
+<td>06:33</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>1.037511</td>
+<td>1.050543</td>
+<td>0.275713</td>
+<td>06:34</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="lets-export-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="lets-export-the-model">Let’s Export the model</h3>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>learn_without_fp.export(<span class="st">'Lecture6_Part1_Food_Resnet_Model.pkl'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="run-of-test-data" class="level2">
+<h2 class="anchored" data-anchor-id="run-of-test-data">4. Run of Test Data</h2>
+<section id="read-test-data" class="level3">
+<h3 class="anchored" data-anchor-id="read-test-data">Read test data</h3>
+<p>We can now get the probabilities of each class, and the index of the most likely class, from this test set (the 2nd thing returned by get_preds are the targets, which are blank for a test set, so we discard them)</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>test_files <span class="op">=</span> get_image_files(test_path).<span class="bu">sorted</span>()</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>test_dl <span class="op">=</span> dls.test_dl(test_files)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>probs,_,idxs <span class="op">=</span> learn_without_fp.get_preds(dl<span class="op">=</span>test_dl, with_decoded<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>idxs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<pre><code>tensor([54, 80, 44,  ..., 73, 78, 92])</code></pre>
+<p>These need to be mapped to the names of each of these type, these names are stored by fastai automatically in the <code>vocab</code>:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>dls.vocab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>['apple_pie', 'baby_back_ribs', 'baklava', 'beef_carpaccio', 'beef_tartare', 'beet_salad', 'beignets', 'bibimbap', 'bread_pudding', 'breakfast_burrito', 'bruschetta', 'caesar_salad', 'cannoli', 'caprese_salad', 'carrot_cake', 'ceviche', 'cheese_plate', 'cheesecake', 'chicken_curry', 'chicken_quesadilla', 'chicken_wings', 'chocolate_cake', 'chocolate_mousse', 'churros', 'clam_chowder', 'club_sandwich', 'crab_cakes', 'creme_brulee', 'croque_madame', 'cup_cakes', 'deviled_eggs', 'donuts', 'dumplings', 'edamame', 'eggs_benedict', 'escargots', 'falafel', 'filet_mignon', 'fish_and_chips', 'foie_gras', 'french_fries', 'french_onion_soup', 'french_toast', 'fried_calamari', 'fried_rice', 'frozen_yogurt', 'garlic_bread', 'gnocchi', 'greek_salad', 'grilled_cheese_sandwich', 'grilled_salmon', 'guacamole', 'gyoza', 'hamburger', 'hot_and_sour_soup', 'hot_dog', 'huevos_rancheros', 'hummus', 'ice_cream', 'lasagna', 'lobster_bisque', 'lobster_roll_sandwich', 'macaroni_and_cheese', 'macarons', 'miso_soup', 'mussels', 'nachos', 'omelette', 'onion_rings', 'oysters', 'pad_thai', 'paella', 'pancakes', 'panna_cotta', 'peking_duck', 'pho', 'pizza', 'pork_chop', 'poutine', 'prime_rib', 'pulled_pork_sandwich', 'ramen', 'ravioli', 'red_velvet_cake', 'risotto', 'samosa', 'sashimi', 'scallops', 'seaweed_salad', 'shrimp_and_grits', 'spaghetti_bolognese', 'spaghetti_carbonara', 'spring_rolls', 'steak', 'strawberry_shortcake', 'sushi', 'tacos', 'takoyaki', 'tiramisu', 'tuna_tartare', 'waffles']</code></pre>
+</section>
+<section id="map-the-number-with-name" class="level3">
+<h3 class="anchored" data-anchor-id="map-the-number-with-name">Map the number with name</h3>
+<p>Let’s create a mapping using pandas:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>filenames <span class="op">=</span> [path.name <span class="cf">for</span> path <span class="kw">in</span> test_files]</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>ss <span class="op">=</span> pd.DataFrame({<span class="st">'image_id'</span>: filenames})</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>ss</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th>image_id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>1000486.jpg</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>100057.jpg</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>1000605.jpg</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>100093.jpg</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>1001084.jpg</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="odd">
+<td>15145</td>
+<td>999449.jpg</td>
+</tr>
+<tr class="even">
+<td>15146</td>
+<td>999550.jpg</td>
+</tr>
+<tr class="odd">
+<td>15147</td>
+<td>999858.jpg</td>
+</tr>
+<tr class="even">
+<td>15148</td>
+<td>999875.jpg</td>
+</tr>
+<tr class="odd">
+<td>15149</td>
+<td>999961.jpg</td>
+</tr>
+</tbody>
+</table>
+<p>
+15150 rows × 1 columns
+</p>
+</div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>mapping <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">enumerate</span>(dls.vocab))</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> pd.Series(idxs.numpy(), name<span class="op">=</span><span class="st">"idxs"</span>).<span class="bu">map</span>(mapping)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>0           hot_and_sour_soup
+1        pulled_pork_sandwich
+2                  fried_rice
+3               frozen_yogurt
+4              chocolate_cake
+                 ...         
+15145     macaroni_and_cheese
+15146           chicken_curry
+15147             panna_cotta
+15148                 poutine
+15149            spring_rolls
+Name: idxs, Length: 15150, dtype: object</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>ss[<span class="st">'label'</span>] <span class="op">=</span> results</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>ss.to_csv(<span class="st">'/kaggle/working/Lecture6_Part1_Food_Resnet_Submit.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>head Lecture6_Part1_Food_Resnet_Submit.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>image_id,label
+1000486.jpg,hot_and_sour_soup
+100057.jpg,pulled_pork_sandwich
+1000605.jpg,fried_rice
+100093.jpg,frozen_yogurt
+1001084.jpg,chocolate_cake
+1001089.jpg,baby_back_ribs
+1001113.jpg,bibimbap
+100148.jpg,french_fries
+1002334.jpg,baklava</code></pre>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
