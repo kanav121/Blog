@@ -187,11 +187,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#install-fastai" id="toc-install-fastai" class="nav-link" data-scroll-target="#install-fastai">Install FastAI</a></li>
   <li><a href="#get-data-from-fastai-of-food" id="toc-get-data-from-fastai-of-food" class="nav-link" data-scroll-target="#get-data-from-fastai-of-food">Get data from FastAI of Food</a></li>
   </ul></li>
-  <li><a href="#create-test-dataset" id="toc-create-test-dataset" class="nav-link" data-scroll-target="#create-test-dataset">1. Create Test dataset</a>
+  <li><a href="#create-test-dataset" id="toc-create-test-dataset" class="nav-link" data-scroll-target="#create-test-dataset">1. Create Test Dataset</a>
   <ul class="collapse">
   <li><a href="#lets-view-random-5-food-items" id="toc-lets-view-random-5-food-items" class="nav-link" data-scroll-target="#lets-view-random-5-food-items">Let’s View Random 5 Food Items</a></li>
   <li><a href="#remove-images-that-are-corrupt" id="toc-remove-images-that-are-corrupt" class="nav-link" data-scroll-target="#remove-images-that-are-corrupt">Remove images that are corrupt</a></li>
-  <li><a href="#standardise-the-size-of-images" id="toc-standardise-the-size-of-images" class="nav-link" data-scroll-target="#standardise-the-size-of-images">Standardise the size of Images</a></li>
+  <li><a href="#standardize-the-size-of-images" id="toc-standardize-the-size-of-images" class="nav-link" data-scroll-target="#standardize-the-size-of-images">Standardize the size of Images</a></li>
   </ul></li>
   <li><a href="#data-loader" id="toc-data-loader" class="nav-link" data-scroll-target="#data-loader">2. Data Loader</a></li>
   <li><a href="#model-building" id="toc-model-building" class="nav-link" data-scroll-target="#model-building">3. Model Building</a>
@@ -223,7 +223,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li>Existing Images : Our models such as ConvNext and ResNet, have been trained on a set of 22,000 images from the <strong>ImageNet</strong> dataset. It is highly probable that our model has already been exposed to commonly encountered categories such as cats, cars, musical instruments, and more during its training.<br>
 </li>
-<li>New Images : Here we are using Images that most probabily are not in <strong>ImagNet</strong> dataset, like Satellite Images, Medical Images etc.</li>
+<li>New Images : Here we are using Images that most probably are not in <strong>ImagNet</strong> dataset, like Satellite Images, Medical Images etc.</li>
 </ol>
 <p>Our key findings :</p>
 <ul>
@@ -298,7 +298,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/lib/python3.10/site
 </section>
 </section>
 <section id="create-test-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="create-test-dataset">1. Create Test dataset</h2>
+<h2 class="anchored" data-anchor-id="create-test-dataset">1. Create Test Dataset</h2>
 <p>We do not have test dataset let’s randomly create a <code>test</code> folder which will have 15% of the images from train folder &amp; we will not train our model on these images.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
@@ -1218,8 +1218,8 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/lib/python3.10/site
  'Failed_Train_Image_Count': 0,
  'Total_Test_Image_Count': 15150}</code></pre>
 </section>
-<section id="standardise-the-size-of-images" class="level3">
-<h3 class="anchored" data-anchor-id="standardise-the-size-of-images">Standardise the size of Images</h3>
+<section id="standardize-the-size-of-images" class="level3">
+<h3 class="anchored" data-anchor-id="standardize-the-size-of-images">Standardize the size of Images</h3>
 <p>Let’s check all their sizes. This is faster if we do it in <code>parallel</code>, it helps to execute function in parallel.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastcore.parallel <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1238,7 +1238,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/lib/python3.10/site
 (407, 512)        1
 (279, 512)        1
 Name: count, Length: 453, dtype: int64</code></pre>
-<p>We can see that we have lot’s of different size of images. We need to standardised it.</p>
+<p>We can see that we have lot’s of different size of images. We need to standardized it.</p>
 </section>
 </section>
 <section id="data-loader" class="level2">

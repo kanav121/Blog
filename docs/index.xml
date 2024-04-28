@@ -27,7 +27,7 @@
 <ol type="1">
 <li>Existing Images : Our models such as ConvNext and ResNet, have been trained on a set of 22,000 images from the <strong>ImageNet</strong> dataset. It is highly probable that our model has already been exposed to commonly encountered categories such as cats, cars, musical instruments, and more during its training.<br>
 </li>
-<li>New Images : Here we are using Images that most probabily are not in <strong>ImagNet</strong> dataset, like Satellite Images, Medical Images etc.</li>
+<li>New Images : Here we are using Images that most probably are not in <strong>ImagNet</strong> dataset, like Satellite Images, Medical Images etc.</li>
 </ol>
 <p>Our key findings :</p>
 <ul>
@@ -142,7 +142,7 @@ font-style: inherit;">=</span>path)</span></code></pre></div>
 </section>
 </section>
 <section id="create-test-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="create-test-dataset">1. Create Test dataset</h2>
+<h2 class="anchored" data-anchor-id="create-test-dataset">1. Create Test Dataset</h2>
 <p>We do not have test dataset let’s randomly create a <code>test</code> folder which will have 15% of the images from train folder &amp; we will not train our model on these images.</p>
 <div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
 background-color: null;
@@ -1312,8 +1312,8 @@ font-style: inherit;">"Total_Test_Image_Count"</span>: total_test_imagelength}</
  'Failed_Train_Image_Count': 0,
  'Total_Test_Image_Count': 15150}</code></pre>
 </section>
-<section id="standardise-the-size-of-images" class="level3">
-<h3 class="anchored" data-anchor-id="standardise-the-size-of-images">Standardise the size of Images</h3>
+<section id="standardize-the-size-of-images" class="level3">
+<h3 class="anchored" data-anchor-id="standardize-the-size-of-images">Standardize the size of Images</h3>
 <p>Let’s check all their sizes. This is faster if we do it in <code>parallel</code>, it helps to execute function in parallel.</p>
 <div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="im" style="color: #00769E;
 background-color: null;
@@ -1348,7 +1348,7 @@ font-style: inherit;">8</span>)</span>
 (407, 512)        1
 (279, 512)        1
 Name: count, Length: 453, dtype: int64</code></pre>
-<p>We can see that we have lot’s of different size of images. We need to standardised it.</p>
+<p>We can see that we have lot’s of different size of images. We need to standardized it.</p>
 </section>
 </section>
 <section id="data-loader" class="level2">

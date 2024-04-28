@@ -17,7 +17,7 @@ In [previous lecture](https://mekanavsharma.github.io/Blog/posts/FastAI_Course_L
 But this time we will be deep diving into these models : [Best Vision Model for fine-tuning](https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning). We have divided our testing in 2 parts :
 
 1.  Existing Images : Our models such as ConvNext and ResNet, have been trained on a set of 22,000 images from the **ImageNet** dataset. It is highly probable that our model has already been exposed to commonly encountered categories such as cats, cars, musical instruments, and more during its training.\
-2.  New Images : Here we are using Images that most probabily are not in **ImagNet** dataset, like Satellite Images, Medical Images etc.
+2.  New Images : Here we are using Images that most probably are not in **ImagNet** dataset, like Satellite Images, Medical Images etc.
 
 Our key findings :
 
@@ -109,7 +109,7 @@ untar_data(URLs.FOOD, data=path)
 Path('/content/food-101')
 ```
 
-## 1. Create Test dataset
+## 1. Create Test Dataset
 
 We do not have test dataset let's randomly create a `test` folder which will have 15% of the images from train folder & we will not train our model on these images.
 
@@ -295,7 +295,7 @@ Image_Count_Dict
  'Total_Test_Image_Count': 15150}
 ```
 
-### Standardise the size of Images
+### Standardize the size of Images
 
 Let's check all their sizes. This is faster if we do it in `parallel`, it helps to execute function in parallel.
 
@@ -322,7 +322,7 @@ pd.Series(sizes).value_counts()
 Name: count, Length: 453, dtype: int64
 ```
 
-We can see that we have lot's of different size of images. We need to standardised it.
+We can see that we have lot's of different size of images. We need to standardized it.
 
 ## 2. Data Loader
 
