@@ -185,11 +185,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#computer-vision-models-understanding" id="toc-computer-vision-models-understanding" class="nav-link active" data-scroll-target="#computer-vision-models-understanding">Computer Vision Model(s) Understanding</a>
   <ul class="collapse">
   <li><a href="#install-fastai" id="toc-install-fastai" class="nav-link" data-scroll-target="#install-fastai">Install FastAI</a></li>
-  <li><a href="#get-data-from-fastai-of-food" id="toc-get-data-from-fastai-of-food" class="nav-link" data-scroll-target="#get-data-from-fastai-of-food">Get data from FastAI of Food</a></li>
+  <li><a href="#retrieve-food-data-from-fastai" id="toc-retrieve-food-data-from-fastai" class="nav-link" data-scroll-target="#retrieve-food-data-from-fastai">Retrieve Food Data from FastAI</a></li>
   </ul></li>
   <li><a href="#create-test-dataset" id="toc-create-test-dataset" class="nav-link" data-scroll-target="#create-test-dataset">1. Create Test Dataset</a>
   <ul class="collapse">
-  <li><a href="#lets-view-random-5-food-items" id="toc-lets-view-random-5-food-items" class="nav-link" data-scroll-target="#lets-view-random-5-food-items">Let’s View Random 5 Food Items</a></li>
+  <li><a href="#lets-view-5-random-food-items" id="toc-lets-view-5-random-food-items" class="nav-link" data-scroll-target="#lets-view-5-random-food-items">Let’s view 5 random food items</a></li>
   <li><a href="#remove-images-that-are-corrupt" id="toc-remove-images-that-are-corrupt" class="nav-link" data-scroll-target="#remove-images-that-are-corrupt">Remove images that are corrupt</a></li>
   <li><a href="#standardize-the-size-of-images" id="toc-standardize-the-size-of-images" class="nav-link" data-scroll-target="#standardize-the-size-of-images">Standardize the size of Images</a></li>
   </ul></li>
@@ -218,18 +218,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="computer-vision-models-understanding" class="level2">
 <h2 class="anchored" data-anchor-id="computer-vision-models-understanding">Computer Vision Model(s) Understanding</h2>
-<p>In <a href="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect3/">previous lecture</a> we referred <a href="https://www.kaggle.com/code/jhoward/which-image-models-are-best">Which Image models are best?</a> to understand Computer vision models in general which among them works best.</p>
-<p>But this time we will be deep diving into these models : <a href="https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning">Best Vision Model for fine-tuning</a>. We have divided our testing in 2 parts :</p>
+<p>In <a href="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect3/">previous lecture</a> , we referred to <a href="https://www.kaggle.com/code/jhoward/which-image-models-are-best">Which Image models are best?</a> to understand computer vision models in general and which among them works best.</p>
+<p>But this time, we will be deep diving into these models : <a href="https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning">Best Vision Model for fine-tuning</a>. We have divided our testing in 2 parts :</p>
 <ol type="1">
-<li>Existing Images : Our models such as ConvNext and ResNet, have been trained on a set of 22,000 images from the <strong>ImageNet</strong> dataset. It is highly probable that our model has already been exposed to commonly encountered categories such as cats, cars, musical instruments, and more during its training.<br>
+<li>Existing Images : Our models, such as ConvNext and ResNet, have been trained on a set of 22,000 images from the <strong>ImageNet</strong> dataset. It is highly probable that our model has already been exposed to commonly encountered categories such as cats, cars, musical instruments, and more during its training.<br>
 </li>
-<li>New Images : Here we are using Images that most probably are not in <strong>ImagNet</strong> dataset, like Satellite Images, Medical Images etc.</li>
+<li>New Images : Here we are using Images that most probably are not in <strong>ImagNet</strong> dataset, like satellite images, medical images etc.</li>
 </ol>
 <p>Our key findings :</p>
 <ul>
 <li><p>In Case 1, both <strong>convnext_tiny_in22k</strong> and <strong>convnext_tiny</strong> emerged as go-to models, selected based on their impressive accuracy and efficient training times.</p></li>
-<li><p>In Case 2, models like ViT (Vision Transformer) and Swin demonstrated excellent performance. Their transformer architecture proved beneficial in understanding patterns from the data they are not trained on previously. namely - <strong>vit_small_patch32_224, vit_small_patch16_224, swin_base_patch4_window7_224_in22k</strong>.</p></li>
-<li><p>Tip - ViT model work only on 224 pixel image so to train our image data on ViT images should be of 224*224 pixels</p></li>
+<li><p>In Case 2, models like ViT (Vision Transformer) and Swin demonstrated excellent performance. Their transformer architecture proved beneficial in understanding patterns from the data they were not trained on previously, namely - <strong>vit_small_patch32_224, vit_small_patch16_224, swin_base_patch4_window7_224_in22k</strong>.</p>
+<ul>
+<li>Tip - ViT model work only on 224 pixel image, so to train our image data on ViT, images should be of 224*224 pixels.</li>
+</ul></li>
 </ul>
 <section id="install-fastai" class="level3">
 <h3 class="anchored" data-anchor-id="install-fastai">Install FastAI</h3>
@@ -270,8 +272,8 @@ Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/lib/python
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (2024.2.2)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/lib/python3.10/site-packages (from sympy-&gt;torch-&gt;timm) (1.3.0)</code></pre>
 </section>
-<section id="get-data-from-fastai-of-food" class="level3">
-<h3 class="anchored" data-anchor-id="get-data-from-fastai-of-food">Get data from FastAI of Food</h3>
+<section id="retrieve-food-data-from-fastai" class="level3">
+<h3 class="anchored" data-anchor-id="retrieve-food-data-from-fastai">Retrieve Food Data from FastAI</h3>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> Path(<span class="st">'/content'</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>untar_data(URLs.FOOD, data<span class="op">=</span>path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <style>
@@ -299,7 +301,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/lib/python3.10/site
 </section>
 <section id="create-test-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="create-test-dataset">1. Create Test Dataset</h2>
-<p>We do not have test dataset let’s randomly create a <code>test</code> folder which will have 15% of the images from train folder &amp; we will not train our model on these images.</p>
+<p>We don’t have test dataset, so let’s randomly create a <code>test</code> folder containing 15% of the images from train folder. Our model will not be trained on these images.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> shutil</span>
@@ -1152,8 +1154,8 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/lib/python3.10/site
 </table>
 </div>
 <p>We can see that .txt file is of no use</p>
-<section id="lets-view-random-5-food-items" class="level3">
-<h3 class="anchored" data-anchor-id="lets-view-random-5-food-items">Let’s View Random 5 Food Items</h3>
+<section id="lets-view-5-random-food-items" class="level3">
+<h3 class="anchored" data-anchor-id="lets-view-5-random-food-items">Let’s view 5 random food items</h3>
 <div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1192,7 +1194,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/lib/python3.10/site
 </section>
 <section id="remove-images-that-are-corrupt" class="level3">
 <h3 class="anchored" data-anchor-id="remove-images-that-are-corrupt">Remove images that are corrupt</h3>
-<p><code>verify_images()</code> will return path of images which are corrupt and using <code>unlink</code> we can remove these files.</p>
+<p><code>verify_images()</code> will return the paths of images that are corrupt, and we can use <code>unlink</code> to remove these files.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fns_train <span class="op">=</span> get_image_files(train_path)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>fns_test <span class="op">=</span> get_image_files(test_path)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1220,7 +1222,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/lib/python3.10/site
 </section>
 <section id="standardize-the-size-of-images" class="level3">
 <h3 class="anchored" data-anchor-id="standardize-the-size-of-images">Standardize the size of Images</h3>
-<p>Let’s check all their sizes. This is faster if we do it in <code>parallel</code>, it helps to execute function in parallel.</p>
+<p>Let’s check all their sizes. This is faster if we do it in <code>parallel</code>, it helps in executing function in parallel.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastcore.parallel <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(o): <span class="cf">return</span> PILImage.create(o).size</span>
@@ -1238,14 +1240,14 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/lib/python3.10/site
 (407, 512)        1
 (279, 512)        1
 Name: count, Length: 453, dtype: int64</code></pre>
-<p>We can see that we have lot’s of different size of images. We need to standardized it.</p>
+<p>We can see that we have lots of images with different sizes. We need to standardize it.</p>
 </section>
 </section>
 <section id="data-loader" class="level2">
 <h2 class="anchored" data-anchor-id="data-loader">2. Data Loader</h2>
-<p>But our images are of size of 512(multiple of 32) , let’s resize it to 480( multiple of 32) .</p>
+<p>Our images are of size of 512(multiple of 32) , let’s resize it to 480( multiple of 32) .</p>
 <ul>
-<li><strong>Tip</strong> If Image is in rectangular format (640,480) with aspect ratio (4:3) then if we want to resize those images do it in same aspect ratio for example (256,192) &amp; if possible set new size to be multiple of <strong>32</strong>. CNN works great with 32* size.</li>
+<li><strong>Tip</strong> If an image is in a rectangular format such as (640,480) with an aspect ratio (4:3), maintain the same aspect ratio when resizing the images. For example, resize it to (256,192). Additionally, if possible set new size to be multiple of <strong>32</strong>. CNN works great with 32* size.</li>
 </ul>
 <div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> ImageDataLoaders.from_folder(train_path, valid_pct<span class="op">=</span><span class="fl">0.2</span>, seed<span class="op">=</span><span class="dv">42</span>,</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    item_tfms<span class="op">=</span>Resize(<span class="dv">480</span>, method<span class="op">=</span><span class="st">'squish'</span>),</span>
@@ -1253,15 +1255,15 @@ Name: count, Length: 453, dtype: int64</code></pre>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>dls.show_batch(max_n<span class="op">=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><img src="lecture-6-road-to-the-top-part-1-self_files/lecture-6-road-to-the-top-part-1-self_20_0.png" class="img-fluid"></p>
-<p>By referring <a href="https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning">Best Vision models for fine-tuning</a> we can make a case that <code>resnet26d</code>, which is the fastest resolution-independent model which gets into the top-15 lists there</p>
+<p>Referring <a href="https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning">Best Vision models for fine-tuning</a> we can make a case that <code>resnet26d</code> is the fastest resolution-independent model, which make it into the top-15 lists there</p>
 <ul>
-<li><strong>Goal</strong> Is not get best possible result but to get things going with simple models &amp; then improve on it.</li>
+<li><strong>Goal</strong> is not to achieve the best possible results, but rather to get things going with simple models &amp; then improve upon them.</li>
 </ul>
 </section>
 <section id="model-building" class="level2">
 <h2 class="anchored" data-anchor-id="model-building">3. Model Building</h2>
 <p><strong>Half-precision floating-point [.to_fp16()]</strong> uses 16 bits to store a number, while single precision (float32) uses 32 bits and double precision (float64) uses 64 bits. It is useful in deep learning for its reduced memory usage.</p>
-<p>And it is great tool to be used during the <em>inference phase to save memory and computational resources</em>.</p>
+<p>Furthermore, it is great tool to be utilized during the <em>inference phase to save memory and computational resources</em>.</p>
 <section id="with-floating-point" class="level3">
 <h3 class="anchored" data-anchor-id="with-floating-point">With floating point</h3>
 <div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>learn_with_fp <span class="op">=</span> vision_learner(dls, <span class="st">'resnet26d'</span>, metrics<span class="op">=</span>error_rate, path<span class="op">=</span><span class="st">'.'</span>).to_fp16()</span>
@@ -1455,14 +1457,14 @@ Name: count, Length: 453, dtype: int64</code></pre>
 </tbody>
 </table>
 <ul>
-<li><p>Comparing both we can say that floating point didn’t come as handy as it should have been accuracy and time are same</p></li>
-<li><p>Also remember in our 1st task on classification of Big cat with very small data we were having such higher accuracy. However, despite the abundance of images (85,850) in this case, we still encounter significant inaccuracies. This discrepancy suggests that the model is encountering learning challenges, possibly due to issues with the training data or the images being too similar. For instance, there may be minimal variation in certain dishes despite being categorized differently, such as <code>Veg Pulao &amp; Briyani.</code></p></li>
+<li><p>Comparing both, we can observe that floating point arithmetic didn’t prove as handy as it should have been, accuracy and time remain the same.</p></li>
+<li><p>Additionally, let’s recall our first task on classification of Big Cats with very little data, we achieved significantly higher accuracy. However, despite the abundance of images (85,850) in this case, we still encounter significant inaccuracies. This discrepancy suggests that the model is encountering learning challenges, possibly due to issues with the training data or the images being too similar. For instance, there may be minimal variation in certain dishes despite being categorized differently, such as <code>Veg Pulao &amp; Briyani.</code></p></li>
 </ul>
 </section>
 <section id="learning-rate" class="level3">
 <h3 class="anchored" data-anchor-id="learning-rate">Learning Rate</h3>
 <p><a href="https://forums.fast.ai/t/new-lr-finder-output/89236/3">Learning Rate blog</a></p>
-<p>As discussed earlier Valley &amp; Slide give us best of result so we don’t need to call other 2 functions. Our default value for learning rate is <strong>0.02.</strong></p>
+<p>As discussed earlier, Valley &amp; Slide yield the best results. So, we don’t need to call the other two functions. Our default value for learning rate is <strong>0.02.</strong></p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>learn_without_fp.lr_find(suggest_funcs<span class="op">=</span>(valley, slide))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <style>
     /* Turns off some styling */
@@ -1481,7 +1483,7 @@ Name: count, Length: 453, dtype: int64</code></pre>
 </style>
 <pre><code>SuggestedLRs(valley=1.2022644114040304e-05, slide=0.019054606556892395)</code></pre>
 <p><img src="lecture-6-road-to-the-top-part-1-self_files/lecture-6-road-to-the-top-part-1-self_30_3.png" class="img-fluid"></p>
-<p>So it was the learning rate that cause such high error rate as we can in our plot, let’s reduce near to <code>valley</code> point</p>
+<p>So it was the learning rate that caused such a high error rate as we can see in our plot. Let’s reduce it near to <code>valley</code> point.</p>
 </section>
 <section id="final-model" class="level3">
 <h3 class="anchored" data-anchor-id="final-model">Final Model</h3>
@@ -1552,7 +1554,7 @@ Name: count, Length: 453, dtype: int64</code></pre>
 <h2 class="anchored" data-anchor-id="run-of-test-data">4. Run of Test Data</h2>
 <section id="read-test-data" class="level3">
 <h3 class="anchored" data-anchor-id="read-test-data">Read test data</h3>
-<p>We can now get the probabilities of each class, and the index of the most likely class, from this test set (the 2nd thing returned by get_preds are the targets, which are blank for a test set, so we discard them)</p>
+<p>Now, we can obtain the probabilities of each class and the index of the most likely class from this test set. The second object returned by <strong>get_preds</strong> contains the targets, which are blank for a test set, so we discard them.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>test_files <span class="op">=</span> get_image_files(test_path).<span class="bu">sorted</span>()</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>test_dl <span class="op">=</span> dls.test_dl(test_files)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1574,7 +1576,7 @@ Name: count, Length: 453, dtype: int64</code></pre>
     }
 </style>
 <pre><code>tensor([54, 80, 44,  ..., 73, 78, 92])</code></pre>
-<p>These need to be mapped to the names of each of these type, these names are stored by fastai automatically in the <code>vocab</code>:</p>
+<p>These need to be mapped to the names of each type. These names are automatically stored by FastAI in the <code>vocab</code>.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>dls.vocab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre><code>['apple_pie', 'baby_back_ribs', 'baklava', 'beef_carpaccio', 'beef_tartare', 'beet_salad', 'beignets', 'bibimbap', 'bread_pudding', 'breakfast_burrito', 'bruschetta', 'caesar_salad', 'cannoli', 'caprese_salad', 'carrot_cake', 'ceviche', 'cheese_plate', 'cheesecake', 'chicken_curry', 'chicken_quesadilla', 'chicken_wings', 'chocolate_cake', 'chocolate_mousse', 'churros', 'clam_chowder', 'club_sandwich', 'crab_cakes', 'creme_brulee', 'croque_madame', 'cup_cakes', 'deviled_eggs', 'donuts', 'dumplings', 'edamame', 'eggs_benedict', 'escargots', 'falafel', 'filet_mignon', 'fish_and_chips', 'foie_gras', 'french_fries', 'french_onion_soup', 'french_toast', 'fried_calamari', 'fried_rice', 'frozen_yogurt', 'garlic_bread', 'gnocchi', 'greek_salad', 'grilled_cheese_sandwich', 'grilled_salmon', 'guacamole', 'gyoza', 'hamburger', 'hot_and_sour_soup', 'hot_dog', 'huevos_rancheros', 'hummus', 'ice_cream', 'lasagna', 'lobster_bisque', 'lobster_roll_sandwich', 'macaroni_and_cheese', 'macarons', 'miso_soup', 'mussels', 'nachos', 'omelette', 'onion_rings', 'oysters', 'pad_thai', 'paella', 'pancakes', 'panna_cotta', 'peking_duck', 'pho', 'pizza', 'pork_chop', 'poutine', 'prime_rib', 'pulled_pork_sandwich', 'ramen', 'ravioli', 'red_velvet_cake', 'risotto', 'samosa', 'sashimi', 'scallops', 'seaweed_salad', 'shrimp_and_grits', 'spaghetti_bolognese', 'spaghetti_carbonara', 'spring_rolls', 'steak', 'strawberry_shortcake', 'sushi', 'tacos', 'takoyaki', 'tiramisu', 'tuna_tartare', 'waffles']</code></pre>
 </section>

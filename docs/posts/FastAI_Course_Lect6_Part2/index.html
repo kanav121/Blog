@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Kanav Sharma">
+<meta name="dcterms.date" content="2024-05-03">
+
+<title>Blog - FastAI Course Lecture 6 Part 2 Notes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/kanav608" rel="" target=""><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/kanav-sharma-896b1021b/" rel="" target=""><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">FastAI Course Lecture 6 Part 2 Notes</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Computer Vision</div>
+                <div class="quarto-category">FastAI</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Kanav Sharma </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">May 3, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#install-fastai" id="toc-install-fastai" class="nav-link active" data-scroll-target="#install-fastai">Install FastAI</a></li>
+  <li><a href="#lets-download-food-data-from-fastai" id="toc-lets-download-food-data-from-fastai" class="nav-link" data-scroll-target="#lets-download-food-data-from-fastai">Let’s download food data from FastAI</a></li>
+  <li><a href="#lets-make-it-faster" id="toc-lets-make-it-faster" class="nav-link" data-scroll-target="#lets-make-it-faster">Let’s make it faster</a>
+  <ul class="collapse">
+  <li><a href="#make-it-into-a-function" id="toc-make-it-into-a-function" class="nav-link" data-scroll-target="#make-it-into-a-function">Make it into a function</a></li>
+  <li><a href="#call-the-function" id="toc-call-the-function" class="nav-link" data-scroll-target="#call-the-function">Call the function</a></li>
+  </ul></li>
+  <li><a href="#convnext-model" id="toc-convnext-model" class="nav-link" data-scroll-target="#convnext-model">ConvNeXt model</a></li>
+  <li><a href="#data-augmentation" id="toc-data-augmentation" class="nav-link" data-scroll-target="#data-augmentation">Data Augmentation</a>
+  <ul class="collapse">
+  <li><a href="#crop" id="toc-crop" class="nav-link" data-scroll-target="#crop">Crop</a></li>
+  <li><a href="#padding" id="toc-padding" class="nav-link" data-scroll-target="#padding">Padding</a></li>
+  <li><a href="#test-time-augmentation" id="toc-test-time-augmentation" class="nav-link" data-scroll-target="#test-time-augmentation">Test time augmentation</a></li>
+  </ul></li>
+  <li><a href="#scaling-up" id="toc-scaling-up" class="nav-link" data-scroll-target="#scaling-up">Scaling Up</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>In <a href="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part1/">Lecture6-Part1</a> we build our model using <code>resent26d</code> architecture with best accuracy <code>73%</code>. In this notebook we will be using <code>ConvNeXt</code> model and aiming towards higher accuracy.</p>
+<section id="install-fastai" class="level3">
+<h3 class="anchored" data-anchor-id="install-fastai">Install FastAI</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#hide</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>Uqq fastbook</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install timm</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> fastbook</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>fastbook.setup_book()</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> timm</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#hide</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastbook <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.vision.widgets <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.vision.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>Requirement already satisfied: timm in /opt/conda/lib/python3.10/site-packages (0.9.16)
+Requirement already satisfied: torch in /opt/conda/lib/python3.10/site-packages (from timm) (2.1.2)
+Requirement already satisfied: torchvision in /opt/conda/lib/python3.10/site-packages (from timm) (0.16.2)
+Requirement already satisfied: pyyaml in /opt/conda/lib/python3.10/site-packages (from timm) (6.0.1)
+Requirement already satisfied: huggingface_hub in /opt/conda/lib/python3.10/site-packages (from timm) (0.20.3)
+Requirement already satisfied: safetensors in /opt/conda/lib/python3.10/site-packages (from timm) (0.4.2)
+Requirement already satisfied: filelock in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (3.13.1)
+Requirement already satisfied: fsspec&gt;=2023.5.0 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (2024.2.0)
+Requirement already satisfied: requests in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (2.31.0)
+Requirement already satisfied: tqdm&gt;=4.42.1 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (4.66.1)
+Requirement already satisfied: typing-extensions&gt;=3.7.4.3 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (4.9.0)
+Requirement already satisfied: packaging&gt;=20.9 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (21.3)
+Requirement already satisfied: sympy in /opt/conda/lib/python3.10/site-packages (from torch-&gt;timm) (1.12)
+Requirement already satisfied: networkx in /opt/conda/lib/python3.10/site-packages (from torch-&gt;timm) (3.2.1)
+Requirement already satisfied: jinja2 in /opt/conda/lib/python3.10/site-packages (from torch-&gt;timm) (3.1.2)
+Requirement already satisfied: numpy in /opt/conda/lib/python3.10/site-packages (from torchvision-&gt;timm) (1.26.4)
+Requirement already satisfied: pillow!=8.3.*,&gt;=5.3.0 in /opt/conda/lib/python3.10/site-packages (from torchvision-&gt;timm) (9.5.0)
+Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /opt/conda/lib/python3.10/site-packages (from packaging&gt;=20.9-&gt;huggingface_hub-&gt;timm) (3.1.1)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /opt/conda/lib/python3.10/site-packages (from jinja2-&gt;torch-&gt;timm) (2.1.3)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (3.6)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (1.26.18)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (2024.2.2)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/lib/python3.10/site-packages (from sympy-&gt;torch-&gt;timm) (1.3.0)</code></pre>
+</section>
+<section id="lets-download-food-data-from-fastai" class="level2">
+<h2 class="anchored" data-anchor-id="lets-download-food-data-from-fastai">Let’s download food data from FastAI</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> Path(<span class="st">'/content'</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>untar_data(URLs.FOOD, data<span class="op">=</span>path)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># actual path to train image folder</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>train_path <span class="op">=</span> <span class="st">'/content/food-101/images'</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>test_path <span class="op">=</span> <span class="st">'/content/food-101/test'</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Test folder</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> shutil</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> move_images_to_test(source_folder, test_folder, percentage<span class="op">=</span><span class="fl">0.1</span>):</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create the test folder if it doesn't exist</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    os.makedirs(test_folder, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Iterate through each subfolder in the source folder</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> subfolder <span class="kw">in</span> os.listdir(source_folder):</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        subfolder_path <span class="op">=</span> os.path.join(source_folder, subfolder)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Check if it's a directory</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.isdir(subfolder_path):</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Get a list of all image files in the subfolder</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>            image_files <span class="op">=</span> [f <span class="cf">for</span> f <span class="kw">in</span> os.listdir(subfolder_path) <span class="cf">if</span> f.endswith(<span class="st">'.jpg'</span>)]</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Calculate the number of images to move</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>            num_images_to_move <span class="op">=</span> <span class="bu">int</span>(<span class="bu">len</span>(image_files) <span class="op">*</span> percentage)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Randomly select images to move</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>            images_to_move <span class="op">=</span> random.sample(image_files, num_images_to_move)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Move selected images to the test folder</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> image <span class="kw">in</span> images_to_move:</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>                source_path <span class="op">=</span> os.path.join(subfolder_path, image)</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>                dest_path <span class="op">=</span> os.path.join(test_folder, image)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>                shutil.move(source_path, dest_path)</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    move_images_to_test(train_path, test_path, percentage<span class="op">=</span><span class="fl">0.15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div>
+<progress value="5686607872" class="" max="5686607260" style="width:300px; height:20px; vertical-align: middle;">
+</progress>
+<p>100.00% [5686607872/5686607260 02:31&lt;00:00]</p>
+</div>
+</section>
+<section id="lets-make-it-faster" class="level2">
+<h2 class="anchored" data-anchor-id="lets-make-it-faster">Let’s make it faster</h2>
+<p>Last time, we encountered a problem even though we were using the fastest architecture. It was still taking too long. For a change, let’s resize the images to <code>256</code> pixels. This will decrease the size of each pixel and allow us to train our model faster.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> ImageDataLoaders.from_folder(path, valid_pct<span class="op">=</span><span class="fl">0.2</span>, seed<span class="op">=</span><span class="dv">42</span>,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    item_tfms<span class="op">=</span>Resize(<span class="dv">256</span>, method<span class="op">=</span><span class="st">'squish'</span>),</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    batch_tfms<span class="op">=</span>aug_transforms(size<span class="op">=</span><span class="dv">128</span>, min_scale<span class="op">=</span><span class="fl">0.75</span>))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>dls.show_batch(max_n<span class="op">=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="Lecture_6_Road_To_The_Top_Part_2_self_files/Lecture_6_Road_To_The_Top_Part_2_self_4_0.png" class="img-fluid"></p>
+<section id="make-it-into-a-function" class="level3">
+<h3 class="anchored" data-anchor-id="make-it-into-a-function">Make it into a function</h3>
+<p>In this notebook, we will be experimenting with lots of models, data(image) augmentation, and other techniques. So instead of repeating the same code every time, let’s create a function that can be called whenever needed.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train(arch, item, batch, epochs<span class="op">=</span><span class="dv">4</span>, learning_rate<span class="op">=</span><span class="fl">0.0002</span>):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    dls <span class="op">=</span> ImageDataLoaders.from_folder(path, seed<span class="op">=</span><span class="dv">42</span>, valid_pct<span class="op">=</span><span class="fl">0.2</span>, item_tfms<span class="op">=</span>item, batch_tfms<span class="op">=</span>batch)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    learn <span class="op">=</span> vision_learner(dls, arch, metrics<span class="op">=</span>error_rate)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    learn.fine_tune(epochs, learning_rate)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> learn</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To ensure consistent function behavior, we have rigidly set the number of epochs and the learning rate value.</p>
+</section>
+<section id="call-the-function" class="level3">
+<h3 class="anchored" data-anchor-id="call-the-function">Call the function</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> train(<span class="st">'resnet26d'</span>, item<span class="op">=</span>Resize(<span class="dv">256</span>),batch<span class="op">=</span>aug_transforms(size<span class="op">=</span><span class="dv">128</span>, min_scale<span class="op">=</span><span class="fl">0.75</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>3.727076</td>
+<td>2.929649</td>
+<td>0.664554</td>
+<td>04:58</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>3.250653</td>
+<td>2.632962</td>
+<td>0.618911</td>
+<td>05:03</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>2.837729</td>
+<td>2.394110</td>
+<td>0.584109</td>
+<td>05:09</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>2.680722</td>
+<td>2.286321</td>
+<td>0.563812</td>
+<td>05:10</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>2.653321</td>
+<td>2.266845</td>
+<td>0.560149</td>
+<td>05:08</td>
+</tr>
+</tbody>
+</table>
+<p>Though we were able to reduce the time but we got higher error rate.</p>
+</section>
+</section>
+<section id="convnext-model" class="level2">
+<h2 class="anchored" data-anchor-id="convnext-model">ConvNeXt model</h2>
+<p>In our previous notebook, we discussed how the <strong>convnext_tiny_in22k</strong> is go-to model. We would like to reduce image size to <strong>192</strong>(multiple 32) &amp; use <strong>squish</strong> method for data augmentation.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>arch <span class="op">=</span> <span class="st">'convnext_tiny_in22k'</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>learn_squish <span class="op">=</span> train(arch, item<span class="op">=</span>Resize(<span class="dv">192</span>, method<span class="op">=</span><span class="st">'squish'</span>),batch<span class="op">=</span>aug_transforms(size<span class="op">=</span><span class="dv">128</span>, min_scale<span class="op">=</span><span class="fl">0.75</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>/opt/conda/lib/python3.10/site-packages/timm/models/_factory.py:117: UserWarning: Mapping deprecated model name convnext_tiny_in22k to current convnext_tiny.fb_in22k.
+  model = create_fn(
+
+
+
+model.safetensors:   0%|          | 0.00/178M [00:00&lt;?, ?B/s]</code></pre>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.464850</td>
+<td>1.882828</td>
+<td>0.412178</td>
+<td>17:27</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.082745</td>
+<td>1.638774</td>
+<td>0.375693</td>
+<td>21:36</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1.828319</td>
+<td>1.418455</td>
+<td>0.350842</td>
+<td>21:36</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>1.719477</td>
+<td>1.355143</td>
+<td>0.342327</td>
+<td>21:34</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>1.633262</td>
+<td>1.351079</td>
+<td>0.340000</td>
+<td>21:38</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="data-augmentation" class="level2">
+<h2 class="anchored" data-anchor-id="data-augmentation">Data Augmentation</h2>
+<section id="crop" class="level3">
+<h3 class="anchored" data-anchor-id="crop">Crop</h3>
+<p><strong>Squish</strong> has already been performed in the last scenario, so let’s check on crop method, which is default in Fastai.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>learn_crop <span class="op">=</span> train(arch, item<span class="op">=</span>Resize(<span class="dv">192</span>),batch<span class="op">=</span>aug_transforms(size<span class="op">=</span><span class="dv">128</span>, min_scale<span class="op">=</span><span class="fl">0.75</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>/opt/conda/lib/python3.10/site-packages/timm/models/_factory.py:117: UserWarning: Mapping deprecated model name convnext_tiny_in22k to current convnext_tiny.fb_in22k.
+  model = create_fn(</code></pre>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.491307</td>
+<td>1.843047</td>
+<td>0.401188</td>
+<td>17:40</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.034851</td>
+<td>1.604407</td>
+<td>0.364554</td>
+<td>21:32</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1.804160</td>
+<td>1.384419</td>
+<td>0.342921</td>
+<td>21:39</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>1.620802</td>
+<td>1.324999</td>
+<td>0.334158</td>
+<td>21:28</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>1.583603</td>
+<td>1.313850</td>
+<td>0.331733</td>
+<td>21:29</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>learn_crop.export(<span class="st">'Lecture6_Part2_Food_Convnext_Tiny_Crop.pkl'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="padding" class="level3">
+<h3 class="anchored" data-anchor-id="padding">Padding</h3>
+<p>It keeps all the original images without transforming them, unlike squish &amp; crop, which change size of the images.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>learn_padding <span class="op">=</span> train(arch, item<span class="op">=</span>Resize((<span class="dv">192</span>), method<span class="op">=</span>ResizeMethod.Pad, pad_mode<span class="op">=</span>PadMode.Zeros),</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>      batch<span class="op">=</span>aug_transforms(size<span class="op">=</span>(<span class="dv">128</span>), min_scale<span class="op">=</span><span class="fl">0.75</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>/opt/conda/lib/python3.10/site-packages/timm/models/_factory.py:117: UserWarning: Mapping deprecated model name convnext_tiny_in22k to current convnext_tiny.fb_in22k.
+  model = create_fn(</code></pre>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.619984</td>
+<td>1.938507</td>
+<td>0.432228</td>
+<td>17:25</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.151396</td>
+<td>1.702708</td>
+<td>0.392723</td>
+<td>21:27</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1.879488</td>
+<td>1.477281</td>
+<td>0.369158</td>
+<td>21:37</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>1.783989</td>
+<td>1.412986</td>
+<td>0.354554</td>
+<td>21:28</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>1.738043</td>
+<td>1.404341</td>
+<td>0.354356</td>
+<td>21:25</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>learn_padding.export(<span class="st">'Lecture6_Part2_Food_Convnext_Tiny_Padding.pkl'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="best-among-these-three-is-padding-method.-lets-obtain-its-learning-rate-see-if-that-needs-to-be-changed." class="level5">
+<h5 class="anchored" data-anchor-id="best-among-these-three-is-padding-method.-lets-obtain-its-learning-rate-see-if-that-needs-to-be-changed.">Best among these three is Padding method. Let’s obtain it’s learning rate &amp; see if that needs to be changed.</h5>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>learn_crop.lr_find(suggest_funcs<span class="op">=</span>(valley, slide))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<pre><code>SuggestedLRs(valley=4.365158383734524e-05, slide=0.019054606556892395)</code></pre>
+<p><img src="Lecture_6_Road_To_The_Top_Part_2_self_files/Lecture_6_Road_To_The_Top_Part_2_self_22_3.png" class="img-fluid"></p>
+<p>As far as learning rate is concerned we are good to go.</p>
+</section>
+</section>
+<section id="test-time-augmentation" class="level3">
+<h3 class="anchored" data-anchor-id="test-time-augmentation">Test time augmentation</h3>
+<p>Instead of making predictions on the original validation image, the model makes predictions on multiple augmented versions of the test image and combines these predictions.</p>
+<p>For more refer : <a href="https://nbviewer.org/github/fastai/fastbook/blob/master/07_sizing_and_tta.ipynb#Test-Time-Augmentation">Test Time Augmentation</a>.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>tta_preds,targs <span class="op">=</span> learn_crop.tta(dl<span class="op">=</span>learn_crop.dls.valid)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>error_rate(tta_preds, targs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div>
+<progress value="0" class="" max="1" style="width:300px; height:20px; vertical-align: middle;">
+</progress>
+</div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<pre><code>TensorBase(0.3120)</code></pre>
+</section>
+</section>
+<section id="scaling-up" class="level2">
+<h2 class="anchored" data-anchor-id="scaling-up">Scaling Up</h2>
+<p>Now that we have identified the best possible model and data augmentation type, let’s scale it up by increasing the image size back to <code>512</code> &amp; number of epoch to <code>6</code>.</p>
+<p>With more than 5 epochs, we are in danger of overfitting. (<code>10</code> is certainly <strong>overfitting</strong> because our model has seen every image 10 times by now).</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> train(arch,item<span class="op">=</span>Resize(<span class="dv">512</span>),batch<span class="op">=</span>aug_transforms(size<span class="op">=</span>(<span class="dv">256</span>), min_scale<span class="op">=</span><span class="fl">0.75</span>), epochs<span class="op">=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>/opt/conda/lib/python3.10/site-packages/timm/models/_factory.py:117: UserWarning: Mapping deprecated model name convnext_tiny_in22k to current convnext_tiny.fb_in22k.
+  model = create_fn(
+
+
+
+model.safetensors:   0%|          | 0.00/178M [00:00&lt;?, ?B/s]</code></pre>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.119423</td>
+<td>1.545519</td>
+<td>0.324604</td>
+<td>31:25</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>1.857518</td>
+<td>1.425361</td>
+<td>0.301139</td>
+<td>35:32</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1.573771</td>
+<td>1.231033</td>
+<td>0.280644</td>
+<td>35:34</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>1.429572</td>
+<td>1.093103</td>
+<td>0.265149</td>
+<td>35:35</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>1.246169</td>
+<td>1.031862</td>
+<td>0.256931</td>
+<td>35:35</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>1.202549</td>
+<td>1.000573</td>
+<td>0.249356</td>
+<td>35:35</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>1.172318</td>
+<td>0.974019</td>
+<td>0.246089</td>
+<td>35:34</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>1.095220</td>
+<td>0.961513</td>
+<td>0.242673</td>
+<td>35:36</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>1.071022</td>
+<td>0.952826</td>
+<td>0.242079</td>
+<td>35:40</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td>1.101088</td>
+<td>0.950712</td>
+<td>0.241139</td>
+<td>35:38</td>
+</tr>
+<tr class="even">
+<td>9</td>
+<td>1.096281</td>
+<td>0.950866</td>
+<td>0.240545</td>
+<td>35:35</td>
+</tr>
+</tbody>
+</table>
+<p>This is far more accurate than our previous model.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>We achieved higher accuracy compared to our Part 1 version, but it put too much strain on our GPU. It even crashed at times during the execution of the ‘Scale Up!’ part. In the next notebook, we will learn how to optimize the GPU for better performance.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

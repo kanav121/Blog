@@ -12,20 +12,20 @@ order: 0
 
 ## Computer Vision Model(s) Understanding
 
-In [previous lecture](https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect3/) we referred [Which Image models are best?](https://www.kaggle.com/code/jhoward/which-image-models-are-best) to understand Computer vision models in general which among them works best.
+In [previous lecture](https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect3/) , we referred to [Which Image models are best?](https://www.kaggle.com/code/jhoward/which-image-models-are-best) to understand computer vision models in general and which among them works best.
 
-But this time we will be deep diving into these models : [Best Vision Model for fine-tuning](https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning). We have divided our testing in 2 parts :
+But this time, we will be deep diving into these models : [Best Vision Model for fine-tuning](https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning). We have divided our testing in 2 parts :
 
-1.  Existing Images : Our models such as ConvNext and ResNet, have been trained on a set of 22,000 images from the **ImageNet** dataset. It is highly probable that our model has already been exposed to commonly encountered categories such as cats, cars, musical instruments, and more during its training.\
-2.  New Images : Here we are using Images that most probably are not in **ImagNet** dataset, like Satellite Images, Medical Images etc.
+1.  Existing Images : Our models, such as ConvNext and ResNet, have been trained on a set of 22,000 images from the **ImageNet** dataset. It is highly probable that our model has already been exposed to commonly encountered categories such as cats, cars, musical instruments, and more during its training.\
+2.  New Images : Here we are using Images that most probably are not in **ImagNet** dataset, like satellite images, medical images etc.
 
 Our key findings :
 
 -   In Case 1, both **convnext_tiny_in22k** and **convnext_tiny** emerged as go-to models, selected based on their impressive accuracy and efficient training times.
 
--   In Case 2, models like ViT (Vision Transformer) and Swin demonstrated excellent performance. Their transformer architecture proved beneficial in understanding patterns from the data they are not trained on previously. namely - **vit_small_patch32_224, vit_small_patch16_224, swin_base_patch4_window7_224_in22k**.
+-   In Case 2, models like ViT (Vision Transformer) and Swin demonstrated excellent performance. Their transformer architecture proved beneficial in understanding patterns from the data they were not trained on previously, namely - **vit_small_patch32_224, vit_small_patch16_224, swin_base_patch4_window7_224_in22k**.
 
--   Tip - ViT model work only on 224 pixel image so to train our image data on ViT images should be of 224\*224 pixels
+    -   Tip - ViT model work only on 224 pixel image, so to train our image data on ViT, images should be of 224\*224 pixels.
 
 ### Install FastAI
 
@@ -71,7 +71,7 @@ Requirement already satisfied: certifi>=2017.4.17 in /opt/conda/lib/python3.10/s
 Requirement already satisfied: mpmath>=0.19 in /opt/conda/lib/python3.10/site-packages (from sympy->torch->timm) (1.3.0)
 ```
 
-### Get data from FastAI of Food
+### Retrieve Food Data from FastAI
 
 ``` python
 path = Path('/content')
@@ -111,7 +111,7 @@ Path('/content/food-101')
 
 ## 1. Create Test Dataset
 
-We do not have test dataset let's randomly create a `test` folder which will have 15% of the images from train folder & we will not train our model on these images.
+We don't have test dataset, so let's randomly create a `test` folder containing 15% of the images from train folder. Our model will not be trained on these images.
 
 ``` python
 import os
@@ -220,7 +220,7 @@ df_train_txt.head(10)
 
 We can see that .txt file is of no use
 
-### Let's View Random 5 Food Items
+### Let's view 5 random food items
 
 ``` python
 from PIL import Image
@@ -263,7 +263,7 @@ show_random_images(all_image_paths, num_images=5, display_size=(25, 25))
 
 ### Remove images that are corrupt
 
-`verify_images()` will return path of images which are corrupt and using `unlink` we can remove these files.
+`verify_images()` will return the paths of images that are corrupt, and we can use `unlink` to remove these files.
 
 ``` python
 fns_train = get_image_files(train_path)
@@ -297,7 +297,7 @@ Image_Count_Dict
 
 ### Standardize the size of Images
 
-Let's check all their sizes. This is faster if we do it in `parallel`, it helps to execute function in parallel.
+Let's check all their sizes. This is faster if we do it in `parallel`, it helps in executing function in parallel.
 
 ``` python
 from fastcore.parallel import *
@@ -322,13 +322,13 @@ pd.Series(sizes).value_counts()
 Name: count, Length: 453, dtype: int64
 ```
 
-We can see that we have lot's of different size of images. We need to standardized it.
+We can see that we have lots of images with different sizes. We need to standardize it.
 
 ## 2. Data Loader
 
-But our images are of size of 512(multiple of 32) , let's resize it to 480( multiple of 32) .
+Our images are of size of 512(multiple of 32) , let's resize it to 480( multiple of 32) .
 
--   **Tip** If Image is in rectangular format (640,480) with aspect ratio (4:3) then if we want to resize those images do it in same aspect ratio for example (256,192) & if possible set new size to be multiple of **32**. CNN works great with 32\* size.
+-   **Tip** If an image is in a rectangular format such as (640,480) with an aspect ratio (4:3), maintain the same aspect ratio when resizing the images. For example, resize it to (256,192). Additionally, if possible set new size to be multiple of **32**. CNN works great with 32\* size.
 
 ``` python
 dls = ImageDataLoaders.from_folder(train_path, valid_pct=0.2, seed=42,
@@ -340,15 +340,15 @@ dls.show_batch(max_n=4)
 
 ![](lecture-6-road-to-the-top-part-1-self_files/lecture-6-road-to-the-top-part-1-self_20_0.png)
 
-By referring [Best Vision models for fine-tuning](https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning) we can make a case that `resnet26d`, which is the fastest resolution-independent model which gets into the top-15 lists there
+Referring [Best Vision models for fine-tuning](https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning) we can make a case that `resnet26d` is the fastest resolution-independent model, which make it into the top-15 lists there
 
--   **Goal** Is not get best possible result but to get things going with simple models & then improve on it.
+-   **Goal** is not to achieve the best possible results, but rather to get things going with simple models & then improve upon them.
 
 ## 3. Model Building
 
 **Half-precision floating-point \[.to_fp16()\]** uses 16 bits to store a number, while single precision (float32) uses 32 bits and double precision (float64) uses 64 bits. It is useful in deep learning for its reduced memory usage.
 
-And it is great tool to be used during the *inference phase to save memory and computational resources*.
+Furthermore, it is great tool to be utilized during the *inference phase to save memory and computational resources*.
 
 ### With floating point
 
@@ -458,15 +458,15 @@ model.safetensors:   0%|          | 0.00/64.2M [00:00<?, ?B/s]
 | 2     | 1.586775   | 1.457398   | 0.379907   | 06:45 |
 | 3     | 1.483222   | 1.437040   | 0.376878   | 06:35 |
 
--   Comparing both we can say that floating point didn't come as handy as it should have been accuracy and time are same
+-   Comparing both, we can observe that floating point arithmetic didn't prove as handy as it should have been, accuracy and time remain the same.
 
--   Also remember in our 1st task on classification of Big cat with very small data we were having such higher accuracy. However, despite the abundance of images (85,850) in this case, we still encounter significant inaccuracies. This discrepancy suggests that the model is encountering learning challenges, possibly due to issues with the training data or the images being too similar. For instance, there may be minimal variation in certain dishes despite being categorized differently, such as `Veg Pulao & Briyani.`
+-   Additionally, let's recall our first task on classification of Big Cats with very little data, we achieved significantly higher accuracy. However, despite the abundance of images (85,850) in this case, we still encounter significant inaccuracies. This discrepancy suggests that the model is encountering learning challenges, possibly due to issues with the training data or the images being too similar. For instance, there may be minimal variation in certain dishes despite being categorized differently, such as `Veg Pulao & Briyani.`
 
 ### Learning Rate
 
 [Learning Rate blog](https://forums.fast.ai/t/new-lr-finder-output/89236/3)
 
-As discussed earlier Valley & Slide give us best of result so we don't need to call other 2 functions. Our default value for learning rate is **0.02.**
+As discussed earlier, Valley & Slide yield the best results. So, we don't need to call the other two functions. Our default value for learning rate is **0.02.**
 
 ``` python
 learn_without_fp.lr_find(suggest_funcs=(valley, slide))
@@ -495,7 +495,7 @@ SuggestedLRs(valley=1.2022644114040304e-05, slide=0.019054606556892395)
 
 ![](lecture-6-road-to-the-top-part-1-self_files/lecture-6-road-to-the-top-part-1-self_30_3.png)
 
-So it was the learning rate that cause such high error rate as we can in our plot, let's reduce near to `valley` point
+So it was the learning rate that caused such a high error rate as we can see in our plot. Let's reduce it near to `valley` point.
 
 ### Final Model
 
@@ -537,7 +537,7 @@ learn_without_fp.export('Lecture6_Part1_Food_Resnet_Model.pkl')
 
 ### Read test data
 
-We can now get the probabilities of each class, and the index of the most likely class, from this test set (the 2nd thing returned by get_preds are the targets, which are blank for a test set, so we discard them)
+Now, we can obtain the probabilities of each class and the index of the most likely class from this test set. The second object returned by **get_preds** contains the targets, which are blank for a test set, so we discard them.
 
 ``` python
 test_files = get_image_files(test_path).sorted()
@@ -568,7 +568,7 @@ idxs
 tensor([54, 80, 44,  ..., 73, 78, 92])
 ```
 
-These need to be mapped to the names of each of these type, these names are stored by fastai automatically in the `vocab`:
+These need to be mapped to the names of each type. These names are automatically stored by FastAI in the `vocab`.
 
 ``` python
 dls.vocab

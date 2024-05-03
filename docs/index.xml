@@ -10,7 +10,1064 @@
 <atom:link href="https://mekanavsharma.github.io/Blog/index.xml" rel="self" type="application/rss+xml"/>
 <description>Collection of my Projects and Ideas</description>
 <generator>quarto-1.3.450</generator>
-<lastBuildDate>Sat, 27 Apr 2024 18:30:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 02 May 2024 18:30:00 GMT</lastBuildDate>
+<item>
+  <title>FastAI Course Lecture 6 Part 2 Notes</title>
+  <dc:creator>Kanav Sharma</dc:creator>
+  <link>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part2/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>In <a href="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part1/">Lecture6-Part1</a> we build our model using <code>resent26d</code> architecture with best accuracy <code>73%</code>. In this notebook we will be using <code>ConvNeXt</code> model and aiming towards higher accuracy.</p>
+<section id="install-fastai" class="level3">
+<h3 class="anchored" data-anchor-id="install-fastai">Install FastAI</h3>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#hide</span></span>
+<span id="cb1-2"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span>pip install <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>Uqq fastbook</span>
+<span id="cb1-3"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span>pip install timm</span>
+<span id="cb1-4"></span>
+<span id="cb1-5"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> fastbook</span>
+<span id="cb1-6">fastbook.setup_book()</span>
+<span id="cb1-7"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> timm</span>
+<span id="cb1-8"></span>
+<span id="cb1-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#hide</span></span>
+<span id="cb1-10"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> fastbook <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span>
+<span id="cb1-11"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> fastai.vision.widgets <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span>
+<span id="cb1-12"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> fastai.vision.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">all</span> <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span></code></pre></div>
+<pre><code>Requirement already satisfied: timm in /opt/conda/lib/python3.10/site-packages (0.9.16)
+Requirement already satisfied: torch in /opt/conda/lib/python3.10/site-packages (from timm) (2.1.2)
+Requirement already satisfied: torchvision in /opt/conda/lib/python3.10/site-packages (from timm) (0.16.2)
+Requirement already satisfied: pyyaml in /opt/conda/lib/python3.10/site-packages (from timm) (6.0.1)
+Requirement already satisfied: huggingface_hub in /opt/conda/lib/python3.10/site-packages (from timm) (0.20.3)
+Requirement already satisfied: safetensors in /opt/conda/lib/python3.10/site-packages (from timm) (0.4.2)
+Requirement already satisfied: filelock in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (3.13.1)
+Requirement already satisfied: fsspec&gt;=2023.5.0 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (2024.2.0)
+Requirement already satisfied: requests in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (2.31.0)
+Requirement already satisfied: tqdm&gt;=4.42.1 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (4.66.1)
+Requirement already satisfied: typing-extensions&gt;=3.7.4.3 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (4.9.0)
+Requirement already satisfied: packaging&gt;=20.9 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (21.3)
+Requirement already satisfied: sympy in /opt/conda/lib/python3.10/site-packages (from torch-&gt;timm) (1.12)
+Requirement already satisfied: networkx in /opt/conda/lib/python3.10/site-packages (from torch-&gt;timm) (3.2.1)
+Requirement already satisfied: jinja2 in /opt/conda/lib/python3.10/site-packages (from torch-&gt;timm) (3.1.2)
+Requirement already satisfied: numpy in /opt/conda/lib/python3.10/site-packages (from torchvision-&gt;timm) (1.26.4)
+Requirement already satisfied: pillow!=8.3.*,&gt;=5.3.0 in /opt/conda/lib/python3.10/site-packages (from torchvision-&gt;timm) (9.5.0)
+Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /opt/conda/lib/python3.10/site-packages (from packaging&gt;=20.9-&gt;huggingface_hub-&gt;timm) (3.1.1)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /opt/conda/lib/python3.10/site-packages (from jinja2-&gt;torch-&gt;timm) (2.1.3)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (3.6)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (1.26.18)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (2024.2.2)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/lib/python3.10/site-packages (from sympy-&gt;torch-&gt;timm) (1.3.0)</code></pre>
+</section>
+<section id="lets-download-food-data-from-fastai" class="level2">
+<h2 class="anchored" data-anchor-id="lets-download-food-data-from-fastai">Let’s download food data from FastAI</h2>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Path(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/content'</span>)</span>
+<span id="cb3-2">untar_data(URLs.FOOD, data<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>path)</span>
+<span id="cb3-3"></span>
+<span id="cb3-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># actual path to train image folder</span></span>
+<span id="cb3-5">train_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/content/food-101/images'</span></span>
+<span id="cb3-6">test_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/content/food-101/test'</span></span>
+<span id="cb3-7"></span>
+<span id="cb3-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Create Test folder</span></span>
+<span id="cb3-9"></span>
+<span id="cb3-10"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> os</span>
+<span id="cb3-11"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> random</span>
+<span id="cb3-12"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> shutil</span>
+<span id="cb3-13"></span>
+<span id="cb3-14"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> move_images_to_test(source_folder, test_folder, percentage<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>):</span>
+<span id="cb3-15">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Create the test folder if it doesn't exist</span></span>
+<span id="cb3-16">    os.makedirs(test_folder, exist_ok<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span>
+<span id="cb3-17"></span>
+<span id="cb3-18">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Iterate through each subfolder in the source folder</span></span>
+<span id="cb3-19">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> subfolder <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> os.listdir(source_folder):</span>
+<span id="cb3-20">        subfolder_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(source_folder, subfolder)</span>
+<span id="cb3-21"></span>
+<span id="cb3-22">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Check if it's a directory</span></span>
+<span id="cb3-23">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> os.path.isdir(subfolder_path):</span>
+<span id="cb3-24">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Get a list of all image files in the subfolder</span></span>
+<span id="cb3-25">            image_files <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [f <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> f <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> os.listdir(subfolder_path) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> f.endswith(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'.jpg'</span>)]</span>
+<span id="cb3-26"></span>
+<span id="cb3-27">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Calculate the number of images to move</span></span>
+<span id="cb3-28">            num_images_to_move <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(image_files) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> percentage)</span>
+<span id="cb3-29"></span>
+<span id="cb3-30">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Randomly select images to move</span></span>
+<span id="cb3-31">            images_to_move <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> random.sample(image_files, num_images_to_move)</span>
+<span id="cb3-32"></span>
+<span id="cb3-33">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Move selected images to the test folder</span></span>
+<span id="cb3-34">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> image <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> images_to_move:</span>
+<span id="cb3-35">                source_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(subfolder_path, image)</span>
+<span id="cb3-36">                dest_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(test_folder, image)</span>
+<span id="cb3-37">                shutil.move(source_path, dest_path)</span>
+<span id="cb3-38"></span>
+<span id="cb3-39"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">__name__</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"__main__"</span>:</span>
+<span id="cb3-40">    move_images_to_test(train_path, test_path, percentage<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.15</span>)</span></code></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div>
+<progress value="5686607872" class="" max="5686607260" style="width:300px; height:20px; vertical-align: middle;">
+</progress>
+<p>100.00% [5686607872/5686607260 02:31&lt;00:00]</p>
+</div>
+</section>
+<section id="lets-make-it-faster" class="level2">
+<h2 class="anchored" data-anchor-id="lets-make-it-faster">Let’s make it faster</h2>
+<p>Last time, we encountered a problem even though we were using the fastest architecture. It was still taking too long. For a change, let’s resize the images to <code>256</code> pixels. This will decrease the size of each pixel and allow us to train our model faster.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">dls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ImageDataLoaders.from_folder(path, valid_pct<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, seed<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>,</span>
+<span id="cb4-2">    item_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">256</span>, method<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'squish'</span>),</span>
+<span id="cb4-3">    batch_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>aug_transforms(size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>, min_scale<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.75</span>))</span>
+<span id="cb4-4"></span>
+<span id="cb4-5">dls.show_batch(max_n<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)</span></code></pre></div>
+<p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part2/Lecture_6_Road_To_The_Top_Part_2_self_files/Lecture_6_Road_To_The_Top_Part_2_self_4_0.png" class="img-fluid"></p>
+<section id="make-it-into-a-function" class="level3">
+<h3 class="anchored" data-anchor-id="make-it-into-a-function">Make it into a function</h3>
+<p>In this notebook, we will be experimenting with lots of models, data(image) augmentation, and other techniques. So instead of repeating the same code every time, let’s create a function that can be called whenever needed.</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> train(arch, item, batch, epochs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, learning_rate<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0002</span>):</span>
+<span id="cb5-2">    dls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ImageDataLoaders.from_folder(path, seed<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>, valid_pct<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, item_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>item, batch_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>batch)</span>
+<span id="cb5-3">    learn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> vision_learner(dls, arch, metrics<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>error_rate)</span>
+<span id="cb5-4">    learn.fine_tune(epochs, learning_rate)</span>
+<span id="cb5-5">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> learn</span></code></pre></div>
+<p>To ensure consistent function behavior, we have rigidly set the number of epochs and the learning rate value.</p>
+</section>
+<section id="call-the-function" class="level3">
+<h3 class="anchored" data-anchor-id="call-the-function">Call the function</h3>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1">learn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> train(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'resnet26d'</span>, item<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">256</span>),batch<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>aug_transforms(size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>, min_scale<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.75</span>))</span></code></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>3.727076</td>
+<td>2.929649</td>
+<td>0.664554</td>
+<td>04:58</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>3.250653</td>
+<td>2.632962</td>
+<td>0.618911</td>
+<td>05:03</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>2.837729</td>
+<td>2.394110</td>
+<td>0.584109</td>
+<td>05:09</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>2.680722</td>
+<td>2.286321</td>
+<td>0.563812</td>
+<td>05:10</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>2.653321</td>
+<td>2.266845</td>
+<td>0.560149</td>
+<td>05:08</td>
+</tr>
+</tbody>
+</table>
+<p>Though we were able to reduce the time but we got higher error rate.</p>
+</section>
+</section>
+<section id="convnext-model" class="level2">
+<h2 class="anchored" data-anchor-id="convnext-model">ConvNeXt model</h2>
+<p>In our previous notebook, we discussed how the <strong>convnext_tiny_in22k</strong> is go-to model. We would like to reduce image size to <strong>192</strong>(multiple 32) &amp; use <strong>squish</strong> method for data augmentation.</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">arch <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'convnext_tiny_in22k'</span></span>
+<span id="cb7-2"></span>
+<span id="cb7-3">learn_squish <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> train(arch, item<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">192</span>, method<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'squish'</span>),batch<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>aug_transforms(size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>, min_scale<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.75</span>))</span></code></pre></div>
+<pre><code>/opt/conda/lib/python3.10/site-packages/timm/models/_factory.py:117: UserWarning: Mapping deprecated model name convnext_tiny_in22k to current convnext_tiny.fb_in22k.
+  model = create_fn(
+
+
+
+model.safetensors:   0%|          | 0.00/178M [00:00&lt;?, ?B/s]</code></pre>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.464850</td>
+<td>1.882828</td>
+<td>0.412178</td>
+<td>17:27</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.082745</td>
+<td>1.638774</td>
+<td>0.375693</td>
+<td>21:36</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1.828319</td>
+<td>1.418455</td>
+<td>0.350842</td>
+<td>21:36</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>1.719477</td>
+<td>1.355143</td>
+<td>0.342327</td>
+<td>21:34</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>1.633262</td>
+<td>1.351079</td>
+<td>0.340000</td>
+<td>21:38</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="data-augmentation" class="level2">
+<h2 class="anchored" data-anchor-id="data-augmentation">Data Augmentation</h2>
+<section id="crop" class="level3">
+<h3 class="anchored" data-anchor-id="crop">Crop</h3>
+<p><strong>Squish</strong> has already been performed in the last scenario, so let’s check on crop method, which is default in Fastai.</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">learn_crop <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> train(arch, item<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">192</span>),batch<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>aug_transforms(size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>, min_scale<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.75</span>))</span></code></pre></div>
+<pre><code>/opt/conda/lib/python3.10/site-packages/timm/models/_factory.py:117: UserWarning: Mapping deprecated model name convnext_tiny_in22k to current convnext_tiny.fb_in22k.
+  model = create_fn(</code></pre>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.491307</td>
+<td>1.843047</td>
+<td>0.401188</td>
+<td>17:40</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.034851</td>
+<td>1.604407</td>
+<td>0.364554</td>
+<td>21:32</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1.804160</td>
+<td>1.384419</td>
+<td>0.342921</td>
+<td>21:39</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>1.620802</td>
+<td>1.324999</td>
+<td>0.334158</td>
+<td>21:28</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>1.583603</td>
+<td>1.313850</td>
+<td>0.331733</td>
+<td>21:29</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1">learn_crop.export(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Lecture6_Part2_Food_Convnext_Tiny_Crop.pkl'</span>)</span></code></pre></div>
+</section>
+<section id="padding" class="level3">
+<h3 class="anchored" data-anchor-id="padding">Padding</h3>
+<p>It keeps all the original images without transforming them, unlike squish &amp; crop, which change size of the images.</p>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">learn_padding <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> train(arch, item<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Resize((<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">192</span>), method<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>ResizeMethod.Pad, pad_mode<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>PadMode.Zeros),</span>
+<span id="cb12-2">      batch<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>aug_transforms(size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>), min_scale<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.75</span>))</span></code></pre></div>
+<pre><code>/opt/conda/lib/python3.10/site-packages/timm/models/_factory.py:117: UserWarning: Mapping deprecated model name convnext_tiny_in22k to current convnext_tiny.fb_in22k.
+  model = create_fn(</code></pre>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.619984</td>
+<td>1.938507</td>
+<td>0.432228</td>
+<td>17:25</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.151396</td>
+<td>1.702708</td>
+<td>0.392723</td>
+<td>21:27</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1.879488</td>
+<td>1.477281</td>
+<td>0.369158</td>
+<td>21:37</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>1.783989</td>
+<td>1.412986</td>
+<td>0.354554</td>
+<td>21:28</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>1.738043</td>
+<td>1.404341</td>
+<td>0.354356</td>
+<td>21:25</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1">learn_padding.export(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Lecture6_Part2_Food_Convnext_Tiny_Padding.pkl'</span>)</span></code></pre></div>
+<section id="best-among-these-three-is-padding-method.-lets-obtain-its-learning-rate-see-if-that-needs-to-be-changed." class="level5">
+<h5 class="anchored" data-anchor-id="best-among-these-three-is-padding-method.-lets-obtain-its-learning-rate-see-if-that-needs-to-be-changed.">Best among these three is Padding method. Let’s obtain it’s learning rate &amp; see if that needs to be changed.</h5>
+<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">learn_crop.lr_find(suggest_funcs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(valley, slide))</span></code></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<pre><code>SuggestedLRs(valley=4.365158383734524e-05, slide=0.019054606556892395)</code></pre>
+<p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part2/Lecture_6_Road_To_The_Top_Part_2_self_files/Lecture_6_Road_To_The_Top_Part_2_self_22_3.png" class="img-fluid"></p>
+<p>As far as learning rate is concerned we are good to go.</p>
+</section>
+</section>
+<section id="test-time-augmentation" class="level3">
+<h3 class="anchored" data-anchor-id="test-time-augmentation">Test time augmentation</h3>
+<p>Instead of making predictions on the original validation image, the model makes predictions on multiple augmented versions of the test image and combines these predictions.</p>
+<p>For more refer : <a href="https://nbviewer.org/github/fastai/fastbook/blob/master/07_sizing_and_tta.ipynb#Test-Time-Augmentation">Test Time Augmentation</a>.</p>
+<div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1">tta_preds,targs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> learn_crop.tta(dl<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>learn_crop.dls.valid)</span>
+<span id="cb17-2">error_rate(tta_preds, targs)</span></code></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div>
+<progress value="0" class="" max="1" style="width:300px; height:20px; vertical-align: middle;">
+</progress>
+</div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<pre><code>TensorBase(0.3120)</code></pre>
+</section>
+</section>
+<section id="scaling-up" class="level2">
+<h2 class="anchored" data-anchor-id="scaling-up">Scaling Up</h2>
+<p>Now that we have identified the best possible model and data augmentation type, let’s scale it up by increasing the image size back to <code>512</code> &amp; number of epoch to <code>6</code>.</p>
+<p>With more than 5 epochs, we are in danger of overfitting. (<code>10</code> is certainly <strong>overfitting</strong> because our model has seen every image 10 times by now).</p>
+<div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1">learn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> train(arch,item<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">512</span>),batch<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>aug_transforms(size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">256</span>), min_scale<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.75</span>), epochs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>)</span></code></pre></div>
+<pre><code>/opt/conda/lib/python3.10/site-packages/timm/models/_factory.py:117: UserWarning: Mapping deprecated model name convnext_tiny_in22k to current convnext_tiny.fb_in22k.
+  model = create_fn(
+
+
+
+model.safetensors:   0%|          | 0.00/178M [00:00&lt;?, ?B/s]</code></pre>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.119423</td>
+<td>1.545519</td>
+<td>0.324604</td>
+<td>31:25</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>1.857518</td>
+<td>1.425361</td>
+<td>0.301139</td>
+<td>35:32</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1.573771</td>
+<td>1.231033</td>
+<td>0.280644</td>
+<td>35:34</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>1.429572</td>
+<td>1.093103</td>
+<td>0.265149</td>
+<td>35:35</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>1.246169</td>
+<td>1.031862</td>
+<td>0.256931</td>
+<td>35:35</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>1.202549</td>
+<td>1.000573</td>
+<td>0.249356</td>
+<td>35:35</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>1.172318</td>
+<td>0.974019</td>
+<td>0.246089</td>
+<td>35:34</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>1.095220</td>
+<td>0.961513</td>
+<td>0.242673</td>
+<td>35:36</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>1.071022</td>
+<td>0.952826</td>
+<td>0.242079</td>
+<td>35:40</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td>1.101088</td>
+<td>0.950712</td>
+<td>0.241139</td>
+<td>35:38</td>
+</tr>
+<tr class="even">
+<td>9</td>
+<td>1.096281</td>
+<td>0.950866</td>
+<td>0.240545</td>
+<td>35:35</td>
+</tr>
+</tbody>
+</table>
+<p>This is far more accurate than our previous model.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>We achieved higher accuracy compared to our Part 1 version, but it put too much strain on our GPU. It even crashed at times during the execution of the ‘Scale Up!’ part. In the next notebook, we will learn how to optimize the GPU for better performance.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Computer Vision</category>
+  <category>FastAI</category>
+  <guid>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part2/index.html</guid>
+  <pubDate>Thu, 02 May 2024 18:30:00 GMT</pubDate>
+</item>
 <item>
   <title>FastAI Course Lecture 6 Part 1 Notes</title>
   <dc:creator>Kanav Sharma</dc:creator>
@@ -22,18 +1079,20 @@
 
 <section id="computer-vision-models-understanding" class="level2">
 <h2 class="anchored" data-anchor-id="computer-vision-models-understanding">Computer Vision Model(s) Understanding</h2>
-<p>In <a href="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect3/">previous lecture</a> we referred <a href="https://www.kaggle.com/code/jhoward/which-image-models-are-best">Which Image models are best?</a> to understand Computer vision models in general which among them works best.</p>
-<p>But this time we will be deep diving into these models : <a href="https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning">Best Vision Model for fine-tuning</a>. We have divided our testing in 2 parts :</p>
+<p>In <a href="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect3/">previous lecture</a> , we referred to <a href="https://www.kaggle.com/code/jhoward/which-image-models-are-best">Which Image models are best?</a> to understand computer vision models in general and which among them works best.</p>
+<p>But this time, we will be deep diving into these models : <a href="https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning">Best Vision Model for fine-tuning</a>. We have divided our testing in 2 parts :</p>
 <ol type="1">
-<li>Existing Images : Our models such as ConvNext and ResNet, have been trained on a set of 22,000 images from the <strong>ImageNet</strong> dataset. It is highly probable that our model has already been exposed to commonly encountered categories such as cats, cars, musical instruments, and more during its training.<br>
+<li>Existing Images : Our models, such as ConvNext and ResNet, have been trained on a set of 22,000 images from the <strong>ImageNet</strong> dataset. It is highly probable that our model has already been exposed to commonly encountered categories such as cats, cars, musical instruments, and more during its training.<br>
 </li>
-<li>New Images : Here we are using Images that most probably are not in <strong>ImagNet</strong> dataset, like Satellite Images, Medical Images etc.</li>
+<li>New Images : Here we are using Images that most probably are not in <strong>ImagNet</strong> dataset, like satellite images, medical images etc.</li>
 </ol>
 <p>Our key findings :</p>
 <ul>
 <li><p>In Case 1, both <strong>convnext_tiny_in22k</strong> and <strong>convnext_tiny</strong> emerged as go-to models, selected based on their impressive accuracy and efficient training times.</p></li>
-<li><p>In Case 2, models like ViT (Vision Transformer) and Swin demonstrated excellent performance. Their transformer architecture proved beneficial in understanding patterns from the data they are not trained on previously. namely - <strong>vit_small_patch32_224, vit_small_patch16_224, swin_base_patch4_window7_224_in22k</strong>.</p></li>
-<li><p>Tip - ViT model work only on 224 pixel image so to train our image data on ViT images should be of 224*224 pixels</p></li>
+<li><p>In Case 2, models like ViT (Vision Transformer) and Swin demonstrated excellent performance. Their transformer architecture proved beneficial in understanding patterns from the data they were not trained on previously, namely - <strong>vit_small_patch32_224, vit_small_patch16_224, swin_base_patch4_window7_224_in22k</strong>.</p>
+<ul>
+<li>Tip - ViT model work only on 224 pixel image, so to train our image data on ViT, images should be of 224*224 pixels.</li>
+</ul></li>
 </ul>
 <section id="install-fastai" class="level3">
 <h3 class="anchored" data-anchor-id="install-fastai">Install FastAI</h3>
@@ -108,8 +1167,8 @@ Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/lib/python
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (2024.2.2)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/lib/python3.10/site-packages (from sympy-&gt;torch-&gt;timm) (1.3.0)</code></pre>
 </section>
-<section id="get-data-from-fastai-of-food" class="level3">
-<h3 class="anchored" data-anchor-id="get-data-from-fastai-of-food">Get data from FastAI of Food</h3>
+<section id="retrieve-food-data-from-fastai" class="level3">
+<h3 class="anchored" data-anchor-id="retrieve-food-data-from-fastai">Retrieve Food Data from FastAI</h3>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">path <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> Path(<span class="st" style="color: #20794D;
@@ -143,7 +1202,7 @@ font-style: inherit;">=</span>path)</span></code></pre></div>
 </section>
 <section id="create-test-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="create-test-dataset">1. Create Test Dataset</h2>
-<p>We do not have test dataset let’s randomly create a <code>test</code> folder which will have 15% of the images from train folder &amp; we will not train our model on these images.</p>
+<p>We don’t have test dataset, so let’s randomly create a <code>test</code> folder containing 15% of the images from train folder. Our model will not be trained on these images.</p>
 <div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> os</span>
@@ -1092,8 +2151,8 @@ font-style: inherit;">10</span>)</span></code></pre></div>
 </table>
 </div>
 <p>We can see that .txt file is of no use</p>
-<section id="lets-view-random-5-food-items" class="level3">
-<h3 class="anchored" data-anchor-id="lets-view-random-5-food-items">Let’s View Random 5 Food Items</h3>
+<section id="lets-view-5-random-food-items" class="level3">
+<h3 class="anchored" data-anchor-id="lets-view-5-random-food-items">Let’s view 5 random food items</h3>
 <div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> PIL <span class="im" style="color: #00769E;
@@ -1250,7 +2309,7 @@ font-style: inherit;">25</span>))</span></code></pre></div>
 </section>
 <section id="remove-images-that-are-corrupt" class="level3">
 <h3 class="anchored" data-anchor-id="remove-images-that-are-corrupt">Remove images that are corrupt</h3>
-<p><code>verify_images()</code> will return path of images which are corrupt and using <code>unlink</code> we can remove these files.</p>
+<p><code>verify_images()</code> will return the paths of images that are corrupt, and we can use <code>unlink</code> to remove these files.</p>
 <div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">fns_train <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> get_image_files(train_path)</span>
@@ -1314,7 +2373,7 @@ font-style: inherit;">"Total_Test_Image_Count"</span>: total_test_imagelength}</
 </section>
 <section id="standardize-the-size-of-images" class="level3">
 <h3 class="anchored" data-anchor-id="standardize-the-size-of-images">Standardize the size of Images</h3>
-<p>Let’s check all their sizes. This is faster if we do it in <code>parallel</code>, it helps to execute function in parallel.</p>
+<p>Let’s check all their sizes. This is faster if we do it in <code>parallel</code>, it helps in executing function in parallel.</p>
 <div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> fastcore.parallel <span class="im" style="color: #00769E;
@@ -1348,14 +2407,14 @@ font-style: inherit;">8</span>)</span>
 (407, 512)        1
 (279, 512)        1
 Name: count, Length: 453, dtype: int64</code></pre>
-<p>We can see that we have lot’s of different size of images. We need to standardized it.</p>
+<p>We can see that we have lots of images with different sizes. We need to standardize it.</p>
 </section>
 </section>
 <section id="data-loader" class="level2">
 <h2 class="anchored" data-anchor-id="data-loader">2. Data Loader</h2>
-<p>But our images are of size of 512(multiple of 32) , let’s resize it to 480( multiple of 32) .</p>
+<p>Our images are of size of 512(multiple of 32) , let’s resize it to 480( multiple of 32) .</p>
 <ul>
-<li><strong>Tip</strong> If Image is in rectangular format (640,480) with aspect ratio (4:3) then if we want to resize those images do it in same aspect ratio for example (256,192) &amp; if possible set new size to be multiple of <strong>32</strong>. CNN works great with 32* size.</li>
+<li><strong>Tip</strong> If an image is in a rectangular format such as (640,480) with an aspect ratio (4:3), maintain the same aspect ratio when resizing the images. For example, resize it to (256,192). Additionally, if possible set new size to be multiple of <strong>32</strong>. CNN works great with 32* size.</li>
 </ul>
 <div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1">dls <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1395,15 +2454,15 @@ font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">4</span>)</span></code></pre></div>
 <p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part1/lecture-6-road-to-the-top-part-1-self_files/lecture-6-road-to-the-top-part-1-self_20_0.png" class="img-fluid"></p>
-<p>By referring <a href="https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning">Best Vision models for fine-tuning</a> we can make a case that <code>resnet26d</code>, which is the fastest resolution-independent model which gets into the top-15 lists there</p>
+<p>Referring <a href="https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning">Best Vision models for fine-tuning</a> we can make a case that <code>resnet26d</code> is the fastest resolution-independent model, which make it into the top-15 lists there</p>
 <ul>
-<li><strong>Goal</strong> Is not get best possible result but to get things going with simple models &amp; then improve on it.</li>
+<li><strong>Goal</strong> is not to achieve the best possible results, but rather to get things going with simple models &amp; then improve upon them.</li>
 </ul>
 </section>
 <section id="model-building" class="level2">
 <h2 class="anchored" data-anchor-id="model-building">3. Model Building</h2>
 <p><strong>Half-precision floating-point [.to_fp16()]</strong> uses 16 bits to store a number, while single precision (float32) uses 32 bits and double precision (float64) uses 64 bits. It is useful in deep learning for its reduced memory usage.</p>
-<p>And it is great tool to be used during the <em>inference phase to save memory and computational resources</em>.</p>
+<p>Furthermore, it is great tool to be utilized during the <em>inference phase to save memory and computational resources</em>.</p>
 <section id="with-floating-point" class="level3">
 <h3 class="anchored" data-anchor-id="with-floating-point">With floating point</h3>
 <div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1">learn_with_fp <span class="op" style="color: #5E5E5E;
@@ -1621,14 +2680,14 @@ font-style: inherit;">4</span>)</span></code></pre></div>
 </tbody>
 </table>
 <ul>
-<li><p>Comparing both we can say that floating point didn’t come as handy as it should have been accuracy and time are same</p></li>
-<li><p>Also remember in our 1st task on classification of Big cat with very small data we were having such higher accuracy. However, despite the abundance of images (85,850) in this case, we still encounter significant inaccuracies. This discrepancy suggests that the model is encountering learning challenges, possibly due to issues with the training data or the images being too similar. For instance, there may be minimal variation in certain dishes despite being categorized differently, such as <code>Veg Pulao &amp; Briyani.</code></p></li>
+<li><p>Comparing both, we can observe that floating point arithmetic didn’t prove as handy as it should have been, accuracy and time remain the same.</p></li>
+<li><p>Additionally, let’s recall our first task on classification of Big Cats with very little data, we achieved significantly higher accuracy. However, despite the abundance of images (85,850) in this case, we still encounter significant inaccuracies. This discrepancy suggests that the model is encountering learning challenges, possibly due to issues with the training data or the images being too similar. For instance, there may be minimal variation in certain dishes despite being categorized differently, such as <code>Veg Pulao &amp; Briyani.</code></p></li>
 </ul>
 </section>
 <section id="learning-rate" class="level3">
 <h3 class="anchored" data-anchor-id="learning-rate">Learning Rate</h3>
 <p><a href="https://forums.fast.ai/t/new-lr-finder-output/89236/3">Learning Rate blog</a></p>
-<p>As discussed earlier Valley &amp; Slide give us best of result so we don’t need to call other 2 functions. Our default value for learning rate is <strong>0.02.</strong></p>
+<p>As discussed earlier, Valley &amp; Slide yield the best results. So, we don’t need to call the other two functions. Our default value for learning rate is <strong>0.02.</strong></p>
 <div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1">learn_without_fp.lr_find(suggest_funcs<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>(valley, slide))</span></code></pre></div>
@@ -1649,7 +2708,7 @@ font-style: inherit;">=</span>(valley, slide))</span></code></pre></div>
 </style>
 <pre><code>SuggestedLRs(valley=1.2022644114040304e-05, slide=0.019054606556892395)</code></pre>
 <p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part1/lecture-6-road-to-the-top-part-1-self_files/lecture-6-road-to-the-top-part-1-self_30_3.png" class="img-fluid"></p>
-<p>So it was the learning rate that cause such high error rate as we can in our plot, let’s reduce near to <code>valley</code> point</p>
+<p>So it was the learning rate that caused such a high error rate as we can see in our plot. Let’s reduce it near to <code>valley</code> point.</p>
 </section>
 <section id="final-model" class="level3">
 <h3 class="anchored" data-anchor-id="final-model">Final Model</h3>
@@ -1728,7 +2787,7 @@ font-style: inherit;">'Lecture6_Part1_Food_Resnet_Model.pkl'</span>)</span></cod
 <h2 class="anchored" data-anchor-id="run-of-test-data">4. Run of Test Data</h2>
 <section id="read-test-data" class="level3">
 <h3 class="anchored" data-anchor-id="read-test-data">Read test data</h3>
-<p>We can now get the probabilities of each class, and the index of the most likely class, from this test set (the 2nd thing returned by get_preds are the targets, which are blank for a test set, so we discard them)</p>
+<p>Now, we can obtain the probabilities of each class and the index of the most likely class from this test set. The second object returned by <strong>get_preds</strong> contains the targets, which are blank for a test set, so we discard them.</p>
 <div class="sourceCode" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1">test_files <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> get_image_files(test_path).<span class="bu" style="color: null;
@@ -1764,7 +2823,7 @@ font-style: inherit;">True</span>)</span>
     }
 </style>
 <pre><code>tensor([54, 80, 44,  ..., 73, 78, 92])</code></pre>
-<p>These need to be mapped to the names of each of these type, these names are stored by fastai automatically in the <code>vocab</code>:</p>
+<p>These need to be mapped to the names of each type. These names are automatically stored by FastAI in the <code>vocab</code>.</p>
 <div class="sourceCode" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1">dls.vocab</span></code></pre></div>
 <pre><code>['apple_pie', 'baby_back_ribs', 'baklava', 'beef_carpaccio', 'beef_tartare', 'beet_salad', 'beignets', 'bibimbap', 'bread_pudding', 'breakfast_burrito', 'bruschetta', 'caesar_salad', 'cannoli', 'caprese_salad', 'carrot_cake', 'ceviche', 'cheese_plate', 'cheesecake', 'chicken_curry', 'chicken_quesadilla', 'chicken_wings', 'chocolate_cake', 'chocolate_mousse', 'churros', 'clam_chowder', 'club_sandwich', 'crab_cakes', 'creme_brulee', 'croque_madame', 'cup_cakes', 'deviled_eggs', 'donuts', 'dumplings', 'edamame', 'eggs_benedict', 'escargots', 'falafel', 'filet_mignon', 'fish_and_chips', 'foie_gras', 'french_fries', 'french_onion_soup', 'french_toast', 'fried_calamari', 'fried_rice', 'frozen_yogurt', 'garlic_bread', 'gnocchi', 'greek_salad', 'grilled_cheese_sandwich', 'grilled_salmon', 'guacamole', 'gyoza', 'hamburger', 'hot_and_sour_soup', 'hot_dog', 'huevos_rancheros', 'hummus', 'ice_cream', 'lasagna', 'lobster_bisque', 'lobster_roll_sandwich', 'macaroni_and_cheese', 'macarons', 'miso_soup', 'mussels', 'nachos', 'omelette', 'onion_rings', 'oysters', 'pad_thai', 'paella', 'pancakes', 'panna_cotta', 'peking_duck', 'pho', 'pizza', 'pork_chop', 'poutine', 'prime_rib', 'pulled_pork_sandwich', 'ramen', 'ravioli', 'red_velvet_cake', 'risotto', 'samosa', 'sashimi', 'scallops', 'seaweed_salad', 'shrimp_and_grits', 'spaghetti_bolognese', 'spaghetti_carbonara', 'spring_rolls', 'steak', 'strawberry_shortcake', 'sushi', 'tacos', 'takoyaki', 'tiramisu', 'tuna_tartare', 'waffles']</code></pre>
 </section>
