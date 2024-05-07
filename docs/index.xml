@@ -10,7 +10,2014 @@
 <atom:link href="https://mekanavsharma.github.io/Blog/index.xml" rel="self" type="application/rss+xml"/>
 <description>Collection of my Projects and Ideas</description>
 <generator>quarto-1.3.450</generator>
-<lastBuildDate>Thu, 02 May 2024 18:30:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 06 May 2024 18:30:00 GMT</lastBuildDate>
+<item>
+  <title>FastAI Course Lecture 6 Part 3 Notes</title>
+  <dc:creator>Kanav Sharma</dc:creator>
+  <link>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part3/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="call-library-download-data-create-folder-blah-blah.." class="level2">
+<h2 class="anchored" data-anchor-id="call-library-download-data-create-folder-blah-blah..">Call library, download data, create folder blah blah..</h2>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#hide</span></span>
+<span id="cb1-2"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span>pip install <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>Uqq fastbook</span>
+<span id="cb1-3"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span>pip install timm</span>
+<span id="cb1-4"></span>
+<span id="cb1-5"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> fastbook</span>
+<span id="cb1-6">fastbook.setup_book()</span>
+<span id="cb1-7"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> timm</span>
+<span id="cb1-8"></span>
+<span id="cb1-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#hide</span></span>
+<span id="cb1-10"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> fastbook <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span>
+<span id="cb1-11"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> fastai.vision.widgets <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span>
+<span id="cb1-12"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> fastai.vision.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">all</span> <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span>
+<span id="cb1-13"></span>
+<span id="cb1-14">path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Path(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/content'</span>)</span>
+<span id="cb1-15">untar_data(URLs.FOOD, data<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>path)</span>
+<span id="cb1-16"></span>
+<span id="cb1-17"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># actual path to train image folder</span></span>
+<span id="cb1-18">train_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Path(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/content/food-101/images'</span>)</span>
+<span id="cb1-19">test_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Path(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/content/food-101/test'</span>)</span>
+<span id="cb1-20"></span>
+<span id="cb1-21"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Create Test folder</span></span>
+<span id="cb1-22"></span>
+<span id="cb1-23"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> os</span>
+<span id="cb1-24"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> random</span>
+<span id="cb1-25"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> shutil</span>
+<span id="cb1-26"></span>
+<span id="cb1-27"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> move_images_to_test(source_folder, test_folder, percentage<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>):</span>
+<span id="cb1-28">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Create the test folder if it doesn't exist</span></span>
+<span id="cb1-29">    os.makedirs(test_folder, exist_ok<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span>
+<span id="cb1-30"></span>
+<span id="cb1-31">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Iterate through each subfolder in the source folder</span></span>
+<span id="cb1-32">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> subfolder <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> os.listdir(source_folder):</span>
+<span id="cb1-33">        subfolder_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(source_folder, subfolder)</span>
+<span id="cb1-34"></span>
+<span id="cb1-35">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Check if it's a directory</span></span>
+<span id="cb1-36">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> os.path.isdir(subfolder_path):</span>
+<span id="cb1-37">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Get a list of all image files in the subfolder</span></span>
+<span id="cb1-38">            image_files <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [f <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> f <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> os.listdir(subfolder_path) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> f.endswith(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'.jpg'</span>)]</span>
+<span id="cb1-39"></span>
+<span id="cb1-40">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Calculate the number of images to move</span></span>
+<span id="cb1-41">            num_images_to_move <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(image_files) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> percentage)</span>
+<span id="cb1-42"></span>
+<span id="cb1-43">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Randomly select images to move</span></span>
+<span id="cb1-44">            images_to_move <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> random.sample(image_files, num_images_to_move)</span>
+<span id="cb1-45"></span>
+<span id="cb1-46">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Move selected images to the test folder</span></span>
+<span id="cb1-47">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> image <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> images_to_move:</span>
+<span id="cb1-48">                source_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(subfolder_path, image)</span>
+<span id="cb1-49">                dest_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(test_folder, image)</span>
+<span id="cb1-50">                shutil.move(source_path, dest_path)</span>
+<span id="cb1-51"></span>
+<span id="cb1-52"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">__name__</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"__main__"</span>:</span>
+<span id="cb1-53">    move_images_to_test(train_path, test_path, percentage<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.15</span>)</span></code></pre></div>
+<pre><code>Requirement already satisfied: timm in /opt/conda/lib/python3.10/site-packages (0.9.16)
+Requirement already satisfied: torch in /opt/conda/lib/python3.10/site-packages (from timm) (2.1.2)
+Requirement already satisfied: torchvision in /opt/conda/lib/python3.10/site-packages (from timm) (0.16.2)
+Requirement already satisfied: pyyaml in /opt/conda/lib/python3.10/site-packages (from timm) (6.0.1)
+Requirement already satisfied: huggingface_hub in /opt/conda/lib/python3.10/site-packages (from timm) (0.20.3)
+Requirement already satisfied: safetensors in /opt/conda/lib/python3.10/site-packages (from timm) (0.4.2)
+Requirement already satisfied: filelock in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (3.13.1)
+Requirement already satisfied: fsspec&gt;=2023.5.0 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (2024.2.0)
+Requirement already satisfied: requests in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (2.31.0)
+Requirement already satisfied: tqdm&gt;=4.42.1 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (4.66.1)
+Requirement already satisfied: typing-extensions&gt;=3.7.4.3 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (4.9.0)
+Requirement already satisfied: packaging&gt;=20.9 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (21.3)
+Requirement already satisfied: sympy in /opt/conda/lib/python3.10/site-packages (from torch-&gt;timm) (1.12)
+Requirement already satisfied: networkx in /opt/conda/lib/python3.10/site-packages (from torch-&gt;timm) (3.2.1)
+Requirement already satisfied: jinja2 in /opt/conda/lib/python3.10/site-packages (from torch-&gt;timm) (3.1.2)
+Requirement already satisfied: numpy in /opt/conda/lib/python3.10/site-packages (from torchvision-&gt;timm) (1.26.4)
+Requirement already satisfied: pillow!=8.3.*,&gt;=5.3.0 in /opt/conda/lib/python3.10/site-packages (from torchvision-&gt;timm) (9.5.0)
+Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /opt/conda/lib/python3.10/site-packages (from packaging&gt;=20.9-&gt;huggingface_hub-&gt;timm) (3.1.1)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /opt/conda/lib/python3.10/site-packages (from jinja2-&gt;torch-&gt;timm) (2.1.3)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (3.6)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (1.26.18)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (2024.2.2)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/lib/python3.10/site-packages (from sympy-&gt;torch-&gt;timm) (1.3.0)</code></pre>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div>
+<progress value="5686607872" class="" max="5686607260" style="width:300px; height:20px; vertical-align: middle;">
+</progress>
+<p>100.00% [5686607872/5686607260 02:04&lt;00:00]</p>
+</div>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">dls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ImageDataLoaders.from_folder(path, valid_pct<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, seed<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>,</span>
+<span id="cb3-2">    item_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">256</span>, method<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'squish'</span>),</span>
+<span id="cb3-3">    batch_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>aug_transforms(size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>, min_scale<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.75</span>))</span>
+<span id="cb3-4"></span>
+<span id="cb3-5">dls.show_batch(max_n<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)</span></code></pre></div>
+<p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part3/lecture-6-road-to-the-top-part-3-self_files/lecture-6-road-to-the-top-part-3-self_2_0.png" class="img-fluid"></p>
+<section id="under-sampling" class="level3">
+<h3 class="anchored" data-anchor-id="under-sampling">Under-sampling</h3>
+<p>Previously, we had very big data to be trained on, which is why it took so long to train our model. Learning from that, we can undersample our training dataset so that we can get a picture of which model works best. Generally, if a model is performing well proportion of dataset, it will likely perform well on the whole dataset.</p>
+<p>There are two ways of doing this :</p>
+<ul>
+<li><p>We can take 5-10% of all types of food &amp; then train our model</p></li>
+<li><p>We can target 1 food type and train our model on it.</p></li>
+</ul>
+<p>Problem with case 1 is that we would have so little that from every type of food that our model might not be able to understand it well. In case 2, we can significantly reduce the training time and computational resources required.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">subfolders <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [f.name <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> f <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> os.scandir(train_path) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> f.is_dir()]</span>
+<span id="cb4-2">subfolder_count <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(subfolders)</span>
+<span id="cb4-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(subfolders)</span></code></pre></div>
+<pre><code>['fish_and_chips', 'caprese_salad', 'strawberry_shortcake', 'pork_chop', 'edamame', 'macaroni_and_cheese', 'gnocchi', 'lobster_roll_sandwich', 'takoyaki', 'baklava', 'sushi', 'beef_tartare', 'miso_soup', 'steak', 'hot_dog', 'grilled_cheese_sandwich', 'greek_salad', 'crab_cakes', 'falafel', 'beet_salad', 'apple_pie', 'onion_rings', 'chocolate_mousse', 'risotto', 'chicken_wings', 'french_fries', 'pancakes', 'paella', 'chicken_quesadilla', 'gyoza', 'bread_pudding', 'beignets', 'carrot_cake', 'waffles', 'ceviche', 'huevos_rancheros', 'ravioli', 'sashimi', 'bibimbap', 'creme_brulee', 'spaghetti_bolognese', 'cheese_plate', 'oysters', 'filet_mignon', 'baby_back_ribs', 'fried_rice', 'ice_cream', 'tacos', 'cheesecake', 'foie_gras', 'shrimp_and_grits', 'macarons', 'poutine', 'french_onion_soup', 'deviled_eggs', 'grilled_salmon', 'eggs_benedict', 'croque_madame', 'seaweed_salad', 'churros', 'hummus', 'bruschetta', 'club_sandwich', 'ramen', 'clam_chowder', 'cup_cakes', 'hot_and_sour_soup', 'garlic_bread', 'breakfast_burrito', 'guacamole', 'lobster_bisque', 'spring_rolls', 'samosa', 'red_velvet_cake', 'pulled_pork_sandwich', 'escargots', 'chocolate_cake', 'spaghetti_carbonara', 'caesar_salad', 'hamburger', 'tuna_tartare', 'donuts', 'fried_calamari', 'mussels', 'omelette', 'panna_cotta', 'pad_thai', 'beef_carpaccio', 'pizza', 'nachos', 'chicken_curry', 'pho', 'tiramisu', 'frozen_yogurt', 'peking_duck', 'prime_rib', 'cannoli', 'dumplings', 'french_toast', 'lasagna', 'scallops']</code></pre>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># let's randomly take baby_back_ribs folder for training</span></span>
+<span id="cb6-2">trn_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> train_path<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'baby_back_ribs'</span></span>
+<span id="cb6-3">tst_files <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> get_image_files(test_path).<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sorted</span>()</span></code></pre></div>
+</section>
+</section>
+<section id="gpu-problem" class="level2">
+<h2 class="anchored" data-anchor-id="gpu-problem">GPU Problem</h2>
+<p>In the previous file, we encountered a problem regarding GPU, where we run out of memory &amp; have to wait to till our memory was cleared by Kaggle(on Saturday). We can use <code>Gradient accumulation</code> or <code>Half-Precision floating point</code> to save from future GPU constraints. Regarding Half-Precision floating point, we tested it in our <a href="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part1/#model-building">first notebook</a> of this series and observed minimal change in performance.</p>
+<section id="gradient-accumulation" class="level3">
+<h3 class="anchored" data-anchor-id="gradient-accumulation">Gradient Accumulation</h3>
+<p>Working of Gradient Accumulation :</p>
+<ul>
+<li><p>Forward pass: Input data is fed through the model to compute predictions.</p></li>
+<li><p>Backward pass: Gradients are computed by back-propagating the error through the network.</p></li>
+<li><p>Gradients are accumulated over multiple mini-batches.</p></li>
+<li><p>Model parameters are updated after a certain number of mini-batches.</p></li>
+</ul>
+<p>By accumulating gradients over multiple batches,it allows to simulate the effects of a larger batch size without exceeding the available memory.</p>
+<p>However, there is a catch that it can have <strong>Impact on Training Time.</strong> While increasing accumulation can save GPU memory, it may also slow down the training process. The model parameters are updated less frequently, potentially prolonging the convergence time.</p>
+</section>
+<section id="fine_tune-vs-fit_one_cycle" class="level3">
+<h3 class="anchored" data-anchor-id="fine_tune-vs-fit_one_cycle">fine_tune() vs fit_one_cycle()</h3>
+<p><code>fine_tune()</code> It uses transfer learning, where it take a pre-trained model (on ImageNet) &amp; fine-tune it on a specific dataset. Idea is to leverage features learned by the pre-trained model &amp; adapt them to new dataset.</p>
+<p>It uses ‘<em>discriminative learning rates</em>’, where earlier layers are trained with lower learning rates (taking more time but understand data better) to avoid disrupting the general features they have learned. In contrast, later layers are trained with higher learning rates to adapt more quickly to the new tasks.</p>
+<p><code>fit_one_cycle()</code> It used for training a model from scratch or for further fine tuning already fine tuned model.</p>
+<ul>
+<li><p>It starts with low learning rate &amp; gradually increases it over the courses of first half of learning rate.</p></li>
+<li><p>In second half it decreases.</p></li>
+<li><p>This cyclical pattern of learning rates is repeated for no of epochs specified.</p></li>
+</ul>
+<p><strong>fine_tune()</strong> is primarily used for transfer learning, leveraging pre-trained models &amp; adapting them to new data. While <strong>fit_one_cycle()</strong> is used for training models from scratch or further fine-tuning them using a cyclical learning rate schedule.</p>
+<p><strong>fine_tune()</strong> is faster since it doesn’t do an initial fine-tuning of the head.</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> train(arch, size, item<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">480</span>, method<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'squish'</span>), accum<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, finetune<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>, epochs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>):</span>
+<span id="cb7-2">    dls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ImageDataLoaders.from_folder(trn_path, valid_pct<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, item_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>item,</span>
+<span id="cb7-3">        batch_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>aug_transforms(size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>size, min_scale<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.75</span>), bs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">64</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span>accum)</span>
+<span id="cb7-4">    cbs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> GradientAccumulation(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">64</span>) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> accum <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span> []</span>
+<span id="cb7-5">    learn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> vision_learner(dls, arch, metrics<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>error_rate, cbs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>cbs).to_fp16()</span>
+<span id="cb7-6">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> finetune:</span>
+<span id="cb7-7">        learn.fine_tune(epochs, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>)</span>
+<span id="cb7-8">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> learn.tta(dl<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>dls.test_dl(tst_files))</span>
+<span id="cb7-9">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span>:</span>
+<span id="cb7-10">        learn.unfreeze()</span>
+<span id="cb7-11">        learn.fit_one_cycle(epochs, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>)</span>
+<span id="cb7-12">                        </span></code></pre></div>
+<section id="check-the-available-gpu-memory-on-kaggle." class="level4">
+<h4 class="anchored" data-anchor-id="check-the-available-gpu-memory-on-kaggle.">Check the available GPU memory on Kaggle.</h4>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> torch</span>
+<span id="cb8-2"></span>
+<span id="cb8-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> check_gpu_memory():</span>
+<span id="cb8-4">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> torch.cuda.is_available():</span>
+<span id="cb8-5">        device <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> torch.device(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"cuda"</span>)</span>
+<span id="cb8-6">        total_memory <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> torch.cuda.get_device_properties(device).total_memory</span>
+<span id="cb8-7">        reserved_memory <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> torch.cuda.memory_reserved(device)</span>
+<span id="cb8-8">        allocated_memory <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> torch.cuda.memory_allocated(device)</span>
+<span id="cb8-9">        free_memory <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> total_memory <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> reserved_memory <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> allocated_memory</span>
+<span id="cb8-10"></span>
+<span id="cb8-11">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Total GPU memory: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>total_memory <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1024</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.2f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> GB"</span>)</span>
+<span id="cb8-12">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Reserved GPU memory: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>reserved_memory <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1024</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.2f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> GB"</span>)</span>
+<span id="cb8-13">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Allocated GPU memory: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>allocated_memory <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1024</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.2f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> GB"</span>)</span>
+<span id="cb8-14">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Free GPU memory: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>free_memory <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1024</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.2f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> GB"</span>)</span>
+<span id="cb8-15">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span>:</span>
+<span id="cb8-16">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"GPU not available."</span>)</span>
+<span id="cb8-17"></span>
+<span id="cb8-18"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Call the function to check GPU memory</span></span>
+<span id="cb8-19">check_gpu_memory()</span></code></pre></div>
+<pre><code>Total GPU memory: 14.75 GB
+Reserved GPU memory: 0.00 GB
+Allocated GPU memory: 0.00 GB
+Free GPU memory: 14.75 GB</code></pre>
+</section>
+</section>
+<section id="impact-of-gradient-accumulation" class="level3">
+<h3 class="anchored" data-anchor-id="impact-of-gradient-accumulation">Impact of Gradient Accumulation</h3>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">train(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'convnext_small_in22k'</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>, epochs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, accum<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, finetune<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span></code></pre></div>
+<pre><code>/opt/conda/lib/python3.10/site-packages/timm/models/_factory.py:117: UserWarning: Mapping deprecated model name convnext_small_in22k to current convnext_small.fb_in22k.
+  model = create_fn(
+
+
+
+model.safetensors:   0%|          | 0.00/265M [00:00&lt;?, ?B/s]</code></pre>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>00:08</td>
+</tr>
+</tbody>
+</table>
+<p>**It took 0:08 In GPU T4*2 and 0:22 in GPU P100**</p>
+<section id="memory-consumption-and-clearning-it-after-usage" class="level4">
+<h4 class="anchored" data-anchor-id="memory-consumption-and-clearning-it-after-usage">Memory Consumption and Clearning It after usage</h4>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> gc</span>
+<span id="cb12-2"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> report_gpu():</span>
+<span id="cb12-3">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(torch.cuda.list_gpu_processes())</span>
+<span id="cb12-4">    gc.collect()</span>
+<span id="cb12-5">    torch.cuda.empty_cache()</span></code></pre></div>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1">report_gpu()</span></code></pre></div>
+<pre><code>GPU:0
+process       2200 uses     3250.000 MB GPU memory</code></pre>
+<p>So with <code>accum=1</code> the GPU used around 3GB RAM. Let’s try <code>accum=2</code>:</p>
+<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">train(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'convnext_small_in22k'</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>, epochs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, accum<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, finetune<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span>
+<span id="cb15-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Report GPU:"</span>)</span>
+<span id="cb15-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(report_gpu())</span>
+<span id="cb15-4"></span>
+<span id="cb15-5"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">GPU_Memory:"</span>)</span>
+<span id="cb15-6"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(check_gpu_memory())</span></code></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>00:06</td>
+</tr>
+</tbody>
+</table>
+<pre><code>Report GPU:
+GPU:0
+process       2200 uses     2200.000 MB GPU memory
+None
+
+GPU_Memory:
+Total GPU memory: 14.75 GB
+Reserved GPU memory: 0.14 GB
+Allocated GPU memory: 0.02 GB
+Free GPU memory: 14.59 GB
+None</code></pre>
+<p>As we can see that, the RAM usage has now gone down to 2GB. It’s not halved since there’s other overhead involved (for larger models this overhead is likely to be relatively lower).</p>
+<p>Let’s try <code>4</code>:</p>
+<div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1">train(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'convnext_small_in22k'</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>, epochs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, accum<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, finetune<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span>
+<span id="cb17-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Report GPU:"</span>)</span>
+<span id="cb17-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(report_gpu())</span>
+<span id="cb17-4"></span>
+<span id="cb17-5"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">GPU_Memory:"</span>)</span>
+<span id="cb17-6"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(check_gpu_memory())</span></code></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>00:08</td>
+</tr>
+</tbody>
+</table>
+<pre><code>Report GPU:
+GPU:0
+process       2200 uses     1664.000 MB GPU memory
+None
+
+GPU_Memory:
+Total GPU memory: 14.75 GB
+Reserved GPU memory: 0.14 GB
+Allocated GPU memory: 0.02 GB
+Free GPU memory: 14.59 GB
+None</code></pre>
+<p>We are down to half of original version</p>
+</section>
+</section>
+</section>
+<section id="memory-usage-of-every-model" class="level2">
+<h2 class="anchored" data-anchor-id="memory-usage-of-every-model">Memory Usage of Every Model</h2>
+<p>Let’s test this approach on all models that we want to evaluate and determine the optimal value for gradient accumulation. Kaggle provides a <code>16 GB</code> GPU, and our goal is to fit all of our architectures within this constraint.</p>
+<p><code>convnext_large_in22k</code> make GPU Crash always, so let’s tone it down to <code>convnext_base_in22k</code></p>
+<div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1">train(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'convnext_base_in22k'</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">256</span>, epochs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, accum<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, finetune<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span>
+<span id="cb19-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Report GPU:"</span>)</span>
+<span id="cb19-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(report_gpu())</span>
+<span id="cb19-4"></span>
+<span id="cb19-5"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">GPU_Memory:"</span>)</span>
+<span id="cb19-6"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(check_gpu_memory())</span></code></pre></div>
+<pre><code>/opt/conda/lib/python3.10/site-packages/timm/models/_factory.py:117: UserWarning: Mapping deprecated model name convnext_base_in22k to current convnext_base.fb_in22k.
+  model = create_fn(
+
+
+
+model.safetensors:   0%|          | 0.00/440M [00:00&lt;?, ?B/s]</code></pre>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>00:12</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>00:12</td>
+</tr>
+</tbody>
+</table>
+<pre><code>Report GPU:
+GPU:0
+process       2200 uses    12246.000 MB GPU memory
+None
+
+GPU_Memory:
+Total GPU memory: 14.75 GB
+Reserved GPU memory: 0.14 GB
+Allocated GPU memory: 0.02 GB
+Free GPU memory: 14.59 GB
+None</code></pre>
+<div class="sourceCode" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1">train(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'convnext_base_in22k'</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">256</span>, epochs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, accum<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, finetune<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span>
+<span id="cb22-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Report GPU:"</span>)</span>
+<span id="cb22-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(report_gpu())</span>
+<span id="cb22-4"></span>
+<span id="cb22-5"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">GPU_Memory:"</span>)</span>
+<span id="cb22-6"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(check_gpu_memory())</span></code></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>00:12</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>00:12</td>
+</tr>
+</tbody>
+</table>
+<pre><code>Report GPU:
+GPU:0
+process       2200 uses     6988.000 MB GPU memory
+None
+
+GPU_Memory:
+Total GPU memory: 14.75 GB
+Reserved GPU memory: 0.14 GB
+Allocated GPU memory: 0.02 GB
+Free GPU memory: 14.59 GB
+None</code></pre>
+<div class="sourceCode" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1">train(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'convnext_base_in22k'</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">256</span>, epochs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, accum<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, finetune<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span>
+<span id="cb24-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Report GPU:"</span>)</span>
+<span id="cb24-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(report_gpu())</span>
+<span id="cb24-4"></span>
+<span id="cb24-5"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">GPU_Memory:"</span>)</span>
+<span id="cb24-6"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(check_gpu_memory())</span></code></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>00:13</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>00:12</td>
+</tr>
+</tbody>
+</table>
+<pre><code>Report GPU:
+GPU:0
+process       2200 uses     4360.000 MB GPU memory
+None
+
+GPU_Memory:
+Total GPU memory: 14.75 GB
+Reserved GPU memory: 0.14 GB
+Allocated GPU memory: 0.02 GB
+Free GPU memory: 14.59 GB
+None</code></pre>
+<p>With accum = 4 there 1/3 of the memory consumption than original and also there not very high change in time taken</p>
+<p><code>vit_base</code> which is a transformer</p>
+<div class="sourceCode" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1">train(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'vit_base_patch16_224'</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">224</span>, epochs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, accum<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, finetune<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span>
+<span id="cb26-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Report GPU:"</span>)</span>
+<span id="cb26-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(report_gpu())</span>
+<span id="cb26-4"></span>
+<span id="cb26-5"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">GPU_Memory:"</span>)</span>
+<span id="cb26-6"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(check_gpu_memory())</span></code></pre></div>
+<pre><code>model.safetensors:   0%|          | 0.00/346M [00:00&lt;?, ?B/s]</code></pre>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>00:09</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>00:08</td>
+</tr>
+</tbody>
+</table>
+<pre><code>Report GPU:
+GPU:0
+process       2200 uses     2998.000 MB GPU memory
+None
+
+GPU_Memory:
+Total GPU memory: 14.75 GB
+Reserved GPU memory: 0.14 GB
+Allocated GPU memory: 0.02 GB
+Free GPU memory: 14.59 GB
+None</code></pre>
+</section>
+<section id="scaling-it-up-training-on-full-data" class="level2">
+<h2 class="anchored" data-anchor-id="scaling-it-up-training-on-full-data">Scaling It Up!, Training on full data</h2>
+<p>Let’s create dictonary of all the required models &amp; the preprocessing techinque like crop,squish etc.</p>
+<div class="sourceCode" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1">trn_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> train_path</span>
+<span id="cb29-2"></span>
+<span id="cb29-3">models <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> {</span>
+<span id="cb29-4">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'convnext_base_in22k'</span>: {</span>
+<span id="cb29-5">        (Resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">480</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">224</span>)),</span>
+<span id="cb29-6">    }, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'vit_base_patch16_224'</span>: {</span>
+<span id="cb29-7">        (Resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">480</span>, method<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'squish'</span>), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">224</span>),</span>
+<span id="cb29-8">        (Resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">480</span>), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">224</span>),</span>
+<span id="cb29-9">    }</span>
+<span id="cb29-10">}</span></code></pre></div>
+<div class="sourceCode" id="cb30" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1">models.items()</span></code></pre></div>
+<pre><code>dict_items([('convnext_base_in22k', {(Resize -- {'size': (480, 480), 'method': 'crop', 'pad_mode': 'reflection', 'resamples': (&lt;Resampling.BILINEAR: 2&gt;, &lt;Resampling.NEAREST: 0&gt;), 'p': 1.0}:
+encodes: (Image,object) -&gt; encodes
+(TensorBBox,object) -&gt; encodes
+(TensorPoint,object) -&gt; encodes
+decodes: , 224)}), ('vit_base_patch16_224', {(Resize -- {'size': (480, 480), 'method': 'squish', 'pad_mode': 'reflection', 'resamples': (&lt;Resampling.BILINEAR: 2&gt;, &lt;Resampling.NEAREST: 0&gt;), 'p': 1.0}:
+encodes: (Image,object) -&gt; encodes
+(TensorBBox,object) -&gt; encodes
+(TensorPoint,object) -&gt; encodes
+decodes: , 224), (Resize -- {'size': (480, 480), 'method': 'crop', 'pad_mode': 'reflection', 'resamples': (&lt;Resampling.BILINEAR: 2&gt;, &lt;Resampling.NEAREST: 0&gt;), 'p': 1.0}:
+encodes: (Image,object) -&gt; encodes
+(TensorBBox,object) -&gt; encodes
+(TensorPoint,object) -&gt; encodes
+decodes: , 224)})])</code></pre>
+<p>Append each set of TTA predictions on the test set into a list called <code>tta_res</code></p>
+<div class="sourceCode" id="cb32" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1">tta_res <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb32-2"></span>
+<span id="cb32-3"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> arch,details <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> models.items():</span>
+<span id="cb32-4">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> item,size <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> details:</span>
+<span id="cb32-5">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'---'</span>,arch)</span>
+<span id="cb32-6">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(size)</span>
+<span id="cb32-7">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(item.name)</span>
+<span id="cb32-8">        tta_res.append(train(arch, size, item<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>item, accum<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#, epochs=1))</span></span>
+<span id="cb32-9">        gc.collect()</span>
+<span id="cb32-10">        torch.cuda.empty_cache()</span>
+<span id="cb32-11">        </span></code></pre></div>
+<pre><code>--- convnext_base_in22k
+224
+Resize -- {'size': (480, 480), 'method': 'crop', 'pad_mode': 'reflection', 'resamples': (&lt;Resampling.BILINEAR: 2&gt;, &lt;Resampling.NEAREST: 0&gt;), 'p': 1.0}</code></pre>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0.921503</td>
+<td>0.649621</td>
+<td>0.179557</td>
+<td>12:54</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0.623931</td>
+<td>0.491215</td>
+<td>0.132964</td>
+<td>16:42</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>0.590722</td>
+<td>0.472942</td>
+<td>0.128422</td>
+<td>16:56</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>0.414496</td>
+<td>0.423165</td>
+<td>0.111881</td>
+<td>16:38</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>0.234155</td>
+<td>0.403548</td>
+<td>0.100291</td>
+<td>17:14</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>0.168659</td>
+<td>0.408064</td>
+<td>0.099418</td>
+<td>16:41</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div>
+<progress value="0" class="" max="5" style="width:300px; height:20px; vertical-align: middle;">
+</progress>
+</div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<pre><code>--- vit_base_patch16_224
+224
+Resize -- {'size': (480, 480), 'method': 'squish', 'pad_mode': 'reflection', 'resamples': (&lt;Resampling.BILINEAR: 2&gt;, &lt;Resampling.NEAREST: 0&gt;), 'p': 1.0}</code></pre>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>1.048016</td>
+<td>0.767763</td>
+<td>0.210891</td>
+<td>10:24</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0.901554</td>
+<td>0.667587</td>
+<td>0.179441</td>
+<td>13:21</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>0.723949</td>
+<td>0.652103</td>
+<td>0.176296</td>
+<td>13:18</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>0.525216</td>
+<td>0.550479</td>
+<td>0.146302</td>
+<td>13:19</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>0.276363</td>
+<td>0.497780</td>
+<td>0.126616</td>
+<td>13:16</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>0.183772</td>
+<td>0.490051</td>
+<td>0.119802</td>
+<td>13:15</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div>
+<progress value="0" class="" max="5" style="width:300px; height:20px; vertical-align: middle;">
+</progress>
+</div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<pre><code>--- vit_base_patch16_224
+224
+Resize -- {'size': (480, 480), 'method': 'crop', 'pad_mode': 'reflection', 'resamples': (&lt;Resampling.BILINEAR: 2&gt;, &lt;Resampling.NEAREST: 0&gt;), 'p': 1.0}</code></pre>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>1.054235</td>
+<td>0.758079</td>
+<td>0.205708</td>
+<td>10:19</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0.881566</td>
+<td>0.701312</td>
+<td>0.193710</td>
+<td>13:15</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>0.741848</td>
+<td>0.650074</td>
+<td>0.174490</td>
+<td>13:15</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>0.547625</td>
+<td>0.550333</td>
+<td>0.144904</td>
+<td>13:15</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>0.274780</td>
+<td>0.499551</td>
+<td>0.125859</td>
+<td>13:13</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>0.173512</td>
+<td>0.485806</td>
+<td>0.118987</td>
+<td>13:15</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div>
+<progress value="0" class="" max="5" style="width:300px; height:20px; vertical-align: middle;">
+</progress>
+</div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<section id="save-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="save-the-model">Save the Model</h3>
+<div class="sourceCode" id="cb36" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1">save_pickle(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/kaggle/working/Lecture6_Part3_tta_res.pkl'</span>, tta_res)</span></code></pre></div>
+</section>
+</section>
+<section id="ensemble" class="level2">
+<h2 class="anchored" data-anchor-id="ensemble">Ensemble</h2>
+<p><code>Learner.tta</code> returns predictions and targets for each rows. We just want the predictions</p>
+<div class="sourceCode" id="cb37" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"> tta_prs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> first(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">zip</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>tta_res))</span></code></pre></div>
+<div class="sourceCode" id="cb38" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1">tta_prs</span></code></pre></div>
+<pre><code>(tensor([[1.4376e-09, 6.0367e-10, 8.9613e-10,  ..., 5.5386e-09, 8.7931e-08, 4.2121e-10],
+         [4.7340e-05, 7.8465e-06, 1.3157e-05,  ..., 3.5937e-05, 6.6248e-06, 2.0246e-06],
+         [2.3749e-05, 2.8122e-07, 8.3784e-08,  ..., 6.6318e-06, 5.9989e-08, 9.9459e-07],
+         ...,
+         [1.9584e-06, 1.3206e-07, 3.0607e-06,  ..., 1.4922e-07, 5.0935e-09, 8.6562e-08],
+         [4.8399e-03, 1.2087e-04, 4.5856e-04,  ..., 5.0185e-06, 9.4111e-05, 1.8684e-05],
+         [5.0047e-06, 4.3755e-05, 1.8506e-06,  ..., 6.1585e-06, 5.6130e-07, 1.9855e-06]]),
+ tensor([[3.4493e-08, 5.3500e-09, 1.6126e-07,  ..., 3.8252e-08, 1.5104e-06, 2.6966e-09],
+         [6.6286e-03, 7.0347e-05, 3.0234e-05,  ..., 1.9852e-04, 4.9287e-05, 1.0562e-05],
+         [3.3405e-08, 9.6962e-08, 1.1187e-08,  ..., 7.3134e-08, 6.8583e-09, 2.5434e-08],
+         ...,
+         [3.6105e-09, 2.5499e-09, 1.0355e-07,  ..., 4.7640e-10, 4.5013e-08, 5.3833e-10],
+         [1.8239e-06, 1.0662e-06, 9.2194e-07,  ..., 7.3355e-07, 1.3718e-07, 8.0097e-07],
+         [8.3010e-08, 1.5209e-06, 3.5702e-07,  ..., 2.3531e-07, 7.9341e-09, 3.4715e-09]]),
+ tensor([[2.3078e-09, 5.1558e-09, 2.3751e-09,  ..., 1.5020e-08, 2.7991e-08, 4.2394e-10],
+         [2.2522e-02, 1.2250e-05, 2.0199e-05,  ..., 1.2231e-04, 7.0627e-06, 2.2908e-06],
+         [1.0235e-07, 1.3238e-08, 4.5449e-09,  ..., 8.5051e-09, 9.0174e-10, 2.8542e-08],
+         ...,
+         [1.2824e-07, 1.0214e-08, 1.7250e-07,  ..., 3.6925e-09, 3.7722e-07, 2.4337e-09],
+         [1.6956e-05, 5.6481e-06, 5.4464e-06,  ..., 1.2303e-06, 1.3186e-05, 2.0320e-04],
+         [4.9362e-08, 1.2064e-06, 1.6594e-06,  ..., 1.0572e-08, 2.2195e-08, 4.6684e-09]]))</code></pre>
+<p><code>Ensemble</code> is a model which is combination of multiple models. Bagging,Boosting are it’s types.Those are bit complicated &amp; we will stick to simple version that is averaging them out.</p>
+<div class="sourceCode" id="cb40" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1">avg_pr <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> torch.stack(tta_prs).mean(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb40-2">avg_pr.shape</span></code></pre></div>
+<pre><code>torch.Size([15150, 101])</code></pre>
+</section>
+<section id="test-data-set" class="level2">
+<h2 class="anchored" data-anchor-id="test-data-set">Test Data Set</h2>
+<div class="sourceCode" id="cb42" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1">dls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ImageDataLoaders.from_folder(trn_path, valid_pct<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, item_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">480</span>, method<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'squish'</span>),</span>
+<span id="cb42-2">    batch_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>aug_transforms(size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">224</span>, min_scale<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.75</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb43" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1">idxs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> avg_pr.argmax(dim<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb43-2">idxs</span></code></pre></div>
+<pre><code>tensor([57, 71, 24,  ..., 32, 47, 38])</code></pre>
+<div class="sourceCode" id="cb45" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1">vocab <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array(dls.vocab)</span>
+<span id="cb45-2">vocab</span></code></pre></div>
+<pre><code>array(['apple_pie', 'baby_back_ribs', 'baklava', 'beef_carpaccio', 'beef_tartare', 'beet_salad', 'beignets', 'bibimbap', 'bread_pudding', 'breakfast_burrito', 'bruschetta', 'caesar_salad', 'cannoli',
+       'caprese_salad', 'carrot_cake', 'ceviche', 'cheese_plate', 'cheesecake', 'chicken_curry', 'chicken_quesadilla', 'chicken_wings', 'chocolate_cake', 'chocolate_mousse', 'churros',
+       'clam_chowder', 'club_sandwich', 'crab_cakes', 'creme_brulee', 'croque_madame', 'cup_cakes', 'deviled_eggs', 'donuts', 'dumplings', 'edamame', 'eggs_benedict', 'escargots', 'falafel',
+       'filet_mignon', 'fish_and_chips', 'foie_gras', 'french_fries', 'french_onion_soup', 'french_toast', 'fried_calamari', 'fried_rice', 'frozen_yogurt', 'garlic_bread', 'gnocchi', 'greek_salad',
+       'grilled_cheese_sandwich', 'grilled_salmon', 'guacamole', 'gyoza', 'hamburger', 'hot_and_sour_soup', 'hot_dog', 'huevos_rancheros', 'hummus', 'ice_cream', 'lasagna', 'lobster_bisque',
+       'lobster_roll_sandwich', 'macaroni_and_cheese', 'macarons', 'miso_soup', 'mussels', 'nachos', 'omelette', 'onion_rings', 'oysters', 'pad_thai', 'paella', 'pancakes', 'panna_cotta',
+       'peking_duck', 'pho', 'pizza', 'pork_chop', 'poutine', 'prime_rib', 'pulled_pork_sandwich', 'ramen', 'ravioli', 'red_velvet_cake', 'risotto', 'samosa', 'sashimi', 'scallops', 'seaweed_salad',
+       'shrimp_and_grits', 'spaghetti_bolognese', 'spaghetti_carbonara', 'spring_rolls', 'steak', 'strawberry_shortcake', 'sushi', 'tacos', 'takoyaki', 'tiramisu', 'tuna_tartare', 'waffles'],
+      dtype='&lt;U23')</code></pre>
+<div class="sourceCode" id="cb47" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1">tst_files <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> get_image_files(test_path).<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sorted</span>()</span>
+<span id="cb47-2">filenames <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [path.name <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> path <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> tst_files]</span>
+<span id="cb47-3">ss <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.DataFrame({<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'image_id'</span>: filenames})</span>
+<span id="cb47-4">ss[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'label'</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> vocab[idxs]</span>
+<span id="cb47-5">ss</span></code></pre></div>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 19%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>image_id</th>
+<th>label</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>1000314.jpg</td>
+<td>hummus</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1000412.jpg</td>
+<td>paella</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>1000873.jpg</td>
+<td>clam_chowder</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>100127.jpg</td>
+<td>spaghetti_bolognese</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>1001332.jpg</td>
+<td>panna_cotta</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="odd">
+<td>15145</td>
+<td>999118.jpg</td>
+<td>french_onion_soup</td>
+</tr>
+<tr class="even">
+<td>15146</td>
+<td>999178.jpg</td>
+<td>cup_cakes</td>
+</tr>
+<tr class="odd">
+<td>15147</td>
+<td>999236.jpg</td>
+<td>dumplings</td>
+</tr>
+<tr class="even">
+<td>15148</td>
+<td>999449.jpg</td>
+<td>gnocchi</td>
+</tr>
+<tr class="odd">
+<td>15149</td>
+<td>999908.jpg</td>
+<td>fish_and_chips</td>
+</tr>
+</tbody>
+</table>
+<p>
+15150 rows × 2 columns
+</p>
+</div>
+<section id="save-the-file" class="level3">
+<h3 class="anchored" data-anchor-id="save-the-file">Save the file</h3>
+<div class="sourceCode" id="cb48" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1">ss.to_csv(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/kaggle/working/Subm_Part3.csv'</span>, index<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span></code></pre></div>
+</section>
+</section>
+<section id="concluding-remarks" class="level2">
+<h2 class="anchored" data-anchor-id="concluding-remarks">Concluding Remarks</h2>
+<p><code>convnext_base</code> worked way better than <code>convnext_tiny</code> and significantly, better than both data augmentated variants of the transformer models <code>ViT</code>. And in the end we created a ensemble model by averaging them all.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Computer Vision</category>
+  <category>FastAI</category>
+  <guid>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part3/index.html</guid>
+  <pubDate>Mon, 06 May 2024 18:30:00 GMT</pubDate>
+</item>
 <item>
   <title>FastAI Course Lecture 6 Part 2 Notes</title>
   <dc:creator>Kanav Sharma</dc:creator>
