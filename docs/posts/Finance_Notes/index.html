@@ -6,9 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Collection of my Projects and Ideas">
+<meta name="author" content="Kanav Sharma">
+<meta name="dcterms.date" content="2023-03-23">
+<meta name="description" content="A blog regarding Personal Finance">
 
-<title>Blog</title>
+<title>Blog - Personal Finance</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -24,26 +26,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -71,77 +71,26 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
+<style>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-author','listing-date','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
+      .quarto-title-block .quarto-title-banner {
+        background-image: url(image.png);
+background-size: cover;
       }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
+</style>
 
-<link rel="stylesheet" href="styles.css">
-<link rel="alternate" type="application/rss+xml" title="Blog" href="index.xml" data-external="1"></head>
 
-<body class="nav-fixed">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Blog</span>
     </a>
   </div>
@@ -152,7 +101,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -174,279 +123,118 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Personal Finance</h1>
+                  <div>
+        <div class="description">
+          A blog regarding Personal Finance
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Money</div>
+                <div class="quarto-category">Finance</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Kanav Sharma </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 23, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(8)</span></div><div class="category" data-category="Computer Vision">Computer Vision <span class="quarto-category-count">(6)</span></div><div class="category" data-category="FastAI">FastAI <span class="quarto-category-count">(7)</span></div><div class="category" data-category="Informative">Informative <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Interview">Interview <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Tabular Data">Tabular Data <span class="quarto-category-count">(1)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
+<section id="introduction-my-career-shift-story-and-how-you-can-do-it-too" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-my-career-shift-story-and-how-you-can-do-it-too">Introduction: My career shift story and how you can do it too</h2>
+<p>I made the decision to shift my career from the energy sector to either health or finance industries, with a goal of securing a job that would offer at least a 120% salary increase from my current position, ideally in the FinTech space. And guess what? I not only achieved that goal but also landed my dream job!</p>
+<p>Don’t settle for a career that doesn’t excite you. Take charge of your future and make the change you’ve been dreaming of. Join me on this journey, and let’s make 2023 the year of success and fulfillment!</p>
+<p>In this blog post, I’ll share my journey with you and provide valuable insights and tips for how you too can make a career shift and achieve your dream job. From studying Python and machine learning basics to creating resumes and profiles on job portals, I’ll guide you through the entire process. I’ll also share my experience with the roller-coaster of interviews and how I overcame my lack of knowledge in machine learning algorithms.</p>
+</section>
+<section id="initial-plan-and-challenges" class="level2">
+<h2 class="anchored" data-anchor-id="initial-plan-and-challenges">Initial plan and challenges</h2>
+<p>Back in September, I had planned to study Python and machine learning basics for a month before creating an online profile. Unfortunately, my motivation dwindled and I spent two months halfheartedly reading articles and making notes out of them. Nonetheless, I eventually created a resume using resources like <a href="https://www.youtube.com/@codebasics">codebasics</a> and Krish Naik’s videos and established profiles on job portals such as Naukri and LinkedIn. Soon after, I started receiving calls from various organizations, but the interview process was a reality check for me as my understanding of machine learning algorithms was only surface-level.</p>
+</section>
+<section id="learning-from-failures" class="level2">
+<h2 class="anchored" data-anchor-id="learning-from-failures">Learning from failures</h2>
+<p>In November, I learned some valuable lessons through my experiences.I would usually clear first round but would fail in second round one such example was I confidently answered questions related to my resume but was stumped when asked to elaborate on categorical data encoding like difference between label and hot encoding. Similarly, when asked about hypothesis testing, I gave a confused response and said alpha was 0.5 instead of 0.05. Despite making notes on Krish Naik’s Live <a href="https://www.youtube.com/watch?v=11unm2hmvOQ&amp;list=PLZoTAELRMXVMgtxAboeAx-D9qbnY94Yay&amp;ab_channel=KrishNaik">Statistics playlist</a>, I hadn’t covered these topics sincerely.</p>
+<p>However, instead of giving up, I used these experiences as motivation to learn and grow. I went back to my notes, re-studied the topics where I had made mistakes, and updated my notes accordingly. I realized that learning is a continuous process and that we can always improve.</p>
+<p>In the introduction, it is mentioned that I have specialized in time series data. However, due to the limited availability of data for some clients, I did not have much exposure to seasonal data and had only relied on regression-based models for time series analysis. Although I had previously attempted to use models such as Prophet and ARIMA, they did not yield favorable results, and I had not included them in my resume nor prepared them for the interviews. Unfortunately, during a technical interview(3rd technical round), I was asked about ACF, PACF, and the ADF test, and I was unable to answer these questions. To address this knowledge gap, I dedicated the next few weeks to learning the basics of time series terminology and models.</p>
+<section id="gaining-confidence" class="level3">
+<h3 class="anchored" data-anchor-id="gaining-confidence">Gaining confidence</h3>
+<p>Despite a dry spell in December where I didn’t receive any recruiter calls, I didn’t lose hope. Instead, I gained the confidence needed to crack technical interviews. I made sure to prepare well, studying topics in which I was lacking.</p>
+</section>
+</section>
+<section id="silver-lining" class="level2">
+<h2 class="anchored" data-anchor-id="silver-lining">Silver Lining</h2>
+<p>Long story short in January, I had received two offers with a 50% salary increase, but they were not in the FinTech industry, which was my goal. I was satisfied but not happy. Then, I cleared the first round of interviews for two companies, X and Y, on the same day while having a high fever (I’m not blowing my own trumpet, I mentioned this to make the point that if you work hard you will gain confidence eventually). One of the interviewers suggested I should reschedule, but I declined as I did not want to tarnish my reputation.</p>
+</section>
+<section id="alls-well-that-ends-well" class="level2">
+<h2 class="anchored" data-anchor-id="alls-well-that-ends-well">All’s Well that Ends Well</h2>
+<p>In February, I received an offer letter from company X with a 95% salary increase. During my last round of interviews with company Y, I showed them this offer, and they offered me a 150% salary increase, which was a dream come true. I deleted my profile from Naukri and this company Y happened to be TransUnion, a FinTech company where I joined as a Senior Analyst.</p>
+</section>
+<section id="the-reality-of-recruitment-process" class="level2">
+<h2 class="anchored" data-anchor-id="the-reality-of-recruitment-process">The Reality of Recruitment Process</h2>
+<p>I realized early on that the recruitment process is not always straightforward. I cleared the first round in one organization, only to be informed weeks later that they had filled the position internally. In two other organizations, after clearing the first round, I was later told that openings were closed. In another organization, I cleared three rounds and even submitted my documents, only to be told later that I was the second priority and the position was filled via referral. However, I didn’t let these setbacks discourage me, and I continued to persevere.</p>
+</section>
+<section id="the-journey-continues" class="level2">
+<h2 class="anchored" data-anchor-id="the-journey-continues">The Journey Continues</h2>
+<p>I learned that mistakes are an integral part of the learning process. Even though I had an offer from TransUnion I gave another interview (just of fun). The interview taught me about SARIMAX (we can use this for multivariate time series) and I knew only about ARIMA,SARIMA etc which are uni-variate models. It was a humbling experience, but it taught me a valuable lesson that ‘You may think you know but actually you don’t’.</p>
+</section>
+<section id="insights" class="level2">
+<h2 class="anchored" data-anchor-id="insights">Insights</h2>
+<p>1. Set a clear and measurable goal for yourself.</p>
+<p>2. I found that building a strong online profile is essential when looking for job opportunities even before you started preparing because it take time to get a call.</p>
+<p>3. Tailor your resume and cover letter to each position. Highlight your relevant skills and experience and show how you can add value to the company.Make your resume is plain and simple &amp; you should know what have you written in your resume.</p>
+<p>4. Prepare for interviews by researching the company and practicing your responses to common interview questions. Dress professionally and arrive on time.</p>
+<p>5. It’s better to have a deep understanding of a few machine learning algorithms rather than a superficial understanding of many.</p>
+<p>6. Interviews can be nerve-wracking, but it’s essential to remain calm and not let anxiety take over.</p>
+<p>7. Keep your notes updated and review them regularly</p>
+<p>8. Follow up after interviews with a thank-you email or note, and express your continued interest in the position and also ask for the feed back(very important).</p>
+<p>9. There is no such thing called as perfect interview, you can’t answer 100% of the questions.</p>
+<p>10. Don’t be afraid to negotiate job offers. Do your research on salary ranges for the position and make a counter offer if necessary. <strong>This is the most important tip I can give you, as it can make a huge difference in your income and satisfaction.</strong></p>
+</section>
+<section id="study-sources" class="level2">
+<h2 class="anchored" data-anchor-id="study-sources">Study Sources</h2>
+<p>I found the book “<a href="https://amzn.eu/d/6lPwBfQ">Approaching Almost Any Machine Learning Problem</a>” by <a href="https://twitter.com/abhi1thakur">Abhishek Thakur</a> to be an excellent resource for building a strong foundation in machine learning.</p>
+<p>I also relied heavily on online resources like <a href="https://www.youtube.com/@statquest">Statquest</a> and <a href="https://www.youtube.com/@krishnaik06">Krish Naik’s</a> videos, as well as blogs on various websites like Medium, Towards Data Science, and Analytics Vidhya, like for Decision tree I think KDnuggets have one of the finest <a href="https://www.kdnuggets.com/2020/01/decision-tree-algorithm-explained.html">blog</a> on it.</p>
+<p><a href="https://huyenchip.com/ml-interviews-book/">Machine Learning Interviews Book by Chip Huyen</a> was another source from where I learned non technical (like how to negotiate salary) &amp; technical aspect of interview.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>In conclusion, my journey to landing a Senior Analyst role in a FinTech company was not easy, but it taught me valuable lessons about perseverance, learning from mistakes, and the importance of building a strong online profile. I hope my journey can inspire others to pursue their dreams and never give up, no matter how challenging the journey may be.</p>
+<p><strong>Hope</strong> that’s the key, be willing to work hard ‘<em>you will get success may not be today but tomorrow you surely will</em>’.</p>
 
 
+</section>
 
-<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="Computer Vision,FastAI" data-listing-date-sort="1715365800000" data-listing-file-modified-sort="1715417312110" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2613">
-<a href="./posts/FastAI_Course_Lect6_Part4/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="posts\FastAI_Course_Lect6_Part4\lecture-6-road-to-the-top-part-4-self_files\lecture-6-road-to-the-top-part-4-self_23_0.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-FastAI Course Lecture 6 Part 4 Notes
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Computer Vision'); return false;">
-Computer Vision
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('FastAI'); return false;">
-FastAI
-</div>
-</div>
-<div class="card-text listing-description">
-100.00% [5686607872/5686607260 02:26&lt;00:00]
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Kanav Sharma
-</div>
-<div class="listing-date">
-May 11, 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="1" data-categories="Computer Vision,FastAI" data-listing-date-sort="1715020200000" data-listing-file-modified-sort="1715362720628" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="34" data-listing-word-count-sort="6613">
-<a href="./posts/FastAI_Course_Lect6_Part3/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="posts\FastAI_Course_Lect6_Part3\lecture-6-road-to-the-top-part-3-self_files\lecture-6-road-to-the-top-part-3-self_2_0.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-FastAI Course Lecture 6 Part 3 Notes
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Computer Vision'); return false;">
-Computer Vision
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('FastAI'); return false;">
-FastAI
-</div>
-</div>
-<div class="card-text listing-description">
-100.00% [5686607872/5686607260 02:04&lt;00:00]
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Kanav Sharma
-</div>
-<div class="listing-date">
-May 7, 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="2" data-categories="Computer Vision,FastAI" data-listing-date-sort="1714674600000" data-listing-file-modified-sort="1715363253349" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3602">
-<a href="./posts/FastAI_Course_Lect6_Part2/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="posts\FastAI_Course_Lect6_Part2\Lecture_6_Road_To_The_Top_Part_2_self_files\Lecture_6_Road_To_The_Top_Part_2_self_4_0.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-FastAI Course Lecture 6 Part 2 Notes
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Computer Vision'); return false;">
-Computer Vision
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('FastAI'); return false;">
-FastAI
-</div>
-</div>
-<div class="card-text listing-description">
-In Lecture6-Part1 we build our model using <code>resent26d</code> architecture with best accuracy <code>73%</code>. In this notebook we will be using <code>ConvNeXt</code> model and aiming towards higher accuracy.
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Kanav Sharma
-</div>
-<div class="listing-date">
-May 3, 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="3" data-categories="Computer Vision,FastAI" data-listing-date-sort="1714242600000" data-listing-file-modified-sort="1715363186809" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="30" data-listing-word-count-sort="5905">
-<a href="./posts/FastAI_Course_Lect6_Part1/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="posts\FastAI_Course_Lect6_Part1\lecture-6-road-to-the-top-part-1-self_files\lecture-6-road-to-the-top-part-1-self_12_0.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-FastAI Course Lecture 6 Part 1 Notes
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Computer Vision'); return false;">
-Computer Vision
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('FastAI'); return false;">
-FastAI
-</div>
-</div>
-<div class="card-text listing-description">
-In previous lecture , we referred to Which Image models are best? to understand computer vision models in general and which among them works best.
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Kanav Sharma
-</div>
-<div class="listing-date">
-Apr 28, 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="4" data-categories="Tabular Data,FastAI" data-listing-date-sort="1713637800000" data-listing-file-modified-sort="1714318666000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3531">
-<a href="./posts/FastAI_Course_Lect5/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="posts\FastAI_Course_Lect5\Lecture_5_Tabular_Data_Self_files\NN.PNG" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-FastAI Course Lecture 5 Notes
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Tabular Data'); return false;">
-Tabular Data
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('FastAI'); return false;">
-FastAI
-</div>
-</div>
-<div class="card-text listing-description">
-My primary focus is to write on the lessons and techniques related to building and training models for Computer Vision tasks, such as image classification, object detection…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Kanav Sharma
-</div>
-<div class="listing-date">
-Apr 21, 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="5" data-categories="Computer Vision,FastAI" data-listing-date-sort="1713033000000" data-listing-file-modified-sort="1714318672000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="154" data-listing-word-count-sort="30763">
-<a href="./posts/FastAI_Course_Lect3/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="posts\FastAI_Course_Lect3\Lecture_3_Deployment_Self_files\Lecture_3_Deployment_Self_15_0.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-FastAI Course Lecture 3 Notes
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Computer Vision'); return false;">
-Computer Vision
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('FastAI'); return false;">
-FastAI
-</div>
-</div>
-<div class="card-text listing-description">
-Previously, we obtained our data from the DuckDuckGo API and built our model around that.
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Kanav Sharma
-</div>
-<div class="listing-date">
-Apr 14, 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="6" data-categories="Computer Vision,FastAI" data-listing-date-sort="1712601000000" data-listing-file-modified-sort="1713784245000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3084">
-<a href="./posts/FastAI_Course_Lect2/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="posts\FastAI_Course_Lect2\Lecture_2_Production_Self_files\Lecture_2_Production_Self_19_0.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-FastAI Course Lecture 2 Notes
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Computer Vision'); return false;">
-Computer Vision
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('FastAI'); return false;">
-FastAI
-</div>
-</div>
-<div class="card-text listing-description">
-Let’s install all required packages
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Kanav Sharma
-</div>
-<div class="listing-date">
-Apr 9, 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="7" data-categories="Informative,Interview" data-listing-date-sort="1679509800000" data-listing-file-modified-sort="1706790931000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1364">
-<a href="./posts/Job-Search/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="./posts/Job-Search/image.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-How I got multiple offers and Landed My Dream Job in Fintech
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Informative'); return false;">
-Informative
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Interview'); return false;">
-Interview
-</div>
-</div>
-<div class="card-text listing-description">
-A blog regarding how I got what I wanted
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Kanav Sharma
-</div>
-<div class="listing-date">
-Mar 23, 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

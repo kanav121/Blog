@@ -1,0 +1,453 @@
+---
+title: "FastAI Course Lecture 6 Part 4 Notes"
+author: "Kanav Sharma"
+date: "2024-05-11"
+categories: [Computer Vision, FastAI]
+toc: true
+#image: "image.jpg"
+#description: Blog regarding re-creation of Lecture 2 of FastAI Course for own learning
+title-block-banner: true  #it has image in title
+order: 0
+---
+
+#### AIM : In this we want to create a multi-target model i.e. to predict calorie count & food type.
+
+## Call the library, download data, create folder blah blah..
+
+``` python
+#hide
+!pip install -Uqq fastbook
+!pip install timm
+
+import fastbook
+fastbook.setup_book()
+import timm
+
+#hide
+from fastbook import *
+from fastai.vision.widgets import *
+from fastai.vision.all import *
+
+path = Path('/content')
+untar_data(URLs.FOOD, data=path)
+
+# actual path to train image folder
+train_path = Path('/content/food-101/images')
+test_path = Path('/content/food-101/test')
+
+# Create Test folder
+
+import os
+import random
+import shutil
+
+def move_images_to_test(source_folder, test_folder, percentage=0.1):
+    # Create the test folder if it doesn't exist
+    os.makedirs(test_folder, exist_ok=True)
+
+    # Iterate through each subfolder in the source folder
+    for subfolder in os.listdir(source_folder):
+        subfolder_path = os.path.join(source_folder, subfolder)
+
+        # Check if it's a directory
+        if os.path.isdir(subfolder_path):
+            # Get a list of all image files in the subfolder
+            image_files = [f for f in os.listdir(subfolder_path) if f.endswith('.jpg')]
+
+            # Calculate the number of images to move
+            num_images_to_move = int(len(image_files) * percentage)
+
+            # Randomly select images to move
+            images_to_move = random.sample(image_files, num_images_to_move)
+
+            # Move selected images to the test folder
+            for image in images_to_move:
+                source_path = os.path.join(subfolder_path, image)
+                dest_path = os.path.join(test_folder, image)
+                shutil.move(source_path, dest_path)
+
+if __name__ == "__main__":
+    move_images_to_test(train_path, test_path, percentage=0.15)
+```
+
+```         
+Requirement already satisfied: timm in /opt/conda/lib/python3.10/site-packages (0.9.16)
+Requirement already satisfied: torch in /opt/conda/lib/python3.10/site-packages (from timm) (2.1.2)
+Requirement already satisfied: torchvision in /opt/conda/lib/python3.10/site-packages (from timm) (0.16.2)
+Requirement already satisfied: pyyaml in /opt/conda/lib/python3.10/site-packages (from timm) (6.0.1)
+Requirement already satisfied: huggingface_hub in /opt/conda/lib/python3.10/site-packages (from timm) (0.20.3)
+Requirement already satisfied: safetensors in /opt/conda/lib/python3.10/site-packages (from timm) (0.4.2)
+Requirement already satisfied: filelock in /opt/conda/lib/python3.10/site-packages (from huggingface_hub->timm) (3.13.1)
+Requirement already satisfied: fsspec>=2023.5.0 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub->timm) (2024.2.0)
+Requirement already satisfied: requests in /opt/conda/lib/python3.10/site-packages (from huggingface_hub->timm) (2.31.0)
+Requirement already satisfied: tqdm>=4.42.1 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub->timm) (4.66.1)
+Requirement already satisfied: typing-extensions>=3.7.4.3 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub->timm) (4.9.0)
+Requirement already satisfied: packaging>=20.9 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub->timm) (21.3)
+Requirement already satisfied: sympy in /opt/conda/lib/python3.10/site-packages (from torch->timm) (1.12)
+Requirement already satisfied: networkx in /opt/conda/lib/python3.10/site-packages (from torch->timm) (3.2.1)
+Requirement already satisfied: jinja2 in /opt/conda/lib/python3.10/site-packages (from torch->timm) (3.1.2)
+Requirement already satisfied: numpy in /opt/conda/lib/python3.10/site-packages (from torchvision->timm) (1.26.4)
+Requirement already satisfied: pillow!=8.3.*,>=5.3.0 in /opt/conda/lib/python3.10/site-packages (from torchvision->timm) (9.5.0)
+Requirement already satisfied: pyparsing!=3.0.5,>=2.0.2 in /opt/conda/lib/python3.10/site-packages (from packaging>=20.9->huggingface_hub->timm) (3.1.1)
+Requirement already satisfied: MarkupSafe>=2.0 in /opt/conda/lib/python3.10/site-packages (from jinja2->torch->timm) (2.1.3)
+Requirement already satisfied: charset-normalizer<4,>=2 in /opt/conda/lib/python3.10/site-packages (from requests->huggingface_hub->timm) (3.3.2)
+Requirement already satisfied: idna<4,>=2.5 in /opt/conda/lib/python3.10/site-packages (from requests->huggingface_hub->timm) (3.6)
+Requirement already satisfied: urllib3<3,>=1.21.1 in /opt/conda/lib/python3.10/site-packages (from requests->huggingface_hub->timm) (1.26.18)
+Requirement already satisfied: certifi>=2017.4.17 in /opt/conda/lib/python3.10/site-packages (from requests->huggingface_hub->timm) (2024.2.2)
+Requirement already satisfied: mpmath>=0.19 in /opt/conda/lib/python3.10/site-packages (from sympy->torch->timm) (1.3.0)
+```
+
+```{=html}
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+```
+<div>
+
+<progress value="5686607872" class max="5686607260" style="width:300px; height:20px; vertical-align: middle;">
+
+</progress>
+
+100.00% \[5686607872/5686607260 02:26\<00:00\]
+
+</div>
+
+#### Size of all subfolders
+
+``` python
+subfolders = [f.name for f in os.scandir(train_path) if f.is_dir()]
+len(subfolders)
+```
+
+```         
+101
+```
+
+## Calorie and Food Name Folder
+
+Create a dataframe which will have all Images from training folder as Index and have a sub folder and calorie count(which is random).
+
+``` python
+# Initialize empty lists to store subfolder names and file names
+subfolder_names = []
+file_names = []
+
+# Walk through the directory and its subdirectories
+for root, dirs, files in os.walk(train_path):
+    for file in files:
+        # Get the subfolder name
+        subfolder_name = os.path.relpath(root, train_path)
+        
+        # Append the subfolder name and file name to the lists
+        subfolder_names.append(subfolder_name)
+        file_names.append(file)
+
+# Create a DataFrame
+df = pd.DataFrame({'Subfolder_Name': subfolder_names, 'File_name': file_names})
+
+# Generate random calories
+calories = np.random.randint(100, 800, len(list(set(subfolder_names))))
+
+# Create a DataFrame
+Calorie_Df = pd.DataFrame({'Subfolder_Name': list(set(subfolder_names)), 'Calories': calories})
+
+# Merge the two DataFrames on 'Subfolder_Name'
+df = pd.merge(df, Calorie_Df, on='Subfolder_Name', how='left')
+
+# Display the DataFrame with 'File_name' as the index
+df.set_index('File_name', inplace=True)
+
+# Display the updated DataFrame
+df.head()
+```
+
+<div>
+
+```{=html}
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+```
+|             | Subfolder_Name | Calories |
+|-------------|----------------|----------|
+| File_name   |                |          |
+| 524965.jpg  | fish_and_chips | 479      |
+| 1863408.jpg | fish_and_chips | 479      |
+| 16967.jpg   | fish_and_chips | 479      |
+| 1798422.jpg | fish_and_chips | 479      |
+| 3806847.jpg | fish_and_chips | 479      |
+
+</div>
+
+### Get Calorie
+
+Get subsequent calorie as per food type
+
+``` python
+df.loc['1863408.jpg', 'Calories']
+```
+
+```         
+479
+```
+
+``` python
+def get_calorie(p): return df.loc[p.name, 'Calories']
+```
+
+## Dataloaders
+
+Let's create `Dataloaders` & to do that we will use `DataBlock` API, which is convenient in achieving our goal.
+
+``` python
+dls = DataBlock(
+    blocks=(ImageBlock,CategoryBlock,CategoryBlock),
+    n_inp=1,
+    get_items=get_image_files,
+    get_y = [parent_label,get_calorie],
+    splitter=RandomSplitter(0.2, seed=42),
+    item_tfms=Resize(192, method='squish'),
+    batch_tfms=aug_transforms(size=128, min_scale=0.75)
+).dataloaders(train_path)
+```
+
+**Explanation of the code**
+
+``` python
+blocks=(ImageBlock,CategoryBlock,CategoryBlock)
+```
+
+It will generate three outputs: an image (which we want to use for training), a categorical variable representing the calorie content, and another categorical variable representing the food type. We can add as many additional features as needed.
+
+``` python
+n_inp=1
+```
+
+This line will tell our dataloader that only 1 of them(1st block i.e ImageBlock) is Independent variable & other two are target variable.
+
+``` python
+get_items=get_image_files
+```
+
+Use get_image_files to get a list of inputs.
+
+``` python
+get_y = [parent_label,get_calorie]
+```
+
+To create the two outputs for each file, call two functions: parent_label (from fastai) and get_calorie (defined above).
+
+Rest of the lines are already explained in [1st lecture](https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part1/).
+
+### Batch
+
+``` python
+dls.show_batch(max_n=6)
+```
+
+![](lecture-6-road-to-the-top-part-4-self_files/lecture-6-road-to-the-top-part-4-self_23_0.png)
+
+### Replicating the Food model
+
+Now we'll replicate the same food model we've made before, but have it work with this new data.
+
+The key difference is that our metrics and loss will now receive three things instead of two: the model outputs (i.e. the metric and loss function inputs), and the two targets (food_type and calorie). Therefore, we need to define slight variations of our metric (error_rate) and loss function (cross_entropy) to pass on just the `food_type` target:
+
+``` python
+def food_err(inp,food,calorie): return error_rate(inp,food)
+def food_loss(inp,food,calorie): return F.cross_entropy(inp,food)
+```
+
+We're now ready to create our learner.
+
+There's just one wrinkle to be aware of. Now that our `DataLoaders` is returning multiple targets, fastai doesn't know how many outputs our model will need. Therefore we have to pass n_out when we create our `Learner` -- we need `101 outputs`(no of food type), one for each possible disease:
+
+``` python
+arch = 'convnext_small_in22k'
+learn = vision_learner(dls, arch, loss_func=food_loss, metrics=food_err, n_out=101).to_fp16()
+lr = 0.1
+```
+
+```         
+/opt/conda/lib/python3.10/site-packages/timm/models/_factory.py:117: UserWarning: Mapping deprecated model name convnext_small_in22k to current convnext_small.fb_in22k.
+  model = create_fn(
+
+
+
+model.safetensors:   0%|          | 0.00/265M [00:00<?, ?B/s]
+```
+
+When we train this model we should get similar results to what we've seen with similar models before:
+
+``` python
+learn.fine_tune(5, lr)
+```
+
+```{=html}
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+```
+| epoch | train_loss | valid_loss | food_err | time  |
+|-------|------------|------------|----------|-------|
+| 0     | 5.858690   | 16.570326  | 0.348107 | 05:03 |
+
+```{=html}
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+```
+| epoch | train_loss | valid_loss | food_err | time  |
+|-------|------------|------------|----------|-------|
+| 0     | 2.052801   | 24.203112  | 0.343390 | 05:33 |
+| 1     | 2.231666   | 2.649899   | 0.373966 | 05:40 |
+| 2     | 1.380835   | 2.181304   | 0.322423 | 05:39 |
+| 3     | 0.629317   | 1.560569   | 0.217123 | 05:32 |
+| 4     | 0.358618   | 1.224057   | 0.192137 | 05:31 |
+
+## Multi-Target Model
+
+We had a model that predicted 101 things(no of food types) and among these, whichever has the highest probability(food type) will assign ed to that image. Now, I want to have a model that can predict 202 things(101 food type + 101 calorie count).
+
+We can define `disease_loss` just like we did earlier, but with one important change: the input tensor is now of length 202, not 101, so it doesn't match the number of possible food type. We can pick whatever part of the input we want to be used to predict food type. Let's use the first 101 values:
+
+``` python
+def food_loss(inp,food,calorie): return F.cross_entropy(inp[:,:101],food)
+```
+
+That means we can do the same thing for predicting calorie, but use the last 101 values of the input, and set the target to calorie instead of food:
+
+``` python
+def calorie_loss(inp,food,calorie): return F.cross_entropy(inp[:,101:],calorie)
+```
+
+Our overall loss will then be the sum of these two losses:
+
+``` python
+def combine_loss(inp,food,calorie): return food_loss(inp,food,calorie)+calorie_loss(inp,food,calorie)
+```
+
+Error Rate for each of the output
+
+``` python
+def food_err(inp,food,calorie): return error_rate(inp[:,:101],food)
+def calorie_err(inp,food,calorie): return error_rate(inp[:,101:],calorie)
+
+err_metrics = (food_err,calorie_err)
+
+all_metrics = err_metrics+(food_loss,calorie_loss)
+```
+
+### Let's Create Learner
+
+``` python
+learn = vision_learner(dls, arch, loss_func=combine_loss, metrics=all_metrics, n_out=202).to_fp16()
+```
+
+``` python
+learn.fine_tune(5, lr)
+```
+
+```{=html}
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+```
+| epoch | train_loss | valid_loss | food_err | calorie_err | food_loss | calorie_loss | time  |
+|---------|---------|---------|---------|---------|---------|---------|---------|
+| 0     | 13.486178  | 7.905050   | 0.442050 | 0.449971    | 3.916732  | 3.988317     | 04:29 |
+
+```{=html}
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+```
+| epoch | train_loss | valid_loss | food_err | calorie_err | food_loss | calorie_loss | time  |
+|---------|---------|---------|---------|---------|---------|---------|---------|
+| 0     | 4.592400   | 44.517895  | 0.462085 | 0.457484    | 30.451624 | 14.066281    | 05:29 |
+| 1     | 4.814772   | 8.256505   | 0.381246 | 0.378975    | 4.196504  | 4.060001     | 05:29 |
+| 2     | 2.942243   | 12.322714  | 0.274898 | 0.278043    | 6.179482  | 6.143233     | 05:29 |
+| 3     | 1.468126   | 3.271619   | 0.213395 | 0.213920    | 1.606259  | 1.665358     | 05:29 |
+| 4     | 0.805262   | 4.968063   | 0.191322 | 0.192137    | 2.348646  | 2.619417     | 05:31 |
+
+### Save the model
+
+``` python
+save_pickle('/kaggle/working/Lecture6_Part4_multi_model.pkl', learn)
+```
+
+## Conclusion
+
+So, is this useful?
+
+Well... if you're truly seeking a model capable of predicting multiple outcomes, then absolutely! However, whether this approach will enhance our ability to predict rice disease is uncertain

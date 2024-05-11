@@ -6,16 +6,926 @@
       version="2.0">
 <channel>
 <title>Blog</title>
-<link>https://mekanavsharma.github.io/Blog/index.html</link>
+<link>https://mekanavsharma.github.io/Blog/</link>
 <atom:link href="https://mekanavsharma.github.io/Blog/index.xml" rel="self" type="application/rss+xml"/>
 <description>Collection of my Projects and Ideas</description>
-<generator>quarto-1.3.450</generator>
-<lastBuildDate>Mon, 06 May 2024 18:30:00 GMT</lastBuildDate>
+<generator>quarto-1.4.554</generator>
+<lastBuildDate>Fri, 10 May 2024 18:30:00 GMT</lastBuildDate>
+<item>
+  <title>FastAI Course Lecture 6 Part 4 Notes</title>
+  <dc:creator>Kanav Sharma</dc:creator>
+  <link>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part4/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="aim-in-this-we-want-to-create-a-multi-target-model-i.e-to-predict-calorie-count-food-type." class="level4">
+<h4 class="anchored" data-anchor-id="aim-in-this-we-want-to-create-a-multi-target-model-i.e-to-predict-calorie-count-food-type.">AIM : In this we want to create a multi-target model i.e to predict calorie count &amp; food type.</h4>
+</section>
+<section id="call-library-download-data-create-folder-blah-blah.." class="level2">
+<h2 class="anchored" data-anchor-id="call-library-download-data-create-folder-blah-blah..">Call library, download data, create folder blah blah..</h2>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#hide</span></span>
+<span id="cb1-2"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span>pip install <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>Uqq fastbook</span>
+<span id="cb1-3"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span>pip install timm</span>
+<span id="cb1-4"></span>
+<span id="cb1-5"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> fastbook</span>
+<span id="cb1-6">fastbook.setup_book()</span>
+<span id="cb1-7"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> timm</span>
+<span id="cb1-8"></span>
+<span id="cb1-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#hide</span></span>
+<span id="cb1-10"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> fastbook <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span>
+<span id="cb1-11"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> fastai.vision.widgets <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span>
+<span id="cb1-12"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> fastai.vision.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">all</span> <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span>
+<span id="cb1-13"></span>
+<span id="cb1-14">path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Path(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/content'</span>)</span>
+<span id="cb1-15">untar_data(URLs.FOOD, data<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>path)</span>
+<span id="cb1-16"></span>
+<span id="cb1-17"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># actual path to train image folder</span></span>
+<span id="cb1-18">train_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Path(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/content/food-101/images'</span>)</span>
+<span id="cb1-19">test_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Path(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/content/food-101/test'</span>)</span>
+<span id="cb1-20"></span>
+<span id="cb1-21"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Create Test folder</span></span>
+<span id="cb1-22"></span>
+<span id="cb1-23"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> os</span>
+<span id="cb1-24"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> random</span>
+<span id="cb1-25"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> shutil</span>
+<span id="cb1-26"></span>
+<span id="cb1-27"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> move_images_to_test(source_folder, test_folder, percentage<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>):</span>
+<span id="cb1-28">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Create the test folder if it doesn't exist</span></span>
+<span id="cb1-29">    os.makedirs(test_folder, exist_ok<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span>
+<span id="cb1-30"></span>
+<span id="cb1-31">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Iterate through each subfolder in the source folder</span></span>
+<span id="cb1-32">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> subfolder <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> os.listdir(source_folder):</span>
+<span id="cb1-33">        subfolder_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(source_folder, subfolder)</span>
+<span id="cb1-34"></span>
+<span id="cb1-35">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Check if it's a directory</span></span>
+<span id="cb1-36">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> os.path.isdir(subfolder_path):</span>
+<span id="cb1-37">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Get a list of all image files in the subfolder</span></span>
+<span id="cb1-38">            image_files <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [f <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> f <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> os.listdir(subfolder_path) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> f.endswith(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'.jpg'</span>)]</span>
+<span id="cb1-39"></span>
+<span id="cb1-40">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Calculate the number of images to move</span></span>
+<span id="cb1-41">            num_images_to_move <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(image_files) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> percentage)</span>
+<span id="cb1-42"></span>
+<span id="cb1-43">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Randomly select images to move</span></span>
+<span id="cb1-44">            images_to_move <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> random.sample(image_files, num_images_to_move)</span>
+<span id="cb1-45"></span>
+<span id="cb1-46">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Move selected images to the test folder</span></span>
+<span id="cb1-47">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> image <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> images_to_move:</span>
+<span id="cb1-48">                source_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(subfolder_path, image)</span>
+<span id="cb1-49">                dest_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(test_folder, image)</span>
+<span id="cb1-50">                shutil.move(source_path, dest_path)</span>
+<span id="cb1-51"></span>
+<span id="cb1-52"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">__name__</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"__main__"</span>:</span>
+<span id="cb1-53">    move_images_to_test(train_path, test_path, percentage<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.15</span>)</span></code></pre></div>
+<pre><code>Requirement already satisfied: timm in /opt/conda/lib/python3.10/site-packages (0.9.16)
+Requirement already satisfied: torch in /opt/conda/lib/python3.10/site-packages (from timm) (2.1.2)
+Requirement already satisfied: torchvision in /opt/conda/lib/python3.10/site-packages (from timm) (0.16.2)
+Requirement already satisfied: pyyaml in /opt/conda/lib/python3.10/site-packages (from timm) (6.0.1)
+Requirement already satisfied: huggingface_hub in /opt/conda/lib/python3.10/site-packages (from timm) (0.20.3)
+Requirement already satisfied: safetensors in /opt/conda/lib/python3.10/site-packages (from timm) (0.4.2)
+Requirement already satisfied: filelock in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (3.13.1)
+Requirement already satisfied: fsspec&gt;=2023.5.0 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (2024.2.0)
+Requirement already satisfied: requests in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (2.31.0)
+Requirement already satisfied: tqdm&gt;=4.42.1 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (4.66.1)
+Requirement already satisfied: typing-extensions&gt;=3.7.4.3 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (4.9.0)
+Requirement already satisfied: packaging&gt;=20.9 in /opt/conda/lib/python3.10/site-packages (from huggingface_hub-&gt;timm) (21.3)
+Requirement already satisfied: sympy in /opt/conda/lib/python3.10/site-packages (from torch-&gt;timm) (1.12)
+Requirement already satisfied: networkx in /opt/conda/lib/python3.10/site-packages (from torch-&gt;timm) (3.2.1)
+Requirement already satisfied: jinja2 in /opt/conda/lib/python3.10/site-packages (from torch-&gt;timm) (3.1.2)
+Requirement already satisfied: numpy in /opt/conda/lib/python3.10/site-packages (from torchvision-&gt;timm) (1.26.4)
+Requirement already satisfied: pillow!=8.3.*,&gt;=5.3.0 in /opt/conda/lib/python3.10/site-packages (from torchvision-&gt;timm) (9.5.0)
+Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /opt/conda/lib/python3.10/site-packages (from packaging&gt;=20.9-&gt;huggingface_hub-&gt;timm) (3.1.1)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /opt/conda/lib/python3.10/site-packages (from jinja2-&gt;torch-&gt;timm) (2.1.3)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (3.6)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (1.26.18)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/lib/python3.10/site-packages (from requests-&gt;huggingface_hub-&gt;timm) (2024.2.2)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/lib/python3.10/site-packages (from sympy-&gt;torch-&gt;timm) (1.3.0)</code></pre>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div>
+<progress value="5686607872" class="" max="5686607260" style="width:300px; height:20px; vertical-align: middle;">
+</progress>
+<p>100.00% [5686607872/5686607260 02:26&lt;00:00]</p>
+</div>
+<section id="name-of-all-subfolders" class="level4">
+<h4 class="anchored" data-anchor-id="name-of-all-subfolders">Name of all subfolders</h4>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">subfolders <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [f.name <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> f <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> os.scandir(train_path) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> f.is_dir()]</span>
+<span id="cb3-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(subfolders)</span></code></pre></div>
+<pre><code>101</code></pre>
+</section>
+</section>
+<section id="calorie-and-food-name-folder" class="level2">
+<h2 class="anchored" data-anchor-id="calorie-and-food-name-folder">Calorie and Food Name Folder</h2>
+<p>Create a dataframe which will have all Images from training folder as Index and have sub folder and calorie count(which is random).</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Initialize empty lists to store subfolder names and file names</span></span>
+<span id="cb5-2">subfolder_names <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb5-3">file_names <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb5-4"></span>
+<span id="cb5-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Walk through the directory and its subdirectories</span></span>
+<span id="cb5-6"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> root, dirs, files <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> os.walk(train_path):</span>
+<span id="cb5-7">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">file</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> files:</span>
+<span id="cb5-8">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Get the subfolder name</span></span>
+<span id="cb5-9">        subfolder_name <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.relpath(root, train_path)</span>
+<span id="cb5-10">        </span>
+<span id="cb5-11">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Append the subfolder name and file name to the lists</span></span>
+<span id="cb5-12">        subfolder_names.append(subfolder_name)</span>
+<span id="cb5-13">        file_names.append(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">file</span>)</span>
+<span id="cb5-14"></span>
+<span id="cb5-15"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Create a DataFrame</span></span>
+<span id="cb5-16">df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.DataFrame({<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Subfolder_Name'</span>: subfolder_names, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'File_name'</span>: file_names})</span>
+<span id="cb5-17"></span>
+<span id="cb5-18"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Generate random calories</span></span>
+<span id="cb5-19">calories <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.random.randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">800</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>(subfolder_names))))</span>
+<span id="cb5-20"></span>
+<span id="cb5-21"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Create a DataFrame</span></span>
+<span id="cb5-22">Calorie_Df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.DataFrame({<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Subfolder_Name'</span>: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>(subfolder_names)), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Calories'</span>: calories})</span>
+<span id="cb5-23"></span>
+<span id="cb5-24"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Merge the two DataFrames on 'Subfolder_Name'</span></span>
+<span id="cb5-25">df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.merge(df, Calorie_Df, on<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Subfolder_Name'</span>, how<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'left'</span>)</span>
+<span id="cb5-26"></span>
+<span id="cb5-27"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Display the DataFrame with 'File_name' as the index</span></span>
+<span id="cb5-28">df.set_index(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'File_name'</span>, inplace<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span>
+<span id="cb5-29"></span>
+<span id="cb5-30"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Display the updated DataFrame</span></span>
+<span id="cb5-31">df.head()</span></code></pre></div>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th>Subfolder_Name</th>
+<th>Calories</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>File_name</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>524965.jpg</td>
+<td>fish_and_chips</td>
+<td>479</td>
+</tr>
+<tr class="odd">
+<td>1863408.jpg</td>
+<td>fish_and_chips</td>
+<td>479</td>
+</tr>
+<tr class="even">
+<td>16967.jpg</td>
+<td>fish_and_chips</td>
+<td>479</td>
+</tr>
+<tr class="odd">
+<td>1798422.jpg</td>
+<td>fish_and_chips</td>
+<td>479</td>
+</tr>
+<tr class="even">
+<td>3806847.jpg</td>
+<td>fish_and_chips</td>
+<td>479</td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="get-calorie" class="level3">
+<h3 class="anchored" data-anchor-id="get-calorie">Get Calorie</h3>
+<p>Get subsequent calorie as per food type</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1">df.loc[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'1863408.jpg'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Calories'</span>]</span></code></pre></div>
+<pre><code>479</code></pre>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> get_calorie(p): <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> df.loc[p.name, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Calories'</span>]</span></code></pre></div>
+</section>
+</section>
+<section id="dataloaders" class="level2">
+<h2 class="anchored" data-anchor-id="dataloaders">Dataloaders</h2>
+<p>Let’s create <code>Dataloaders</code> &amp; to do that we will use <code>DataBlock</code> API, which is convenient in achieving our goal.</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">dls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> DataBlock(</span>
+<span id="cb9-2">    blocks<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(ImageBlock,CategoryBlock,CategoryBlock),</span>
+<span id="cb9-3">    n_inp<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,</span>
+<span id="cb9-4">    get_items<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>get_image_files,</span>
+<span id="cb9-5">    get_y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [parent_label,get_calorie],</span>
+<span id="cb9-6">    splitter<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>RandomSplitter(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, seed<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>),</span>
+<span id="cb9-7">    item_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">192</span>, method<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'squish'</span>),</span>
+<span id="cb9-8">    batch_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>aug_transforms(size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>, min_scale<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.75</span>)</span>
+<span id="cb9-9">).dataloaders(train_path)</span></code></pre></div>
+<p><strong>Explanation of the code</strong></p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">blocks<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(ImageBlock,CategoryBlock,CategoryBlock)</span></code></pre></div>
+<p>it will generate three outputs: an image (which we want to use for training), a categorical variable representing the calorie content, and another categorical variable representing the food type. We can add as many additional features as needed.</p>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1">n_inp<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span></code></pre></div>
+<p>This line will tell to our dataloader that only 1 of them(1st block i.e ImageBlock) is Independent variable &amp; other two are target variable.</p>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">get_items<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>get_image_files</span></code></pre></div>
+<p>Use get_image_files to get a list of inputs.</p>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1">get_y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [parent_label,get_calorie]</span></code></pre></div>
+<p>To create the two outputs for each file, call two functions: parent_label (from fastai) and get_calorie (defined above).</p>
+<p>Rest of the lines are already explained in 1st lecture</p>
+<section id="batch" class="level3">
+<h3 class="anchored" data-anchor-id="batch">Batch</h3>
+<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1">dls.show_batch(max_n<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>)</span></code></pre></div>
+<p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part4/lecture-6-road-to-the-top-part-4-self_files/lecture-6-road-to-the-top-part-4-self_23_0.png" class="img-fluid"></p>
+</section>
+<section id="replicating-the-disease-model" class="level3">
+<h3 class="anchored" data-anchor-id="replicating-the-disease-model">Replicating the disease model</h3>
+<p>Now we’ll replicate the same disease model we’ve made before, but have it work with this new data.</p>
+<p>The key difference is that our metrics and loss will now receive three things instead of two: the model outputs (i.e.&nbsp;the metric and loss function inputs), and the two targets (food_type and calorie). Therefore, we need to define slight variations of our metric (error_rate) and loss function (cross_entropy) to pass on just the <code>food_type</code> target:</p>
+<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> food_err(inp,food,calorie): <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> error_rate(inp,food)</span>
+<span id="cb15-2"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> food_loss(inp,food,calorie): <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> F.cross_entropy(inp,food)</span></code></pre></div>
+<p>We’re now ready to create our learner.</p>
+<p>There’s just one wrinkle to be aware of. Now that our <code>DataLoaders</code> is returning multiple targets, fastai doesn’t know how many outputs our model will need. Therefore we have to pass n_out when we create our <code>Learner</code> – we need <code>101 outputs</code>(no of food type), one for each possible disease:</p>
+<div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1">arch <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'convnext_small_in22k'</span></span>
+<span id="cb16-2">learn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> vision_learner(dls, arch, loss_func<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>food_loss, metrics<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>food_err, n_out<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">101</span>).to_fp16()</span>
+<span id="cb16-3">lr <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span></span></code></pre></div>
+<pre><code>/opt/conda/lib/python3.10/site-packages/timm/models/_factory.py:117: UserWarning: Mapping deprecated model name convnext_small_in22k to current convnext_small.fb_in22k.
+  model = create_fn(
+
+
+
+model.safetensors:   0%|          | 0.00/265M [00:00&lt;?, ?B/s]</code></pre>
+<p>When we train this model we should get similar results to what we’ve seen with similar models before:</p>
+<div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1">learn.fine_tune(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, lr)</span></code></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>food_err</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>5.858690</td>
+<td>16.570326</td>
+<td>0.348107</td>
+<td>05:03</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>food_err</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2.052801</td>
+<td>24.203112</td>
+<td>0.343390</td>
+<td>05:33</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>2.231666</td>
+<td>2.649899</td>
+<td>0.373966</td>
+<td>05:40</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>1.380835</td>
+<td>2.181304</td>
+<td>0.322423</td>
+<td>05:39</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>0.629317</td>
+<td>1.560569</td>
+<td>0.217123</td>
+<td>05:32</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>0.358618</td>
+<td>1.224057</td>
+<td>0.192137</td>
+<td>05:31</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="multi-target-model" class="level2">
+<h2 class="anchored" data-anchor-id="multi-target-model">Multi-Target Model</h2>
+<p>We had a model that predicted 100 things(no of food types) and among these whomsoever have the highest probability(food type) will assign to that image. So, now I want to have a model that can predict 202 things(101 food type + 101 calorie count).</p>
+<p>We can define <code>disease_loss</code> just like we did previously, but with one important change: the input tensor is now length 202, not 101, so it doesn’t match the number of possible food type. We can pick whatever part of the input we want to be used to predict food type. Let’s use the first 101 values:</p>
+<div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> food_loss(inp,food,calorie): <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> F.cross_entropy(inp[:,:<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">101</span>],food)</span></code></pre></div>
+<p>That means we can do the same thing for predicting variety, but use the last 10 values of the input, and set the target to variety instead of disease:</p>
+<div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> calorie_loss(inp,food,calorie): <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> F.cross_entropy(inp[:,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">101</span>:],calorie)</span></code></pre></div>
+<p>Our overall loss will then be the sum of these two losses:</p>
+<div class="sourceCode" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> combine_loss(inp,food,calorie): <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> food_loss(inp,food,calorie)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span>calorie_loss(inp,food,calorie)</span></code></pre></div>
+<p>Error Rate for each of the output</p>
+<div class="sourceCode" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> food_err(inp,food,calorie): <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> error_rate(inp[:,:<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">101</span>],food)</span>
+<span id="cb22-2"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> calorie_err(inp,food,calorie): <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> error_rate(inp[:,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">101</span>:],calorie)</span>
+<span id="cb22-3"></span>
+<span id="cb22-4">err_metrics <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (food_err,calorie_err)</span>
+<span id="cb22-5"></span>
+<span id="cb22-6">all_metrics <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> err_metrics<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span>(food_loss,calorie_loss)</span></code></pre></div>
+<section id="lets-create-learner" class="level3">
+<h3 class="anchored" data-anchor-id="lets-create-learner">Let’s Create Learner</h3>
+<div class="sourceCode" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1">learn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> vision_learner(dls, arch, loss_func<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>combine_loss, metrics<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>all_metrics, n_out<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">202</span>).to_fp16()</span></code></pre></div>
+<div class="sourceCode" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1">learn.fine_tune(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, lr)</span></code></pre></div>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>food_err</th>
+<th>calorie_err</th>
+<th>food_loss</th>
+<th>calorie_loss</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>13.486178</td>
+<td>7.905050</td>
+<td>0.442050</td>
+<td>0.449971</td>
+<td>3.916732</td>
+<td>3.988317</td>
+<td>04:29</td>
+</tr>
+</tbody>
+</table>
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>food_err</th>
+<th>calorie_err</th>
+<th>food_loss</th>
+<th>calorie_loss</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>4.592400</td>
+<td>44.517895</td>
+<td>0.462085</td>
+<td>0.457484</td>
+<td>30.451624</td>
+<td>14.066281</td>
+<td>05:29</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>4.814772</td>
+<td>8.256505</td>
+<td>0.381246</td>
+<td>0.378975</td>
+<td>4.196504</td>
+<td>4.060001</td>
+<td>05:29</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>2.942243</td>
+<td>12.322714</td>
+<td>0.274898</td>
+<td>0.278043</td>
+<td>6.179482</td>
+<td>6.143233</td>
+<td>05:29</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>1.468126</td>
+<td>3.271619</td>
+<td>0.213395</td>
+<td>0.213920</td>
+<td>1.606259</td>
+<td>1.665358</td>
+<td>05:29</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>0.805262</td>
+<td>4.968063</td>
+<td>0.191322</td>
+<td>0.192137</td>
+<td>2.348646</td>
+<td>2.619417</td>
+<td>05:31</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="save-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="save-the-model">Save the model</h3>
+<div class="sourceCode" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1">save_pickle(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/kaggle/working/Lecture6_Part4_multi_model.pkl'</span>, learn)</span></code></pre></div>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>So, is this useful?</p>
+<p>Well… if you actually want a model that predicts multiple things, then yes, definitely! But as to whether it’s going to help us better predict rice disease, I honestly don’t know. I haven’t come across any research that tackles this important question: when can a multi-target model improve the accuracy of the individual targets compared to a single target model? (That doesn’t mean it doesn’t exist of course – perhaps it does and I haven’t found it yet…)</p>
+<p>I’ve certainly found in previous projects that there are cases where improvements to single targets can be made by using a multi-target model. I’d guess that it’ll be most useful when you’re having problems with overfitting. So try doing this with more epochs, and let me know how you go!</p>
+<p>If you found this notebook useful, please remember to click the little up-arrow at the top to upvote it, since I like to know when people have found my work useful, and it helps others find it too. And if you have any questions or comments, please pop them below – I read every comment I receive.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Computer Vision</category>
+  <category>FastAI</category>
+  <guid>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part4/</guid>
+  <pubDate>Fri, 10 May 2024 18:30:00 GMT</pubDate>
+</item>
 <item>
   <title>FastAI Course Lecture 6 Part 3 Notes</title>
   <dc:creator>Kanav Sharma</dc:creator>
-  <link>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part3/index.html</link>
+  <link>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part3/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -2015,14 +2925,15 @@ font-style: inherit;">False</span>)</span></code></pre></div>
  ]]></description>
   <category>Computer Vision</category>
   <category>FastAI</category>
-  <guid>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part3/index.html</guid>
+  <guid>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part3/</guid>
   <pubDate>Mon, 06 May 2024 18:30:00 GMT</pubDate>
 </item>
 <item>
   <title>FastAI Course Lecture 6 Part 2 Notes</title>
   <dc:creator>Kanav Sharma</dc:creator>
-  <link>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part2/index.html</link>
+  <link>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part2/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -3072,14 +3983,15 @@ model.safetensors:   0%|          | 0.00/178M [00:00&lt;?, ?B/s]</code></pre>
  ]]></description>
   <category>Computer Vision</category>
   <category>FastAI</category>
-  <guid>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part2/index.html</guid>
+  <guid>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part2/</guid>
   <pubDate>Thu, 02 May 2024 18:30:00 GMT</pubDate>
 </item>
 <item>
   <title>FastAI Course Lecture 6 Part 1 Notes</title>
   <dc:creator>Kanav Sharma</dc:creator>
-  <link>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part1/index.html</link>
+  <link>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part1/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -4984,14 +5896,15 @@ font-style: inherit;">!</span>head Lecture6_Part1_Food_Resnet_Submit.csv</span><
  ]]></description>
   <category>Computer Vision</category>
   <category>FastAI</category>
-  <guid>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part1/index.html</guid>
+  <guid>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect6_Part1/</guid>
   <pubDate>Sat, 27 Apr 2024 18:30:00 GMT</pubDate>
 </item>
 <item>
   <title>FastAI Course Lecture 5 Notes</title>
   <dc:creator>Kanav Sharma</dc:creator>
-  <link>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect5/index.html</link>
+  <link>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect5/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -5041,19 +5954,19 @@ font-style: inherit;">10</span>)</span></code></pre></div>
 </style>
 <table class="table">
 <colgroup>
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
+<col style="width: 3%">
+<col style="width: 8%">
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 33%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 11%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 6%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -5916,14 +6829,15 @@ font-style: inherit;">'Survived'</span>]]</span>
  ]]></description>
   <category>Tabular Data</category>
   <category>FastAI</category>
-  <guid>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect5/index.html</guid>
+  <guid>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect5/</guid>
   <pubDate>Sat, 20 Apr 2024 18:30:00 GMT</pubDate>
 </item>
 <item>
   <title>FastAI Course Lecture 3 Notes</title>
   <dc:creator>Kanav Sharma</dc:creator>
-  <link>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect3/index.html</link>
+  <link>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect3/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -6566,7 +7480,7 @@ font-style: inherit;">2</span>)</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect3/Lecture_3_Deployment_Self_files/Lecture_3_Deployment_Self_15_0.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">png</figcaption>
+<figcaption>png</figcaption>
 </figure>
 </div>
 </section>
@@ -6602,7 +7516,7 @@ font-style: inherit;">2</span>)</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect3/Lecture_3_Deployment_Self_files/Lecture_3_Deployment_Self_17_0.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">png</figcaption>
+<figcaption>png</figcaption>
 </figure>
 </div>
 </section>
@@ -6619,142 +7533,96 @@ background-color: null;
 font-style: inherit;">5</span>)</span></code></pre></div>
 <pre><code>Downloading: "https://download.pytorch.org/models/resnet34-b627a593.pth" to /root/.cache/torch/hub/checkpoints/resnet34-b627a593.pth
 100%|██████████| 83.3M/83.3M [00:00&lt;00:00, 164MB/s]</code></pre>
-
-
-<table class="dataframe table table-sm table-striped small">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
 <thead>
-<tr>
-<th>
-epoch
-</th>
-<th>
-train_loss
-</th>
-<th>
-valid_loss
-</th>
-<th>
-error_rate
-</th>
-<th>
-time
-</th>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>
-0
-</td>
-<td>
-1.837715
-</td>
-<td>
-0.237122
-</td>
-<td>
-0.088296
-</td>
-<td>
-00:13
-</td>
+<tr class="odd">
+<td>0</td>
+<td>1.837715</td>
+<td>0.237122</td>
+<td>0.088296</td>
+<td>00:13</td>
 </tr>
 </tbody>
-
 </table>
-
-
-<table class="dataframe table table-sm table-striped small">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
 <thead>
-<tr>
-<th>
-epoch
-</th>
-<th>
-train_loss
-</th>
-<th>
-valid_loss
-</th>
-<th>
-error_rate
-</th>
-<th>
-time
-</th>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>
-0
-</td>
-<td>
-0.565063
-</td>
-<td>
-0.141556
-</td>
-<td>
-0.041068
-</td>
-<td>
-00:18
-</td>
+<tr class="odd">
+<td>0</td>
+<td>0.565063</td>
+<td>0.141556</td>
+<td>0.041068</td>
+<td>00:18</td>
 </tr>
-<tr>
-<td>
-1
-</td>
-<td>
-0.431256
-</td>
-<td>
-0.147855
-</td>
-<td>
-0.051335
-</td>
-<td>
-00:20
-</td>
+<tr class="even">
+<td>1</td>
+<td>0.431256</td>
+<td>0.147855</td>
+<td>0.051335</td>
+<td>00:20</td>
 </tr>
-<tr>
-<td>
-2
-</td>
-<td>
-0.337753
-</td>
-<td>
-0.119496
-</td>
-<td>
-0.036961
-</td>
-<td>
-00:17
-</td>
+<tr class="odd">
+<td>2</td>
+<td>0.337753</td>
+<td>0.119496</td>
+<td>0.036961</td>
+<td>00:17</td>
 </tr>
-<tr>
-<td>
-3
-</td>
-<td>
-0.268090
-</td>
-<td>
-0.115800
-</td>
-<td>
-0.032854
-</td>
-<td>
-00:14
-</td>
+<tr class="even">
+<td>3</td>
+<td>0.268090</td>
+<td>0.115800</td>
+<td>0.032854</td>
+<td>00:14</td>
 </tr>
 </tbody>
-
 </table>
 <p>understand structure of model</p>
 <div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">learn.summary()</span></code></pre></div>
@@ -6949,7 +7817,7 @@ font-style: inherit;">=</span> ClassificationInterpretation.from_learner(learn)<
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect3/Lecture_3_Deployment_Self_files/Lecture_3_Deployment_Self_23_4.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">png</figcaption>
+<figcaption>png</figcaption>
 </figure>
 </div>
 </section>
@@ -6986,7 +7854,7 @@ font-style: inherit;">4</span>))</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect3/Lecture_3_Deployment_Self_files/Lecture_3_Deployment_Self_25_2.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">png</figcaption>
+<figcaption>png</figcaption>
 </figure>
 </div>
 <p>We can observe from both the confusion matrix and visual representation that the model is having difficulty differentiating between the Jaguar and the African Leopard. Even I find it challenging to distinguish between the two. 😵 So, we can let it be.</p>
@@ -7129,222 +7997,102 @@ font-style: inherit;">0</span>]</span>
 <span id="cb24-6">Benchmark_Result.head(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">5</span>)</span></code></pre></div>
-
-<table class="dataframe table table-sm table-striped small">
+<table class="table">
+<colgroup>
+<col style="width: 3%">
+<col style="width: 15%">
+<col style="width: 4%">
+<col style="width: 6%">
+<col style="width: 4%">
+<col style="width: 6%">
+<col style="width: 7%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 9%">
+<col style="width: 30%">
+</colgroup>
 <thead>
-<tr>
-<th>
-</th>
-<th>
-model
-</th>
-<th>
-top1
-</th>
-<th>
-top1_err
-</th>
-<th>
-top5
-</th>
-<th>
-top5_err
-</th>
-<th>
-param_count
-</th>
-<th>
-img_size
-</th>
-<th>
-crop_pct
-</th>
-<th>
-interpolation
-</th>
-<th>
-model_org
-</th>
+<tr class="header">
+<th></th>
+<th>model</th>
+<th>top1</th>
+<th>top1_err</th>
+<th>top5</th>
+<th>top5_err</th>
+<th>param_count</th>
+<th>img_size</th>
+<th>crop_pct</th>
+<th>interpolation</th>
+<th>model_org</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<th>
-0
-</th>
-<td>
-eva02_large_patch14_448
-</td>
-<td>
-90.052
-</td>
-<td>
-9.948
-</td>
-<td>
-99.048
-</td>
-<td>
-0.952
-</td>
-<td>
-305.08
-</td>
-<td>
-448
-</td>
-<td>
-1.0
-</td>
-<td>
-bicubic
-</td>
-<td>
-eva02_large_patch14_448.mim_m38m_ft_in22k_in1k
-</td>
+<tr class="odd">
+<td>0</td>
+<td>eva02_large_patch14_448</td>
+<td>90.052</td>
+<td>9.948</td>
+<td>99.048</td>
+<td>0.952</td>
+<td>305.08</td>
+<td>448</td>
+<td>1.0</td>
+<td>bicubic</td>
+<td>eva02_large_patch14_448.mim_m38m_ft_in22k_in1k</td>
 </tr>
-<tr>
-<th>
-1
-</th>
-<td>
-eva02_large_patch14_448
-</td>
-<td>
-89.970
-</td>
-<td>
-10.030
-</td>
-<td>
-99.012
-</td>
-<td>
-0.988
-</td>
-<td>
-305.08
-</td>
-<td>
-448
-</td>
-<td>
-1.0
-</td>
-<td>
-bicubic
-</td>
-<td>
-eva02_large_patch14_448.mim_in22k_ft_in22k_in1k
-</td>
+<tr class="even">
+<td>1</td>
+<td>eva02_large_patch14_448</td>
+<td>89.970</td>
+<td>10.030</td>
+<td>99.012</td>
+<td>0.988</td>
+<td>305.08</td>
+<td>448</td>
+<td>1.0</td>
+<td>bicubic</td>
+<td>eva02_large_patch14_448.mim_in22k_ft_in22k_in1k</td>
 </tr>
-<tr>
-<th>
-2
-</th>
-<td>
-eva_giant_patch14_560
-</td>
-<td>
-89.786
-</td>
-<td>
-10.214
-</td>
-<td>
-98.992
-</td>
-<td>
-1.008
-</td>
-<td>
-1,014.45
-</td>
-<td>
-560
-</td>
-<td>
-1.0
-</td>
-<td>
-bicubic
-</td>
-<td>
-eva_giant_patch14_560.m30m_ft_in22k_in1k
-</td>
+<tr class="odd">
+<td>2</td>
+<td>eva_giant_patch14_560</td>
+<td>89.786</td>
+<td>10.214</td>
+<td>98.992</td>
+<td>1.008</td>
+<td>1,014.45</td>
+<td>560</td>
+<td>1.0</td>
+<td>bicubic</td>
+<td>eva_giant_patch14_560.m30m_ft_in22k_in1k</td>
 </tr>
-<tr>
-<th>
-3
-</th>
-<td>
-eva02_large_patch14_448
-</td>
-<td>
-89.622
-</td>
-<td>
-10.378
-</td>
-<td>
-98.950
-</td>
-<td>
-1.050
-</td>
-<td>
-305.08
-</td>
-<td>
-448
-</td>
-<td>
-1.0
-</td>
-<td>
-bicubic
-</td>
-<td>
-eva02_large_patch14_448.mim_in22k_ft_in1k
-</td>
+<tr class="even">
+<td>3</td>
+<td>eva02_large_patch14_448</td>
+<td>89.622</td>
+<td>10.378</td>
+<td>98.950</td>
+<td>1.050</td>
+<td>305.08</td>
+<td>448</td>
+<td>1.0</td>
+<td>bicubic</td>
+<td>eva02_large_patch14_448.mim_in22k_ft_in1k</td>
 </tr>
-<tr>
-<th>
-4
-</th>
-<td>
-eva02_large_patch14_448
-</td>
-<td>
-89.574
-</td>
-<td>
-10.426
-</td>
-<td>
-98.924
-</td>
-<td>
-1.076
-</td>
-<td>
-305.08
-</td>
-<td>
-448
-</td>
-<td>
-1.0
-</td>
-<td>
-bicubic
-</td>
-<td>
-eva02_large_patch14_448.mim_m38m_ft_in1k
-</td>
+<tr class="odd">
+<td>4</td>
+<td>eva02_large_patch14_448</td>
+<td>89.574</td>
+<td>10.426</td>
+<td>98.924</td>
+<td>1.076</td>
+<td>305.08</td>
+<td>448</td>
+<td>1.0</td>
+<td>bicubic</td>
+<td>eva02_large_patch14_448.mim_m38m_ft_in1k</td>
 </tr>
 </tbody>
-
 </table>
 <p>Let’s add a “family” column that will allow us to group architectures into categories with similar characteristics:</p>
 <div class="sourceCode" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><span class="kw" style="color: #003B4F;
@@ -7448,348 +8196,151 @@ font-style: inherit;">'infer_samples_per_sec'</span>)</span>
 <span id="cb25-11">Inference_Data.head(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">5</span>)</span></code></pre></div>
-
-<table class="dataframe table table-sm table-striped small">
+<table class="table">
+<colgroup>
+<col style="width: 2%">
+<col style="width: 5%">
+<col style="width: 9%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 3%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 4%">
+<col style="width: 6%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 6%">
+<col style="width: 10%">
+<col style="width: 4%">
+<col style="width: 3%">
+</colgroup>
 <thead>
-<tr>
-<th>
-</th>
-<th>
-model
-</th>
-<th>
-infer_samples_per_sec
-</th>
-<th>
-infer_step_time
-</th>
-<th>
-infer_batch_size
-</th>
-<th>
-infer_img_size
-</th>
-<th>
-param_count_x
-</th>
-<th>
-top1
-</th>
-<th>
-top1_err
-</th>
-<th>
-top5
-</th>
-<th>
-top5_err
-</th>
-<th>
-param_count_y
-</th>
-<th>
-img_size
-</th>
-<th>
-crop_pct
-</th>
-<th>
-interpolation
-</th>
-<th>
-model_org
-</th>
-<th>
-secs
-</th>
-<th>
-family
-</th>
+<tr class="header">
+<th></th>
+<th>model</th>
+<th>infer_samples_per_sec</th>
+<th>infer_step_time</th>
+<th>infer_batch_size</th>
+<th>infer_img_size</th>
+<th>param_count_x</th>
+<th>top1</th>
+<th>top1_err</th>
+<th>top5</th>
+<th>top5_err</th>
+<th>param_count_y</th>
+<th>img_size</th>
+<th>crop_pct</th>
+<th>interpolation</th>
+<th>model_org</th>
+<th>secs</th>
+<th>family</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<th>
-12
-</th>
-<td>
-levit_128s
-</td>
-<td>
-21485.80
-</td>
-<td>
-47.648
-</td>
-<td>
-1024
-</td>
-<td>
-224
-</td>
-<td>
-7.78
-</td>
-<td>
-76.526
-</td>
-<td>
-23.474
-</td>
-<td>
-92.872
-</td>
-<td>
-7.128
-</td>
-<td>
-7.78
-</td>
-<td>
-224
-</td>
-<td>
-0.900
-</td>
-<td>
-bicubic
-</td>
-<td>
-levit_128s.fb_dist_in1k
-</td>
-<td>
-0.000047
-</td>
-<td>
-levit
-</td>
+<tr class="odd">
+<td>12</td>
+<td>levit_128s</td>
+<td>21485.80</td>
+<td>47.648</td>
+<td>1024</td>
+<td>224</td>
+<td>7.78</td>
+<td>76.526</td>
+<td>23.474</td>
+<td>92.872</td>
+<td>7.128</td>
+<td>7.78</td>
+<td>224</td>
+<td>0.900</td>
+<td>bicubic</td>
+<td>levit_128s.fb_dist_in1k</td>
+<td>0.000047</td>
+<td>levit</td>
 </tr>
-<tr>
-<th>
-13
-</th>
-<td>
-regnetx_002
-</td>
-<td>
-17821.98
-</td>
-<td>
-57.446
-</td>
-<td>
-1024
-</td>
-<td>
-224
-</td>
-<td>
-2.68
-</td>
-<td>
-68.752
-</td>
-<td>
-31.248
-</td>
-<td>
-88.542
-</td>
-<td>
-11.458
-</td>
-<td>
-2.68
-</td>
-<td>
-224
-</td>
-<td>
-0.875
-</td>
-<td>
-bicubic
-</td>
-<td>
-regnetx_002.pycls_in1k
-</td>
-<td>
-0.000056
-</td>
-<td>
-regnetx
-</td>
+<tr class="even">
+<td>13</td>
+<td>regnetx_002</td>
+<td>17821.98</td>
+<td>57.446</td>
+<td>1024</td>
+<td>224</td>
+<td>2.68</td>
+<td>68.752</td>
+<td>31.248</td>
+<td>88.542</td>
+<td>11.458</td>
+<td>2.68</td>
+<td>224</td>
+<td>0.875</td>
+<td>bicubic</td>
+<td>regnetx_002.pycls_in1k</td>
+<td>0.000056</td>
+<td>regnetx</td>
 </tr>
-<tr>
-<th>
-15
-</th>
-<td>
-regnety_002
-</td>
-<td>
-16673.08
-</td>
-<td>
-61.405
-</td>
-<td>
-1024
-</td>
-<td>
-224
-</td>
-<td>
-3.16
-</td>
-<td>
-70.280
-</td>
-<td>
-29.720
-</td>
-<td>
-89.530
-</td>
-<td>
-10.470
-</td>
-<td>
-3.16
-</td>
-<td>
-224
-</td>
-<td>
-0.875
-</td>
-<td>
-bicubic
-</td>
-<td>
-regnety_002.pycls_in1k
-</td>
-<td>
-0.000060
-</td>
-<td>
-regnety
-</td>
+<tr class="odd">
+<td>15</td>
+<td>regnety_002</td>
+<td>16673.08</td>
+<td>61.405</td>
+<td>1024</td>
+<td>224</td>
+<td>3.16</td>
+<td>70.280</td>
+<td>29.720</td>
+<td>89.530</td>
+<td>10.470</td>
+<td>3.16</td>
+<td>224</td>
+<td>0.875</td>
+<td>bicubic</td>
+<td>regnety_002.pycls_in1k</td>
+<td>0.000060</td>
+<td>regnety</td>
 </tr>
-<tr>
-<th>
-17
-</th>
-<td>
-levit_128
-</td>
-<td>
-14657.83
-</td>
-<td>
-69.849
-</td>
-<td>
-1024
-</td>
-<td>
-224
-</td>
-<td>
-9.21
-</td>
-<td>
-78.490
-</td>
-<td>
-21.510
-</td>
-<td>
-94.012
-</td>
-<td>
-5.988
-</td>
-<td>
-9.21
-</td>
-<td>
-224
-</td>
-<td>
-0.900
-</td>
-<td>
-bicubic
-</td>
-<td>
-levit_128.fb_dist_in1k
-</td>
-<td>
-0.000068
-</td>
-<td>
-levit
-</td>
+<tr class="even">
+<td>17</td>
+<td>levit_128</td>
+<td>14657.83</td>
+<td>69.849</td>
+<td>1024</td>
+<td>224</td>
+<td>9.21</td>
+<td>78.490</td>
+<td>21.510</td>
+<td>94.012</td>
+<td>5.988</td>
+<td>9.21</td>
+<td>224</td>
+<td>0.900</td>
+<td>bicubic</td>
+<td>levit_128.fb_dist_in1k</td>
+<td>0.000068</td>
+<td>levit</td>
 </tr>
-<tr>
-<th>
-18
-</th>
-<td>
-regnetx_004
-</td>
-<td>
-14440.03
-</td>
-<td>
-70.903
-</td>
-<td>
-1024
-</td>
-<td>
-224
-</td>
-<td>
-5.16
-</td>
-<td>
-72.402
-</td>
-<td>
-27.598
-</td>
-<td>
-90.826
-</td>
-<td>
-9.174
-</td>
-<td>
-5.16
-</td>
-<td>
-224
-</td>
-<td>
-0.875
-</td>
-<td>
-bicubic
-</td>
-<td>
-regnetx_004.pycls_in1k
-</td>
-<td>
-0.000069
-</td>
-<td>
-regnetx
-</td>
+<tr class="odd">
+<td>18</td>
+<td>regnetx_004</td>
+<td>14440.03</td>
+<td>70.903</td>
+<td>1024</td>
+<td>224</td>
+<td>5.16</td>
+<td>72.402</td>
+<td>27.598</td>
+<td>90.826</td>
+<td>9.174</td>
+<td>5.16</td>
+<td>224</td>
+<td>0.875</td>
+<td>bicubic</td>
+<td>regnetx_004.pycls_in1k</td>
+<td>0.000069</td>
+<td>regnetx</td>
 </tr>
 </tbody>
-
 </table>
 </section>
 <section id="plot-of-all-the-architectures." class="level3">
@@ -7855,8 +8406,7 @@ font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'model_org'</span>, hover_data<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">=</span>[size])</span>
-<span id="cb26-7"></span></code></pre></div>
+font-style: inherit;">=</span>[size])</span></code></pre></div>
 <div class="sourceCode" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1">show_all(Inference_Data, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Inference'</span>, <span class="st" style="color: #20794D;
@@ -8014,163 +8564,107 @@ font-style: inherit;">5</span>)</span></code></pre></div>
   warnings.warn(
 /usr/local/lib/python3.10/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ConvNeXt_Base_Weights.IMAGENET1K_V1`. You can also use `weights=ConvNeXt_Base_Weights.DEFAULT` to get the most up-to-date weights.
   warnings.warn(msg)</code></pre>
-
-
-<table class="dataframe table table-sm table-striped small">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
 <thead>
-<tr>
-<th>
-epoch
-</th>
-<th>
-train_loss
-</th>
-<th>
-valid_loss
-</th>
-<th>
-error_rate
-</th>
-<th>
-time
-</th>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>
-0
-</td>
-<td>
-1.130588
-</td>
-<td>
-0.183650
-</td>
-<td>
-0.045175
-</td>
-<td>
-00:17
-</td>
+<tr class="odd">
+<td>0</td>
+<td>1.130588</td>
+<td>0.183650</td>
+<td>0.045175</td>
+<td>00:17</td>
 </tr>
 </tbody>
-
 </table>
 <pre><code>/usr/lib/python3.10/multiprocessing/popen_fork.py:66: RuntimeWarning: os.fork() was called. os.fork() is incompatible with multithreaded code, and JAX is multithreaded, so this will likely lead to a deadlock.
   self.pid = os.fork()
 /usr/lib/python3.10/multiprocessing/popen_fork.py:66: RuntimeWarning: os.fork() was called. os.fork() is incompatible with multithreaded code, and JAX is multithreaded, so this will likely lead to a deadlock.
   self.pid = os.fork()</code></pre>
-
-
-<table class="dataframe table table-sm table-striped small">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<table class="table">
 <thead>
-<tr>
-<th>
-epoch
-</th>
-<th>
-train_loss
-</th>
-<th>
-valid_loss
-</th>
-<th>
-error_rate
-</th>
-<th>
-time
-</th>
+<tr class="header">
+<th>epoch</th>
+<th>train_loss</th>
+<th>valid_loss</th>
+<th>error_rate</th>
+<th>time</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>
-0
-</td>
-<td>
-0.306945
-</td>
-<td>
-0.164550
-</td>
-<td>
-0.047228
-</td>
-<td>
-00:20
-</td>
+<tr class="odd">
+<td>0</td>
+<td>0.306945</td>
+<td>0.164550</td>
+<td>0.047228</td>
+<td>00:20</td>
 </tr>
-<tr>
-<td>
-1
-</td>
-<td>
-0.253462
-</td>
-<td>
-0.118687
-</td>
-<td>
-0.026694
-</td>
-<td>
-00:11
-</td>
+<tr class="even">
+<td>1</td>
+<td>0.253462</td>
+<td>0.118687</td>
+<td>0.026694</td>
+<td>00:11</td>
 </tr>
-<tr>
-<td>
-2
-</td>
-<td>
-0.207020
-</td>
-<td>
-0.103058
-</td>
-<td>
-0.024641
-</td>
-<td>
-00:11
-</td>
+<tr class="odd">
+<td>2</td>
+<td>0.207020</td>
+<td>0.103058</td>
+<td>0.024641</td>
+<td>00:11</td>
 </tr>
-<tr>
-<td>
-3
-</td>
-<td>
-0.175618
-</td>
-<td>
-0.094374
-</td>
-<td>
-0.020534
-</td>
-<td>
-00:11
-</td>
+<tr class="even">
+<td>3</td>
+<td>0.175618</td>
+<td>0.094374</td>
+<td>0.020534</td>
+<td>00:11</td>
 </tr>
-<tr>
-<td>
-4
-</td>
-<td>
-0.151438
-</td>
-<td>
-0.092010
-</td>
-<td>
-0.020534
-</td>
-<td>
-00:13
-</td>
+<tr class="odd">
+<td>4</td>
+<td>0.151438</td>
+<td>0.092010</td>
+<td>0.020534</td>
+<td>00:13</td>
 </tr>
 </tbody>
-
 </table>
 <p>Compared to the <code>resnet34</code> model, which had an error rate of 32%, the <code>convnext_base</code> model demonstrates a significant improvement with an error rate of just 21%</p>
 <p>Structure of the architecture</p>
@@ -8964,14 +9458,15 @@ font-style: inherit;">3</span>]</span>
  ]]></description>
   <category>Computer Vision</category>
   <category>FastAI</category>
-  <guid>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect3/index.html</guid>
+  <guid>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect3/</guid>
   <pubDate>Sat, 13 Apr 2024 18:30:00 GMT</pubDate>
 </item>
 <item>
   <title>FastAI Course Lecture 2 Notes</title>
   <dc:creator>Kanav Sharma</dc:creator>
-  <link>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/index.html</link>
+  <link>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -9228,7 +9723,7 @@ font-style: inherit;">2</span>)</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/Lecture_2_Production_Self_files/Lecture_2_Production_Self_19_0.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">png</figcaption>
+<figcaption>png</figcaption>
 </figure>
 </div>
 <p><strong>Squishing or Padding for Model Training :</strong></p>
@@ -9276,7 +9771,7 @@ font-style: inherit;">2</span>)</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/Lecture_2_Production_Self_files/Lecture_2_Production_Self_21_0.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">png</figcaption>
+<figcaption>png</figcaption>
 </figure>
 </div>
 </section>
@@ -9308,13 +9803,6 @@ font-style: inherit;">8</span>)</span></code></pre></div>
     }
 </style>
 <table class="table">
-<colgroup>
-<col style="width: 11%">
-<col style="width: 18%">
-<col style="width: 18%">
-<col style="width: 18%">
-<col style="width: 11%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>epoch</th>
@@ -9350,13 +9838,6 @@ font-style: inherit;">8</span>)</span></code></pre></div>
     }
 </style>
 <table class="table">
-<colgroup>
-<col style="width: 11%">
-<col style="width: 18%">
-<col style="width: 18%">
-<col style="width: 18%">
-<col style="width: 11%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>epoch</th>
@@ -9464,7 +9945,7 @@ font-style: inherit;">=</span> ClassificationInterpretation.from_learner(learn)<
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/Lecture_2_Production_Self_files/Lecture_2_Production_Self_26_4.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">png</figcaption>
+<figcaption>png</figcaption>
 </figure>
 </div>
 <p><code>plot_top_losses</code> shows us the images with the highest loss in our dataset.</p>
@@ -9499,7 +9980,7 @@ font-style: inherit;">4</span>))</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/Lecture_2_Production_Self_files/Lecture_2_Production_Self_28_2.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">png</figcaption>
+<figcaption>png</figcaption>
 </figure>
 </div>
 </section>
@@ -9622,7 +10103,7 @@ font-style: inherit;">2</span>)</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/Lecture_2_Production_Self_files/Lecture_2_Production_Self_35_0.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">png</figcaption>
+<figcaption>png</figcaption>
 </figure>
 </div>
 <div class="sourceCode" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1">learn <span class="op" style="color: #5E5E5E;
@@ -9651,13 +10132,6 @@ font-style: inherit;">8</span>)</span></code></pre></div>
     }
 </style>
 <table class="table">
-<colgroup>
-<col style="width: 11%">
-<col style="width: 18%">
-<col style="width: 18%">
-<col style="width: 18%">
-<col style="width: 11%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>epoch</th>
@@ -9693,13 +10167,6 @@ font-style: inherit;">8</span>)</span></code></pre></div>
     }
 </style>
 <table class="table">
-<colgroup>
-<col style="width: 11%">
-<col style="width: 18%">
-<col style="width: 18%">
-<col style="width: 18%">
-<col style="width: 11%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>epoch</th>
@@ -9805,7 +10272,7 @@ font-style: inherit;">=</span> ClassificationInterpretation.from_learner(learn)<
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/Lecture_2_Production_Self_files/Lecture_2_Production_Self_37_4.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">png</figcaption>
+<figcaption>png</figcaption>
 </figure>
 </div>
 <div class="sourceCode" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1">interp.plot_top_losses(<span class="dv" style="color: #AD0000;
@@ -9839,7 +10306,7 @@ font-style: inherit;">4</span>))</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/Lecture_2_Production_Self_files/Lecture_2_Production_Self_38_2.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">png</figcaption>
+<figcaption>png</figcaption>
 </figure>
 </div>
 <section id="so-by-reading-confusion-matrix-and-looking-at-output-from-plot_top_losses-we-can-say-that-we-still-have-a-problem-with-our-data-and-it-will-take-a-lot-more-iteration-to-fix-it.-for-now-lets-conclude-our-efforts-at-this-point." class="level4">
@@ -9864,13 +10331,13 @@ font-style: inherit;">'Lecture2_Big_Cat_Model.pkl'</span>)</span></code></pre></
  ]]></description>
   <category>Computer Vision</category>
   <category>FastAI</category>
-  <guid>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/index.html</guid>
+  <guid>https://mekanavsharma.github.io/Blog/posts/FastAI_Course_Lect2/</guid>
   <pubDate>Mon, 08 Apr 2024 18:30:00 GMT</pubDate>
 </item>
 <item>
   <title>How I got multiple offers and Landed My Dream Job in Fintech</title>
   <dc:creator>Kanav Sharma</dc:creator>
-  <link>https://mekanavsharma.github.io/Blog/posts/Job-Search/index.html</link>
+  <link>https://mekanavsharma.github.io/Blog/posts/Job-Search/</link>
   <description><![CDATA[ 
 
 
@@ -9943,7 +10410,7 @@ font-style: inherit;">'Lecture2_Big_Cat_Model.pkl'</span>)</span></code></pre></
  ]]></description>
   <category>Informative</category>
   <category>Interview</category>
-  <guid>https://mekanavsharma.github.io/Blog/posts/Job-Search/index.html</guid>
+  <guid>https://mekanavsharma.github.io/Blog/posts/Job-Search/</guid>
   <pubDate>Wed, 22 Mar 2023 18:30:00 GMT</pubDate>
   <media:content url="https://mekanavsharma.github.io/Blog/posts/Job-Search/image.jpg" medium="image" type="image/jpeg"/>
 </item>

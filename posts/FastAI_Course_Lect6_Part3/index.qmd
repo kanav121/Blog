@@ -8,9 +8,6 @@ toc: true
 #description: Blog regarding re-creation of Lecture 2 of FastAI Course for own learning
 title-block-banner: true  #it has image in title
 order: 0
-editor: 
-  markdown: 
-    wrap: sentence
 ---
 
 ## Call library, download data, create folder blah blah..
